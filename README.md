@@ -7,6 +7,7 @@ With almost no android experience, you can create advanced applications without 
 **BlueNimble Apps SDK** sdk provides android developers with simple java interfaces which they can extend to create new themes, component types, effects, data binding, backend integration and more
 
 ## Getting Started
+-----
 
 ### Use in a brand new application
 If you're creating a new application, just clone bluenimble-apps-android-bootstrap. It's a pre-configured android project that you can run immediately.
@@ -15,6 +16,7 @@ If you're creating a new application, just clone bluenimble-apps-android-bootstr
 If you're going to extend your existing application by adding new activities based on bluenimble sdk, add bluenimble-apps-sdk-android to your gradle build script
 
 ## What's a BlueNimble Application 
+-----
 
 A BlueNimble application is a folder under android assets which have the structure bellow:
 
@@ -27,9 +29,12 @@ A BlueNimble application is a folder under android assets which have the structu
 	- anotherPage.json
 	- ...
 
+You can also zip the myApp folder and tell the sdk to load the app from the archive. 
+	
 ## Visual Components - Out-Of-The-Box
+-----
 
-**bluenimble-apps** supports out-of-the-box the most used and standard visual components
+**bluenimble-apps** supports the most used and standard visual components
 <table>
 <tr style="border: 0px;">
 <td style="border: 0px; padding-left: 20px;">
@@ -151,3 +156,20 @@ Scatter Chart
 </td>
 </tr>
 </table>
+
+License
+=======
+Copyright 2016 BlueNimble, Inc.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+
