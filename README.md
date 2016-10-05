@@ -4,7 +4,7 @@
 
 With almost no android experience, you can create advanced applications without the hassle of understanding how layouts, visual components, asyc tasks or backend integration works in android.
 
-**BlueNimble Apps SDK** sdk provides android developers with simple java interfaces which they can extend to create new themes, component types, effects, data binding, backend integration and more
+> **BlueNimble Apps SDK** sdk provides android developers with simple java interfaces which they can extend to create new themes, component types, effects, data binding, backend integration and more
 
 Getting Started
 -----
@@ -22,8 +22,11 @@ A BlueNimble application is a folder under android assets which have the structu
 
 - myApp
   - app.json
-  - themes (optional)
+  - static.json (*optional*. Put application texts by user spoken language such as form fields labels)
+  - backend.json (*optional*. Define your REST or local services)
+  - themes (*optional*)
     - aTheme
+    - anotherTheme
   - pages 
     - aPage.json
 	- anotherPage.json
