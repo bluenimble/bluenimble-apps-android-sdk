@@ -11,9 +11,9 @@ import com.bluenimble.apps.sdk.spec.ComponentSpec;
 import com.bluenimble.apps.sdk.spec.LayerSpec;
 import com.bluenimble.apps.sdk.ui.components.AbstractComponentFactory;
 import com.bluenimble.apps.sdk.ui.components.impls.listeners.EventListener;
-import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
@@ -63,7 +63,7 @@ public class MapFactory extends AbstractComponentFactory {
 	}
 
 	@Override
-	public void bind (ComponentSpec.Binding binding, View view, ApplicationSpec applicationSpec, ComponentSpec spec, DataHolder dh) {
+	public void bind (final ComponentSpec.Binding binding, final View view, final ApplicationSpec applicationSpec, final ComponentSpec spec, final DataHolder dh) {
 		Log.d (MapFactory.class.getSimpleName (), " .bind > view: " + String.valueOf (view));
 	
 		if (view == null) {
@@ -74,56 +74,60 @@ public class MapFactory extends AbstractComponentFactory {
 		FragmentManager manager = ((UIActivity)view.getContext ()).getSupportFragmentManager ();
 		
 		MapFragment mapFragment = (MapFragment)manager.findFragmentByTag (spec.id ());
-		
-		GoogleMap map = mapFragment.getMap ();
-		
-		BindingSpec bindingSpec = spec.binding (binding);
-		if (bindingSpec == null) {
-			return;
-		}
-		
-		String [] property = bindingSpec.property ();
-		
-		switch (binding) {
-			case Set:
-				Object value = dh.valueOf (applicationSpec, bindingSpec);
-				if (value == null) {
+
+		mapFragment.getMapAsync (new OnMapReadyCallback () {
+
+			@Override
+			public void onMapReady (GoogleMap googleMap) {
+				BindingSpec bindingSpec = spec.binding (binding);
+				if (bindingSpec == null) {
 					return;
 				}
-				
-				if (!(value instanceof JsonArray)) {
-					// TODO: log
-					return;
+
+				String [] property = bindingSpec.property ();
+
+				switch (binding) {
+					case Set:
+						Object value = dh.valueOf (applicationSpec, bindingSpec);
+						if (value == null) {
+							return;
+						}
+
+						if (!(value instanceof JsonArray)) {
+							// TODO: log
+							return;
+						}
+
+						JsonArray array = (JsonArray)value;
+						if (array.isEmpty ()) {
+							return;
+						}
+
+						LatLngBounds.Builder builder = new LatLngBounds.Builder ();
+
+						for (int i = 0; i < array.count (); i++) {
+							JsonObject record = (JsonObject)array.get (i);
+							MarkerOptions markerOptions = new MarkerOptions ()
+									.position (new LatLng (Json.getDouble (record, Record.Lat, 0), Json.getDouble (record, Record.Lng, 0)))
+									.title (Json.getString (record, Record.Name));
+							//.icon (BitmapDescriptorFactory.fromResource (0)); // need to review based on "custom": { "icon": "house_icon": { "name": "houseType", "value": "Home" } }
+							Marker marker = googleMap.addMarker (markerOptions);
+							marker.setTitle (Json.getString (record, Record.Id));
+							builder.include (marker.getPosition ());
+						}
+
+						// relocate camera
+						googleMap.animateCamera (CameraUpdateFactory.newLatLngBounds (builder.build (), 0));
+
+						break;
+					case Get:
+						Json.set ((JsonObject)dh.get (bindingSpec.source ()), view.getTag (), property);
+						break;
+					default:
+						break;
 				}
-				
-				JsonArray array = (JsonArray)value;
-				if (array.isEmpty ()) {
-					return;
-				}
-				
-				LatLngBounds.Builder builder = new LatLngBounds.Builder ();
-				
-				for (int i = 0; i < array.count (); i++) {
-					JsonObject record = (JsonObject)array.get (i);
-					MarkerOptions markerOptions = new MarkerOptions ()
-                            .position (new LatLng (Json.getDouble (record, Record.Lat, 0), Json.getDouble (record, Record.Lng, 0)))
-                            .title (Json.getString (record, Record.Name));
-                            //.icon (BitmapDescriptorFactory.fromResource (0)); // need to review based on "custom": { "icon": "house_icon": { "name": "houseType", "value": "Home" } }
-					Marker marker = map.addMarker (markerOptions);
-                    marker.setTitle (Json.getString (record, Record.Id));
-                    builder.include (marker.getPosition ());
-				}
-				
-				// relocate camera
-                map.animateCamera (CameraUpdateFactory.newLatLngBounds (builder.build (), 0));
-                
-				break;
-			case Get:
-				Json.set ((JsonObject)dh.get (bindingSpec.source ()), view.getTag (), property);
-				break;
-			default:
-				break;
-		}
+			}
+		});
 	
 	}
 
@@ -133,9 +137,13 @@ public class MapFactory extends AbstractComponentFactory {
 		
 		MapFragment mapFragment = (MapFragment)manager.findFragmentByTag (component.id ());
 		
-		GoogleMap map = mapFragment.getMap ();
-		
-		map.setOnMapLoadedCallback ();
+		mapFragment.getMapAsync (new OnMapReadyCallback () {
+
+			@Override
+			public void onMapReady (GoogleMap googleMap) {
+
+			}
+		}); //getMap ();
 		
 	}
 
