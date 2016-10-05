@@ -1,10 +1,10 @@
 # BlueNimble Apps SDK for Android
 
-**bluenimble-apps** is an sdk let you create android applications by creating pages, styling components, adding effects and integrate with your backend using simple json configuration files.
+**BlueNimble Apps SDK** let you create android applications by creating pages, styling components, adding effects and integrate with your backend using simple json configuration files.
 
 With almost no android experience, you can create advanced applications without the hassle of understanding how layouts, visual components, asyc tasks or backend integration works in android.
 
-**bluenimble-apps** sdk provides android developers with simple java interfaces which they can extend to create new themes, component types, effects, data binding, backend integration and more
+**BlueNimble Apps SDK** sdk provides android developers with simple java interfaces which they can extend to create new themes, component types, effects, data binding, backend integration and more
 
 ## Getting Started
 
