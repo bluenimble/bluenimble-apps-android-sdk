@@ -22,7 +22,7 @@ A BlueNimble application is a folder under android assets which have the structu
 
 - myApp
   - app.json
-  - static.json (*<span style="color: red;">optional</span>*. Put application texts by user spoken language such as form fields labels)
+  - static.json (<span style="color: red;">optional</span>. Put application texts by user spoken language such as form fields labels)
   - backend.json (*optional*. Define your REST or local services)
   - themes (*optional*)
     - aTheme
