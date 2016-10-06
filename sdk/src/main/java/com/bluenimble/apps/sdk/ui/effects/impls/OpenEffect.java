@@ -10,7 +10,7 @@ public class OpenEffect implements Effect {
 
 	private static final long serialVersionUID = 3783743185246914342L;
 	
-	public static final String Id = "open";
+	private static final String Id = "open";
 
 	@Override
 	public String id () {

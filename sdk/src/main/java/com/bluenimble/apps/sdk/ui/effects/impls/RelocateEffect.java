@@ -21,7 +21,7 @@ public class RelocateEffect implements Effect {
 
 	private static final long serialVersionUID = 3783743185246914342L;
 	
-	public static final String Id = "relocate";
+	private static final String Id = "relocate";
 
 	@Override
 	public String id () {

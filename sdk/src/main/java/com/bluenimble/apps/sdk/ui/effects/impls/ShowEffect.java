@@ -6,7 +6,7 @@ public class ShowEffect extends VisibilityEffect {
 
 	private static final long serialVersionUID = 3783743185246914342L;
 	
-	public static final String Id = "show";
+	private static final String Id = "show";
 
 	public ShowEffect () {
 		super (View.VISIBLE);

@@ -10,7 +10,7 @@ public class GoToEffect implements Effect {
 
 	private static final long serialVersionUID = 3783743185246914342L;
 	
-	public static final String Id = "goto";
+	private static final String Id = "goto";
 
 	@Override
 	public String id () {

@@ -1,15 +1,13 @@
 package com.bluenimble.apps.sdk.ui.effects.impls;
 
-import android.view.View;
-
-public class HideEffect extends VisibilityEffect {
+public class UnbindEffect extends BindEffect {
 
 	private static final long serialVersionUID = 3783743185246914342L;
 	
-	private static final String Id = "hide";
+	private static final String Id = "unbind";
 
-	public HideEffect () {
-		super (View.GONE);
+	public UnbindEffect () {
+		super (false);
 	}
 	
 	@Override

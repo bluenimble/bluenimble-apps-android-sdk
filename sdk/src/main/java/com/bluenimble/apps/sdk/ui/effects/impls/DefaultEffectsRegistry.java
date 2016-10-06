@@ -14,11 +14,14 @@ public class DefaultEffectsRegistry implements EffectsRegistry {
 	
 	public DefaultEffectsRegistry () {
 		register (new BindEffect ());
+		register (new UnbindEffect ());
 		register (new GoToEffect ());
 		register (new HideEffect ());
 		register (new ShowEffect ());
+		register (new OpenEffect ());
 		register (new RelocateEffect ());
 		register (new RenderEffect ());
+		register (new AnimateEffect ());
 	}
 	
 	@Override

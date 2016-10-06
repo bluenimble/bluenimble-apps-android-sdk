@@ -8,7 +8,6 @@ import java.util.Set;
 import com.bluenimble.apps.sdk.Lang;
 import com.bluenimble.apps.sdk.application.UIActivity;
 import com.bluenimble.apps.sdk.controller.DataHolder;
-import com.bluenimble.apps.sdk.controller.impls.AgnosticDataHolder;
 import com.bluenimble.apps.sdk.spec.ApplicationSpec;
 import com.bluenimble.apps.sdk.spec.ComponentSpec;
 import com.bluenimble.apps.sdk.spec.ComponentSpec.Binding;
@@ -19,26 +18,17 @@ import com.bluenimble.apps.sdk.ui.effects.Effect;
 import android.util.Log;
 import android.view.View;
 
-public class BindEffect implements Effect {
+public class AnimateEffect implements Effect {
 
 	private static final long serialVersionUID = 3783743185246914342L;
 	
-	private static final String Id = "bind";
+	private static final String Id = "animate";
 
-	private boolean useDh = true;
-	
-	public BindEffect () {
-	}
-	
-	public BindEffect (boolean useDh) {
-		this.useDh = useDh;
-	}
-	
 	@Override
 	public String id () {
 		return Id;
 	}
-
+	
 	@Override
 	public void apply (UIActivity activity, ApplicationSpec application, PageSpec page, Object spec, DataHolder dh) {
 		
@@ -46,9 +36,7 @@ public class BindEffect implements Effect {
 			return;
 		}
 		
-		String tag = this.getClass ().getSimpleName ();
-
-		Log.d (tag, "\t-> Process Effect [" + getClass ().getSimpleName () + "] Spec => " + spec);
+		Log.d (AnimateEffect.class.getSimpleName (), "\t-> Process Effect [" + getClass ().getSimpleName () + "] Spec => " + spec);
 
 		String list = (String)spec;
 		
@@ -60,12 +48,12 @@ public class BindEffect implements Effect {
 		Set<String> sUis = new HashSet<String>(Arrays.asList (uis));
 		
 		if (sUis.contains (Lang.STAR)) {
-			bindPage (tag, activity, application, page, dh);
+			bindPage (activity, application, page, dh);
 			return;
 		}
 		
 		for (String ui : uis) {
-			Log.d (tag, "\t-> Bind [" + ui + "] ");
+			Log.d (AnimateEffect.class.getSimpleName (), "\t-> Bind [" + ui + "] ");
 			if (ui.equals (Lang.STAR)) {
 				continue;
 			}
@@ -76,12 +64,12 @@ public class BindEffect implements Effect {
 				layerId = ui.substring (0, indexOfDot);
 				componentId = ui.substring (indexOfDot + 1);
 			}
-			Log.d (tag, "\t-> Bind [" + layerId + " . " + componentId + "] ");
+			Log.d (AnimateEffect.class.getSimpleName (), "\t-> Bind [" + layerId + " . " + componentId + "] ");
 			
 			LayerSpec layer = page.layer (layerId);
 			if (layer == null) {
 				// TODO log
-				Log.d (tag, "\t-> Layer [" + layerId + "] not found");
+				Log.d (AnimateEffect.class.getSimpleName (), "\t-> Layer [" + layerId + "] not found");
 				continue;
 			}
 			ComponentSpec component = null;
@@ -89,53 +77,53 @@ public class BindEffect implements Effect {
 				component = layer.component (componentId);
 				if (component == null) {
 					// TODO log
-					Log.d (tag, "\t-> Component [" + componentId + "] not found");
+					Log.d (AnimateEffect.class.getSimpleName (), "\t-> Component [" + componentId + "] not found");
 					continue;
 				}
 			}
 			
 			if (component != null) {
-				bindComponent (tag, activity, application, layer, component, dh);
+				bindComponent (activity, application, layer, component, dh);
 			} else {
-				bindLayer (tag, activity, application, layer, dh);
+				bindLayer (activity, application, layer, dh);
 			}
 			
 		}
 		
 	}
 	
-	private void bindComponent (String tag, UIActivity activity, ApplicationSpec application, LayerSpec layer, ComponentSpec component, DataHolder dh) {
-		Log.d (tag, "\t\t    -> Bind Component [" + component.type () + "/" + component.id () + "]");
+	private void bindComponent (UIActivity activity, ApplicationSpec application, LayerSpec layer, ComponentSpec component, DataHolder dh) {
+		Log.d (AnimateEffect.class.getSimpleName (), "\t\t    -> Bind Component [" + component.type () + "/" + component.id () + "]");
 		View view = activity.component (layer.id (), component.id ());
 		if (view == null) {
-			Log.d (BindEffect.class.getSimpleName (), "\t\t    -> ERR: View Not found [" + layer.id () + Lang.DOT + component.id () + "]");
+			Log.d (AnimateEffect.class.getSimpleName (), "\t\t    -> ERR: View Not found [" + layer.id () + Lang.DOT + component.id () + "]");
 			return;
 		}
-		application.componentsRegistry ().lookup (component.type ()).bind (Binding.Set, view, application, component, useDh ? dh : AgnosticDataHolder.Instance);
+		application.componentsRegistry ().lookup (component.type ()).bind (Binding.Set, view, application, component, dh);
 	}
 
-	private void bindLayer (String tag, UIActivity activity, ApplicationSpec application, LayerSpec layer, DataHolder dh) {
+	private void bindLayer (UIActivity activity, ApplicationSpec application, LayerSpec layer, DataHolder dh) {
 		if (activity.layer (layer.id ()) == null || layer.count () == 0) {
 			return;
 		}
 		
-		Log.d (tag, "\t\t  -> Bind Layer [" + layer.id () + "]");
+		Log.d (AnimateEffect.class.getSimpleName (), "\t\t  -> Bind Layer [" + layer.id () + "]");
 
 		for (int i = 0; i < layer.count (); i++) {
-			bindComponent (tag, activity, application, layer, layer.component (i), dh);
+			bindComponent (activity, application, layer, layer.component (i), dh);
 		}
 	}
 	
-	private void bindPage (String tag, UIActivity activity, ApplicationSpec application, PageSpec page, DataHolder dh) {
+	private void bindPage (UIActivity activity, ApplicationSpec application, PageSpec page, DataHolder dh) {
 		if (page.count () == 0) {
 			return;
 		}
 		
-		Log.d (tag, "\t\t-> Bind Page ...");
+		Log.d (AnimateEffect.class.getSimpleName (), "\t\t-> Bind Page ...");
 
 		Iterator<String> layers = page.layers ();
 		while (layers.hasNext ()) {
-			bindLayer (tag, activity, application, page.layer (layers.next ()), dh);
+			bindLayer (activity, application, page.layer (layers.next ()), dh);
 		}
 	}
 

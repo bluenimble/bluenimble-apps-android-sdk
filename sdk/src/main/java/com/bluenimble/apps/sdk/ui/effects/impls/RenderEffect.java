@@ -24,7 +24,7 @@ public class RenderEffect implements Effect {
 
 	private static final long serialVersionUID = 3783743185246914342L;
 	
-	public static final String Id = "render";
+	private static final String Id = "render";
 
 	@Override
 	public String id () {
