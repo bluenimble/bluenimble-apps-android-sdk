@@ -51,11 +51,9 @@ public class JsonThemeSpec implements ThemeSpec {
 		}
 		if (spec == null) {
 			spec = ((JsonThemeSpec)another).spec;
-			Log.d ("JsonThemeSpec",  "Spec Updated " + spec);
 			return this;
 		}
 		spec = spec.merge (((JsonThemeSpec)another).spec);
-		Log.d ("JsonThemeSpec",  "Spec Updated " + spec);
 		return this;
 	}
 	

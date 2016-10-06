@@ -26,12 +26,12 @@ public class DefaultEffectsRegistry implements EffectsRegistry {
 	
 	@Override
 	public Effect lockup (String id) {
-		return effects.get (id);
+		return effects.get (id.toLowerCase ());
 	}
 
 	@Override
 	public void register (Effect effect) {
-		effects.put (effect.id (), effect);
+		effects.put (effect.id ().toLowerCase (), effect);
 	}
 
 }
