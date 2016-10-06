@@ -1,17 +1,14 @@
 package com.bluenimble.apps.sdk.application;
 
-import android.content.res.AssetManager;
-import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.util.Log;
 
 import com.bluenimble.apps.sdk.Lang;
-import com.bluenimble.apps.sdk.spec.impls.json.AssetsBasedApplicationSpec;
-import com.bluenimble.apps.sdk.ui.utils.Resources;
+import com.bluenimble.apps.sdk.spec.impls.json.AssetsApplicationSpec;
 
 import java.io.IOException;
 
-public class AssetsBasedApplication extends UIApplication {
+public class AssetsApplication extends UIApplication {
 
 	@Override
 	public void onCreate () {
@@ -29,7 +26,7 @@ public class AssetsBasedApplication extends UIApplication {
 	
 	@Override
 	protected void reload () throws Exception {
-		spec = new AssetsBasedApplicationSpec (this);
+		spec = new AssetsApplicationSpec(this);
 		setLogLevel ();
 	}
 

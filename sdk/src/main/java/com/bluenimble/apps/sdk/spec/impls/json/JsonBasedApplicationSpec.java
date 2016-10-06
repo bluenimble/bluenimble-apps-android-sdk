@@ -88,6 +88,9 @@ public class JsonBasedApplicationSpec extends AbstractApplicationSpec {
 	
 
 	public PageSpec add	(String id, JsonObject pageSpec) {
+		if (Lang.isNullOrEmpty (id) || Json.isNullOrEmpty (pageSpec)) {
+			return null;
+		}
 		PageSpec page = new JsonPageSpec (id, pageSpec, this);
 		this.pages.put (id, page);
 		return page;

@@ -1,12 +1,12 @@
 package com.bluenimble.apps.sdk.application;
 
-import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.util.Log;
 
-import com.bluenimble.apps.sdk.spec.impls.json.AssetsBasedApplicationSpec;
+import com.bluenimble.apps.sdk.spec.impls.json.AssetsApplicationSpec;
+import com.bluenimble.apps.sdk.spec.impls.json.DiskApplicationSpec;
 
-public class DiskBasedApplication extends UIApplication {
+public class DiskApplication extends UIApplication {
 
 	@Override
 	public void onCreate () {
@@ -24,7 +24,7 @@ public class DiskBasedApplication extends UIApplication {
 	
 	@Override
 	protected void reload () throws Exception {
-		spec = new AssetsBasedApplicationSpec (this);
+		spec = new DiskApplicationSpec (this);
 		setLogLevel ();
 	}
 

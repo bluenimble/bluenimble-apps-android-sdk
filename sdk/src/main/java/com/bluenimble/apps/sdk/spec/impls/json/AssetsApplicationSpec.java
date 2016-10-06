@@ -11,11 +11,11 @@ import com.bluenimble.apps.sdk.json.JsonObject;
 import android.content.res.AssetManager;
 import android.graphics.Typeface;
 
-public class AssetsBasedApplicationSpec extends JsonBasedApplicationSpec {
+public class AssetsApplicationSpec extends JsonBasedApplicationSpec {
 
 	private static final long serialVersionUID = -5392390555922025109L;
 
-	public AssetsBasedApplicationSpec (UIApplication application) throws Exception {
+	public AssetsApplicationSpec(UIApplication application) throws Exception {
 		
 		id = application.getString (UIApplication.Meta.Application, UIApplication.Defaults.Folder);
 		
@@ -129,19 +129,20 @@ public class AssetsBasedApplicationSpec extends JsonBasedApplicationSpec {
 	private void loadPages (AssetManager assetManager) throws Exception {
 		// load pages from pages folder
 		String [] pagesIds = assetManager.list (id + Lang.SLASH + UIApplication.Resources.Pages);
-		if (pagesIds != null && pagesIds.length != 0) {
-			// load all pages
-			for (String fPage : pagesIds) {
-				InputStream stream = null;
-				try {
-					stream = assetManager.open (id + Lang.SLASH + UIApplication.Resources.Pages + Lang.SLASH + fPage);
-					if (stream == null) {
-						continue;
-					}
-					add (fPage.substring (0, fPage.indexOf (Lang.DOT)), new JsonObject (stream));
-				} finally {
-					IOUtils.closeQuietly (stream);
+		if (pagesIds == null || pagesIds.length == 0) {
+			return;
+		}
+		// load all pages
+		for (String fPage : pagesIds) {
+			InputStream stream = null;
+			try {
+				stream = assetManager.open (id + Lang.SLASH + UIApplication.Resources.Pages + Lang.SLASH + fPage);
+				if (stream == null) {
+					continue;
 				}
+				add (fPage.substring (0, fPage.indexOf (Lang.DOT)), new JsonObject (stream));
+			} finally {
+				IOUtils.closeQuietly (stream);
 			}
 		}
 	}

@@ -7,11 +7,11 @@ import com.bluenimble.apps.sdk.application.UIApplication;
 
 import android.content.res.AssetManager;
 
-public class ArchiveBasedApplicationSpec extends JsonBasedApplicationSpec {
+public class ArchiveApplicationSpec extends JsonBasedApplicationSpec {
 
 	private static final long serialVersionUID = -5392390555922025109L;
 
-	public ArchiveBasedApplicationSpec (UIApplication application) throws Exception {
+	public ArchiveApplicationSpec(UIApplication application) throws Exception {
 		
 		AssetManager assetManager = application.getAssets ();
 		
