@@ -27,20 +27,24 @@ public class UILayer extends Fragment {
 	private 	DataHolder 	dh;
 	
 	protected 	LayerSpec 	layer;
-	
-	public UILayer (LayerSpec layer) {
-		this (layer, null);
+
+	public UILayer () {
 	}
-	
-	public UILayer (LayerSpec layer, DataHolder dh) {
-		
-		setRetainInstance (true);
-		
-		this.layer 	= layer;
-		this.dh 	= dh;
-		createEvent = (JsonObject)new JsonObject ()
-			.set (Spec.Action.OnStart, new JsonObject ()
-			.set (BindEffect.Id, layer.id ()));
+
+	public static UILayer create (LayerSpec layer, DataHolder dh) {
+
+		UILayer fragment = new UILayer ();
+
+		fragment.setRetainInstance (true);
+
+		fragment.layer 	= layer;
+		fragment.dh 	= dh;
+		fragment.createEvent = (JsonObject)new JsonObject ()
+				.set (Spec.Action.OnStart, new JsonObject ()
+						.set (BindEffect.Id, layer.id ()));
+
+		return fragment;
+
 	}
 	
 	@Override

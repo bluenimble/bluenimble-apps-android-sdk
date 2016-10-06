@@ -8,6 +8,8 @@ import com.bluenimble.apps.sdk.spec.ApplicationSpec;
 import android.app.Application;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
+import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
@@ -27,8 +29,13 @@ public abstract class UIApplication extends Application {
 	}
 
 	public interface Resources {
-		String Themes 		= "themes";
 		String Pages 		= "pages";
+
+		String Themes 		= "themes";
+		String Images 		= "images";
+		String Fonts 		= "fonts";
+		String Common 		= "common";
+
 		String App 			= "app.json";
 		String Backend 		= "backend.json";
 		String Static 		= "static.json";
@@ -117,6 +124,8 @@ public abstract class UIApplication extends Application {
 	    }
 	}
 	
-	protected abstract void reload () throws Exception;
-	
+	protected 	abstract void reload () throws Exception;
+
+	public 		abstract Drawable drawable	(String path);
+
 }

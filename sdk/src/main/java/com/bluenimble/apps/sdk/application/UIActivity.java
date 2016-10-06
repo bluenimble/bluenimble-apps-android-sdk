@@ -97,7 +97,7 @@ public class UIActivity extends AppCompatActivity {
 	}
 	
 	public ApplicationSpec getSpec () {
-		return ((FolderBasedApplication) getApplication ()).getSpec ();
+		return ((UIApplication) getApplication ()).getSpec ();
 	}
 	
 	public ViewGroup root () {

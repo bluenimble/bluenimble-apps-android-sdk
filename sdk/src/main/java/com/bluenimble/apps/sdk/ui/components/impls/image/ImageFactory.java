@@ -1,6 +1,8 @@
 package com.bluenimble.apps.sdk.ui.components.impls.image;
 
+import com.bluenimble.apps.sdk.Lang;
 import com.bluenimble.apps.sdk.application.UIActivity;
+import com.bluenimble.apps.sdk.application.UIApplication;
 import com.bluenimble.apps.sdk.controller.DataHolder;
 import com.bluenimble.apps.sdk.json.JsonObject;
 import com.bluenimble.apps.sdk.spec.ApplicationSpec;
@@ -23,6 +25,8 @@ public class ImageFactory extends AbstractComponentFactory {
 	private static final long serialVersionUID = 8437367345924192857L;
 	
 	private static final String Id = "image";
+
+	private static final String Assets = "file:///android_asset/";
 	
 	interface Protocol {
 		String File 	= "file://";
@@ -71,9 +75,10 @@ public class ImageFactory extends AbstractComponentFactory {
 				if (url.startsWith (Protocol.File) || url.startsWith (Protocol.Http) || url.startsWith (Protocol.Https)) {
 					Picasso.with (view.getContext ()).load (url).into (image);
 				} else {
-					int rId = Resources.id (url);
-					if (rId > 0) {
-						Picasso.with (view.getContext ()).load (rId).into (image);
+					if (Resources.exists (url)) {
+						Picasso.with (view.getContext ()).load (Resources.id (url)).into (image);
+					} else {
+						Picasso.with (view.getContext ()).load (Assets + applicationSpec.id () + Lang.SLASH + UIApplication.Resources.Themes + Lang.SLASH + url).into (image);
 					}
 				}
 				break;

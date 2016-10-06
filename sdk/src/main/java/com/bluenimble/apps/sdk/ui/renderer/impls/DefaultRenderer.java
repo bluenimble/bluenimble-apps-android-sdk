@@ -62,7 +62,7 @@ public class DefaultRenderer implements Renderer {
 			if (!layer.isRendered ()) {
 				continue;
 			}
-			Fragment f = new UILayer (page.layer (lyrId));
+			Fragment f = UILayer.create (page.layer (lyrId), null);
 			transaction.add (activity.root ().getId (), f, lyrId);
 		}
 		

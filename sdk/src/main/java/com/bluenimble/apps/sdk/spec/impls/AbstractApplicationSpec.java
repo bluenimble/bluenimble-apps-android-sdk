@@ -22,13 +22,17 @@ import com.bluenimble.apps.sdk.ui.effects.EffectsRegistry;
 import com.bluenimble.apps.sdk.ui.effects.impls.DefaultEffectsRegistry;
 import com.bluenimble.apps.sdk.ui.renderer.Renderer;
 import com.bluenimble.apps.sdk.ui.renderer.impls.DefaultRenderer;
+import com.bluenimble.apps.sdk.ui.themes.FontsRegistry;
 import com.bluenimble.apps.sdk.ui.themes.ThemesRegistry;
+import com.bluenimble.apps.sdk.ui.themes.impls.DefaultFontsRegistry;
 import com.bluenimble.apps.sdk.ui.themes.impls.DefaultThemesRegistry;
 
 public abstract class AbstractApplicationSpec extends JsonEventAwareSpec implements ApplicationSpec {
 
 	private static final long serialVersionUID = 6142608624996785182L;
-	
+
+	protected String id;
+
 	protected SdkVersion 			version;
 	
 	protected ComponentsRegistry 	componentsRegistry 	= new DefaultComponentsRegistry ();
@@ -42,9 +46,15 @@ public abstract class AbstractApplicationSpec extends JsonEventAwareSpec impleme
 	
 	protected I18nProvider			i18nProvider		= new DefaultI18nProvider 		();
 	protected ThemesRegistry 		themesRegistry		= new DefaultThemesRegistry 	();
-	
+	protected FontsRegistry 		fontsRegistry		= new DefaultFontsRegistry		();
+
 	protected Map<String, PageSpec> pages = new HashMap<String, PageSpec> ();
-	
+
+	@Override
+	public String id () {
+		return id;
+	}
+
 	@Override
 	public PageSpec page (String id) {
 		if (pages.isEmpty ()) {
@@ -72,6 +82,11 @@ public abstract class AbstractApplicationSpec extends JsonEventAwareSpec impleme
 	@Override
 	public ThemesRegistry themesRegistry () {
 		return themesRegistry;
+	}
+
+	@Override
+	public FontsRegistry fontsRegistry () {
+		return fontsRegistry;
 	}
 
 	@Override

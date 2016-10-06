@@ -1,10 +1,12 @@
 package com.bluenimble.apps.sdk.application;
 
-import com.bluenimble.apps.sdk.spec.impls.json.AssetsBasedApplicationSpec;
-
+import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
 import android.util.Log;
 
-public class FolderBasedApplication extends UIApplication {
+import com.bluenimble.apps.sdk.spec.impls.json.AssetsBasedApplicationSpec;
+
+public class DiskBasedApplication extends UIApplication {
 
 	@Override
 	public void onCreate () {
@@ -24,6 +26,12 @@ public class FolderBasedApplication extends UIApplication {
 	protected void reload () throws Exception {
 		spec = new AssetsBasedApplicationSpec (this);
 		setLogLevel ();
+	}
+
+
+	@Override
+	public Drawable drawable (String path) {
+		return null;
 	}
 
 }

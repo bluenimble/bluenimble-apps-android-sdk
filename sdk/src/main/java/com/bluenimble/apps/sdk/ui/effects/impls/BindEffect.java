@@ -23,7 +23,7 @@ public class BindEffect implements Effect {
 
 	private static final long serialVersionUID = 3783743185246914342L;
 	
-	private static final String Id = "bind";
+	public static final String Id = "bind";
 
 	private boolean useDh = true;
 	

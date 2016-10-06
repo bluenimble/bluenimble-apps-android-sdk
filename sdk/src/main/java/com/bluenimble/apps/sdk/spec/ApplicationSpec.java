@@ -7,11 +7,13 @@ import com.bluenimble.apps.sdk.logging.Logger;
 import com.bluenimble.apps.sdk.ui.components.ComponentsRegistry;
 import com.bluenimble.apps.sdk.ui.effects.EffectsRegistry;
 import com.bluenimble.apps.sdk.ui.renderer.Renderer;
+import com.bluenimble.apps.sdk.ui.themes.FontsRegistry;
 import com.bluenimble.apps.sdk.ui.themes.ThemesRegistry;
 
 public interface ApplicationSpec extends EventAwareSpec {
 
-	String 				name();
+	String 				id ();
+	String 				name ();
 	String 				description();
 	SdkVersion 			version();
 	String 				defaultLanguage();
@@ -24,7 +26,8 @@ public interface ApplicationSpec extends EventAwareSpec {
 	PageSpec 			page(String id);
 	void				remove(String id);
 
-	ThemesRegistry 		themesRegistry();
+	ThemesRegistry 		themesRegistry ();
+	FontsRegistry 		fontsRegistry ();
 
 	I18nProvider 		i18nProvider();
 	

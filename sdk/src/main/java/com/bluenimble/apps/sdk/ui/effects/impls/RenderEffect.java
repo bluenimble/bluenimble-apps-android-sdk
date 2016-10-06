@@ -72,7 +72,7 @@ public class RenderEffect implements Effect {
 				transaction.remove (f);
 			}
 			
-			Fragment newFragment = new UILayer (layer, dh);
+			Fragment newFragment = UILayer.create (layer, dh);
 			// add the 
 			transaction.add (activity.root ().getId (), newFragment, layer.id ());
 		}

@@ -30,10 +30,11 @@ public class JsonBasedApplicationSpec extends AbstractApplicationSpec {
 		// unzip, read app, pages, themes
 	}
 	
-	public JsonBasedApplicationSpec (JsonObject spec) throws Exception {
+	public JsonBasedApplicationSpec (String id, JsonObject spec) throws Exception {
+		this.id = id;
 		init (spec);
 	}
-	
+
 	protected void init (JsonObject spec) throws Exception {
 		this.spec = spec;
 		version = new JsonSdkVersion (Json.getObject (spec, Spec.sdkVersion.class.getSimpleName ()));
@@ -110,12 +111,10 @@ public class JsonBasedApplicationSpec extends AbstractApplicationSpec {
 		
 		ThemeSpec merged = null;
 		for (String t : aThemes) {
-			Log.d ("JsonBasedApplicationSpec",  "AppTheme: " + t);
 			if (t == null) {
 				continue;
 			}
 			ThemeSpec theme = themesRegistry.lookup (t);
-			Log.d ("JsonBasedApplicationSpec",  "AppTheme found? " + theme);
 			if (theme == null) {
 				continue;
 			}

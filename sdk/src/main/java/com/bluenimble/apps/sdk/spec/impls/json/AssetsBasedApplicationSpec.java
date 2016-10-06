@@ -9,16 +9,15 @@ import com.bluenimble.apps.sdk.application.UIApplication;
 import com.bluenimble.apps.sdk.json.JsonObject;
 
 import android.content.res.AssetManager;
+import android.graphics.Typeface;
 
 public class AssetsBasedApplicationSpec extends JsonBasedApplicationSpec {
 
 	private static final long serialVersionUID = -5392390555922025109L;
 
-	protected String folder;
-	
 	public AssetsBasedApplicationSpec (UIApplication application) throws Exception {
 		
-		folder = application.getString (UIApplication.Meta.Application, UIApplication.Defaults.Folder);
+		id = application.getString (UIApplication.Meta.Application, UIApplication.Defaults.Folder);
 		
 		AssetManager assetManager = application.getAssets ();
 		
@@ -27,7 +26,7 @@ public class AssetsBasedApplicationSpec extends JsonBasedApplicationSpec {
 
 		InputStream stream = null;
 		try {
-			stream = assetManager.open (folder + Lang.SLASH + UIApplication.Resources.App);
+			stream = assetManager.open (id + Lang.SLASH + UIApplication.Resources.App);
 			if (stream == null) {
 				throw new Exception ("application spec file not found in assets/bluenimble [app.json]");
 			}
@@ -53,7 +52,7 @@ public class AssetsBasedApplicationSpec extends JsonBasedApplicationSpec {
 	private void loadI18n (AssetManager assetManager) throws Exception {
 		InputStream stream = null;
 		try {
-			stream = assetManager.open (folder + Lang.SLASH + UIApplication.Resources.Static);
+			stream = assetManager.open (id + Lang.SLASH + UIApplication.Resources.Static);
 		} catch (Exception ex) {
 			// Ignore
 		}	
@@ -78,7 +77,7 @@ public class AssetsBasedApplicationSpec extends JsonBasedApplicationSpec {
 	private void loadBackend (AssetManager assetManager) throws Exception {
 		InputStream stream = null;
 		try {
-			stream = assetManager.open (folder + Lang.SLASH + UIApplication.Resources.Backend);
+			stream = assetManager.open (id + Lang.SLASH + UIApplication.Resources.Backend);
 		} catch (Exception ex) {
 			// Ignore
 		}	
@@ -93,30 +92,49 @@ public class AssetsBasedApplicationSpec extends JsonBasedApplicationSpec {
 	}
 	
 	private void loadThemes (AssetManager assetManager, float [] screenSize) throws Exception {
-		String [] themes = assetManager.list (folder + Lang.SLASH + UIApplication.Resources.Themes);
+		String [] themes = assetManager.list (id + Lang.SLASH + UIApplication.Resources.Themes);
 		if (themes == null || themes.length == 0) {
 			return;
 		}
 		
 		// load all themes
 		for (String fTheme : themes) {
-			InputStream stream = assetManager.open (folder + Lang.SLASH + UIApplication.Resources.Themes + Lang.SLASH + fTheme + Lang.SLASH + UIApplication.Resources.Theme);
+			String themePath = id + Lang.SLASH + UIApplication.Resources.Themes + Lang.SLASH + fTheme;
+			InputStream stream = assetManager.open (themePath + Lang.SLASH + UIApplication.Resources.Theme);
 			if (stream == null) {
 				continue;
 			}
 			themesRegistry.load (fTheme, stream, screenSize);
+
+			// load fonts
+			String fontsPath = themePath + Lang.SLASH + UIApplication.Resources.Fonts;
+			String [] fonts = assetManager.list (fontsPath);
+			if (fonts == null || fonts.length == 0) {
+				continue;
+			}
+			loadFonts (assetManager, fontsPath, fonts);
+		}
+	}
+
+	private void loadFonts (AssetManager assetManager, String fontsPath, String [] fonts) throws Exception {
+		for (String f : fonts) {
+			String id = f;
+			if (f.indexOf (Lang.DOT) > 0) {
+				id = f.substring (0, f.indexOf (Lang.DOT));
+			}
+			fontsRegistry.register (id, Typeface.createFromAsset (assetManager, fontsPath + Lang.SLASH + f));
 		}
 	}
 	
 	private void loadPages (AssetManager assetManager) throws Exception {
 		// load pages from pages folder
-		String [] pagesIds = assetManager.list (folder + Lang.SLASH + UIApplication.Resources.Pages);
+		String [] pagesIds = assetManager.list (id + Lang.SLASH + UIApplication.Resources.Pages);
 		if (pagesIds != null && pagesIds.length != 0) {
 			// load all pages
 			for (String fPage : pagesIds) {
 				InputStream stream = null;
 				try {
-					stream = assetManager.open (folder + Lang.SLASH + UIApplication.Resources.Pages + Lang.SLASH + fPage);
+					stream = assetManager.open (id + Lang.SLASH + UIApplication.Resources.Pages + Lang.SLASH + fPage);
 					if (stream == null) {
 						continue;
 					}

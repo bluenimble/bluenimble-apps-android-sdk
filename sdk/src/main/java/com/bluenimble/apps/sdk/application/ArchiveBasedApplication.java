@@ -1,5 +1,8 @@
 package com.bluenimble.apps.sdk.application;
 
+import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
+
 import com.bluenimble.apps.sdk.spec.impls.json.ArchiveBasedApplicationSpec;
 
 public class ArchiveBasedApplication extends UIApplication {
@@ -22,6 +25,10 @@ public class ArchiveBasedApplication extends UIApplication {
 		spec = new ArchiveBasedApplicationSpec (this);
 		setLogLevel ();
 	}
-	
-	
+
+	@Override
+	public Drawable drawable (String path) {
+		return null;
+	}
+
 }

@@ -8,9 +8,11 @@ import java.util.Map;
 import com.bluenimble.apps.sdk.IOUtils;
 import com.bluenimble.apps.sdk.Json;
 import com.bluenimble.apps.sdk.Lang;
+import com.bluenimble.apps.sdk.application.UIApplication;
 import com.bluenimble.apps.sdk.json.JsonObject;
 import com.bluenimble.apps.sdk.spec.ThemeSpec;
 import com.bluenimble.apps.sdk.ui.themes.ThemesRegistry;
+import com.bluenimble.apps.sdk.ui.utils.Resources;
 
 import android.util.Log;
 
@@ -19,8 +21,8 @@ public class DefaultThemesRegistry implements ThemesRegistry {
 	private static final long serialVersionUID = 1660627548394509356L;
 	
 	public static final String DefaultTheme = ThemeSpec.Default + ".theme";
-	
-	private static final String WbyH = "x";
+
+	private static final String WbyH 		= "x";
 	
 	protected Map<String, ThemeSpec> themes = new HashMap<String, ThemeSpec> ();
 	
@@ -54,10 +56,16 @@ public class DefaultThemesRegistry implements ThemesRegistry {
 			if (allResolutions.isEmpty ()) {
 				return;
 			}
+
+			JsonObject common = Json.getObject (allResolutions, Lang.STAR);
+			if (!Json.isNullOrEmpty (common)) {
+				resolveImagesAndFonts (id, Lang.STAR, common);
+			}
 			
 			JsonObject theme = null;
 			
-			float diffInWidth = 0;
+			float 	diffInWidth = 0;
+			String 	selected 	= null;
 					
 			Iterator<String> allKeys = allResolutions.keys ();
 			while (allKeys.hasNext ()) {
@@ -69,11 +77,14 @@ public class DefaultThemesRegistry implements ThemesRegistry {
 				if (diff > diffInWidth) {
 					diffInWidth = diff;
 				}
-				theme = allResolutions.getObject (key);
+				theme 		= allResolutions.getObject (key);
+				selected	= key;
 			}
 			
 			if (theme == null) {
-				theme = Json.getObject (allResolutions, Lang.STAR);
+				theme = common;
+			} else {
+				resolveImagesAndFonts (id, selected, theme);
 			}
 			
 			Log.d ("ThemesRegistry > theme ", theme != null ? theme.toString (2) : null);
@@ -109,6 +120,29 @@ public class DefaultThemesRegistry implements ThemesRegistry {
 		}
 		
 		return size [0] - resWidth;
-	}	
+	}
+
+	private void resolveImagesAndFonts (String id, String resolution, JsonObject theme) {
+		if (Json.isNullOrEmpty (theme)) {
+			return;
+		}
+
+		if (Lang.STAR.equals (resolution)) {
+			resolution = UIApplication.Resources.Common;
+		}
+
+		Iterator<String> styles = theme.keys ();
+		while (styles.hasNext ()) {
+			String styleId = styles.next ();
+			JsonObject style = Json.getObject (theme, styleId);
+			// change background image path
+			String image = (String)Json.find (style, JsonStyleSpec.Group.Background, JsonStyleSpec.Background.Image);
+			if (!Resources.exists (image)) {
+				Json.set (style, id + Lang.SLASH + UIApplication.Resources.Images + Lang.SLASH + resolution + Lang.SLASH + image);
+			}
+			// change font path
+		}
+
+	}
 
 }

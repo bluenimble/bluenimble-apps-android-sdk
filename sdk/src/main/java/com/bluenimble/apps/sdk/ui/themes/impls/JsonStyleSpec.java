@@ -7,6 +7,7 @@ import java.util.Set;
 
 import com.bluenimble.apps.sdk.Json;
 import com.bluenimble.apps.sdk.Lang;
+import com.bluenimble.apps.sdk.application.UIActivity;
 import com.bluenimble.apps.sdk.application.UIApplication;
 import com.bluenimble.apps.sdk.json.JsonObject;
 import com.bluenimble.apps.sdk.spec.ComponentSpec;
@@ -19,6 +20,7 @@ import com.bluenimble.apps.sdk.ui.components.impls.generic.BreakFactory;
 import com.bluenimble.apps.sdk.ui.utils.Resources;
 
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
@@ -138,6 +140,7 @@ public class JsonStyleSpec implements StyleSpec {
 		TextStyle.put ("bold", 			Typeface.BOLD);
 		TextStyle.put ("italic", 		Typeface.ITALIC);
 		TextStyle.put ("bold_italic", 	Typeface.BOLD_ITALIC);
+		TextStyle.put ("underline", 	Paint.UNDERLINE_TEXT_FLAG);
 	}
 	
 	private static Map<String, Integer> TextAlign = new HashMap<String, Integer> ();
@@ -178,11 +181,9 @@ public class JsonStyleSpec implements StyleSpec {
 			if (style == null) {
 				continue;
 			}
-			Log.d ("JsonStyleSpec",  "attach style > " + style);
 			if (appTheme != null) {
 				JsonObject sAppStyle = appTheme.style (style);
 				if (sAppStyle != null) {
-					Log.d ("JsonStyleSpec",  "\tfound in AppTheme");
 					styles.add (sAppStyle);
 				}
 			}
@@ -285,9 +286,11 @@ public class JsonStyleSpec implements StyleSpec {
 			applyMargin (params, isLayer, group);
 			
 		}
+
+		UIApplication application = (UIApplication)((UIActivity)view.getContext ()).getApplication ();
 		
 		// apply font
-		applyFont (view);
+		applyFont (view, application);
 		
 		// apply visible
 		applyVisible (view);
@@ -296,7 +299,7 @@ public class JsonStyleSpec implements StyleSpec {
 		applyPadding (view);
 		
 		// apply background (gradient, border, shadow, insets)
-		applyBackground (view);
+		applyBackground (view, application);
 
 	}
 
@@ -352,7 +355,7 @@ public class JsonStyleSpec implements StyleSpec {
 		}
 	}
 	
-	private void applyFont (View component) {
+	private void applyFont (View component, UIApplication application) {
 		if (!TextView.class.isAssignableFrom (component.getClass ())) {
 			Log.d (JsonStyleSpec.class.getSimpleName (), "!!! Font Unsupported for " + component.getClass ().getSimpleName ());
 			return;
@@ -367,21 +370,21 @@ public class JsonStyleSpec implements StyleSpec {
 		String family = Json.getString (oFont, Text.Font);
 		Log.d (JsonStyleSpec.class.getSimpleName (), "\t-> Text.Font " + Lang.ARRAY_OPEN + family + Lang.ARRAY_CLOSE);
 		if (!Lang.isNullOrEmpty (family)) {
-			text.setTypeface (Typeface.create (family, Typeface.NORMAL));
+			text.setTypeface (application.getSpec ().fontsRegistry ().lookup (family));
 		}
 		
 		String [] fontStyles = Lang.split (Json.getString (oFont, Text.Style), Lang.SPACE);
 		if (fontStyles != null && fontStyles.length > 0) {
-			Typeface tf = text.getTypeface ();
-			if (tf == null) {
-				tf = Typeface.create (Typeface.DEFAULT, Typeface.NORMAL);
-			}
 			for (String fs : fontStyles) {
 				Integer iFontStyle = TextStyle.get (fs.toLowerCase ());
 				if (iFontStyle == null) {
 					continue;
 				}
-				text.setTypeface (tf, iFontStyle);
+				if (iFontStyle == Paint.UNDERLINE_TEXT_FLAG) {
+					text.setPaintFlags (text.getPaintFlags ()|Paint.UNDERLINE_TEXT_FLAG);
+				} else {
+					text.setTypeface (null, iFontStyle);
+				}
 			}
 		}
 
@@ -406,7 +409,7 @@ public class JsonStyleSpec implements StyleSpec {
 		
 	}
 	
-	private void applyBackground (View view) {
+	private void applyBackground (View view, UIApplication application) {
 		JsonObject oBackground 	= Json.getObject (style, Group.Background);
 		JsonObject oShadow 		= Json.getObject (style, Group.Shadow);
 		JsonObject oBorder 		= Json.getObject (style, Group.Border);
@@ -418,8 +421,11 @@ public class JsonStyleSpec implements StyleSpec {
 		// set image
 		String image = Json.getString (oBackground, Background.Image);
 		if (!Lang.isNullOrEmpty (image)) {
-			view.setBackground (Resources.drawable (view.getContext (), image));
-		    return;
+			Drawable dr = application.drawable (image);
+			if (dr != null) {
+				view.setBackground (application.drawable (image));
+				return;
+			}
 		}
 		
 		Log.d (JsonStyleSpec.class.getSimpleName (), "\t-> applyBackground ");
