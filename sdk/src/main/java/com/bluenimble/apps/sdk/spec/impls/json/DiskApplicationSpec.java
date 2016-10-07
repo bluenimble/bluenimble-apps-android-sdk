@@ -1,9 +1,7 @@
 package com.bluenimble.apps.sdk.spec.impls.json;
 
-import android.content.res.AssetManager;
 import android.graphics.Typeface;
 
-import com.bluenimble.apps.sdk.IOUtils;
 import com.bluenimble.apps.sdk.Json;
 import com.bluenimble.apps.sdk.Lang;
 import com.bluenimble.apps.sdk.application.UIApplication;
@@ -15,9 +13,12 @@ import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.Iterator;
 
-public class DiskApplicationSpec extends JsonBasedApplicationSpec {
+public class DiskApplicationSpec extends JsonApplicationSpec {
 
 	private static final long serialVersionUID = -5392390555922025109L;
+
+	public DiskApplicationSpec () throws Exception {
+	}
 
 	public DiskApplicationSpec (UIApplication application) throws Exception {
 		this (application.getString (UIApplication.Meta.Application, UIApplication.Defaults.Folder), application);
@@ -28,24 +29,34 @@ public class DiskApplicationSpec extends JsonBasedApplicationSpec {
 	}
 
 	public DiskApplicationSpec (File root, UIApplication application) throws Exception {
-		
+		setup (root, application);
+	}
+
+	protected File getAppsFolder (UIApplication application) {
+		File appsFolder = new File (application.getFilesDir (), UIApplication.Resources.Apps);
+		if (!appsFolder.exists ()) {
+			appsFolder.mkdir ();
+		}
+		return appsFolder;
+	}
+
+	protected void setup (File root, UIApplication application) throws Exception {
 		this.id = root.getName ();
-		
+
 		// load themes
 		loadThemes (root, application.getSize (false));
 
 		// load descriptor app.json
 		init (Json.load (new File (root, UIApplication.Resources.App)));
-			
+
 		// loadPages
 		loadPages 	(root);
-		
+
 		// load i18n
 		loadI18n (root);
-		
+
 		// load backend
 		loadBackend (root);
-
 	}
 	
 	private void loadI18n (File root) throws Exception {

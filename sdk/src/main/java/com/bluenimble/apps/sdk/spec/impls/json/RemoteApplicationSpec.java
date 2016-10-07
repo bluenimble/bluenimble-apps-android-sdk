@@ -1,6 +1,6 @@
 package com.bluenimble.apps.sdk.spec.impls.json;
 
-public class RemoteApplicationSpec extends JsonBasedApplicationSpec {
+public class RemoteApplicationSpec extends JsonApplicationSpec {
 
 	private static final long serialVersionUID = -5392390555922025109L;
 

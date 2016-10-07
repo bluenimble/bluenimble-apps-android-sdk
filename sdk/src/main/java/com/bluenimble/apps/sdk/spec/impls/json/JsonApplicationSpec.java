@@ -14,7 +14,7 @@ import com.bluenimble.apps.sdk.spec.impls.AbstractApplicationSpec;
 
 import android.util.Log;
 
-public class JsonBasedApplicationSpec extends AbstractApplicationSpec {
+public class JsonApplicationSpec extends AbstractApplicationSpec {
 
 	private static final long serialVersionUID = -5392390555922025109L;
 
@@ -22,15 +22,15 @@ public class JsonBasedApplicationSpec extends AbstractApplicationSpec {
 	
 	private JsonObject spec;
 	
-	protected JsonBasedApplicationSpec () throws Exception {
+	protected JsonApplicationSpec() throws Exception {
 		spec = new JsonObject ();
 	}
 	
-	public JsonBasedApplicationSpec (InputStream archive) throws Exception {
+	public JsonApplicationSpec(InputStream archive) throws Exception {
 		// unzip, read app, pages, themes
 	}
 	
-	public JsonBasedApplicationSpec (String id, JsonObject spec) throws Exception {
+	public JsonApplicationSpec(String id, JsonObject spec) throws Exception {
 		this.id = id;
 		init (spec);
 	}

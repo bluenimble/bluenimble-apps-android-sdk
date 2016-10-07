@@ -17,19 +17,21 @@ public class JsonComponentSpec extends JsonEventAwareSpec implements ComponentSp
 	private static final long serialVersionUID = 6704442381425657398L;
 	
 	protected JsonObject spec;
-	
-	private BindingSpec bindingSet;
-	private BindingSpec bindingGet;
+
+	protected BindingSpec bindingSet;
+	protected BindingSpec bindingGet;
 	
 	private StyleSpec 	style;
+
+	protected String id;
 	
 	public JsonComponentSpec (JsonObject spec, ThemeSpec appTheme) {
 		super (Json.getObject (spec, Spec.Events));
 		this.spec = spec;
 		
-		String id = id ();
+		id = Json.getString (spec, Spec.page.layer.component.Id);
 		if (Lang.isNullOrEmpty (id)) {
-			spec.set (Spec.page.layer.component.Id, Lang.UUID (8));
+			id = Lang.UUID (8);
 		}
 		
 		JsonObject oBinding = Json.getObject (spec, Spec.page.layer.component.binding.class.getSimpleName ());
@@ -47,7 +49,7 @@ public class JsonComponentSpec extends JsonEventAwareSpec implements ComponentSp
 
 	@Override
 	public String id () {
-		return Json.getString (spec, Spec.page.layer.component.Id);
+		return id;
 	}
 
 	@Override
@@ -76,6 +78,10 @@ public class JsonComponentSpec extends JsonEventAwareSpec implements ComponentSp
 				break;
 		}
 		return null;
+	}
+
+	public JsonObject spec () {
+		return spec;
 	}
 	
 	// if no binding set/get found, a default one is created with the component id 

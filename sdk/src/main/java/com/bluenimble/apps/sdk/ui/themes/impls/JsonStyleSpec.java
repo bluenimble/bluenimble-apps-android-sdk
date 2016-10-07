@@ -17,7 +17,6 @@ import com.bluenimble.apps.sdk.spec.StyleSpec;
 import com.bluenimble.apps.sdk.spec.StylishSpec;
 import com.bluenimble.apps.sdk.spec.ThemeSpec;
 import com.bluenimble.apps.sdk.ui.components.impls.generic.BreakFactory;
-import com.bluenimble.apps.sdk.ui.utils.Resources;
 
 import android.graphics.Color;
 import android.graphics.Paint;

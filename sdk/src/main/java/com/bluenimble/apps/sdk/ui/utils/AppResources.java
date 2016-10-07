@@ -8,7 +8,7 @@ import android.graphics.drawable.Drawable;
 
 import java.lang.reflect.Field;
 
-public class Resources {
+public class AppResources {
 
 	@SuppressWarnings("deprecation")
 	public static Drawable drawable (Context context, String name) {

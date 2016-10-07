@@ -5,6 +5,7 @@ import android.util.Log;
 
 import com.bluenimble.apps.sdk.Lang;
 import com.bluenimble.apps.sdk.spec.impls.json.AssetsApplicationSpec;
+import com.bluenimble.apps.sdk.ui.utils.AppResources;
 
 import java.io.IOException;
 
@@ -32,8 +33,8 @@ public class AssetsApplication extends UIApplication {
 
 	@Override
 	public Drawable drawable (String path) {
-		if (com.bluenimble.apps.sdk.ui.utils.Resources.exists (path)) {
-			return com.bluenimble.apps.sdk.ui.utils.Resources.drawable (this, path);
+		if (AppResources.exists (path)) {
+			return AppResources.drawable (this, path);
 		}
 
 		try {

@@ -13,7 +13,7 @@ import com.bluenimble.apps.sdk.ui.components.AbstractComponentFactory;
 import com.bluenimble.apps.sdk.ui.components.impls.listeners.EventListener;
 import com.bluenimble.apps.sdk.ui.components.impls.listeners.OnLongPressListenerImpl;
 import com.bluenimble.apps.sdk.ui.components.impls.listeners.OnPressListenerImpl;
-import com.bluenimble.apps.sdk.ui.utils.Resources;
+import com.bluenimble.apps.sdk.ui.utils.AppResources;
 import com.squareup.picasso.Picasso;
 
 import android.view.View;
@@ -75,8 +75,8 @@ public class ImageFactory extends AbstractComponentFactory {
 				if (url.startsWith (Protocol.File) || url.startsWith (Protocol.Http) || url.startsWith (Protocol.Https)) {
 					Picasso.with (view.getContext ()).load (url).into (image);
 				} else {
-					if (Resources.exists (url)) {
-						Picasso.with (view.getContext ()).load (Resources.id (url)).into (image);
+					if (AppResources.exists (url)) {
+						Picasso.with (view.getContext ()).load (AppResources.id (url)).into (image);
 					} else {
 						Picasso.with (view.getContext ()).load (Assets + applicationSpec.id () + Lang.SLASH + UIApplication.Resources.Themes + Lang.SLASH + url).into (image);
 					}

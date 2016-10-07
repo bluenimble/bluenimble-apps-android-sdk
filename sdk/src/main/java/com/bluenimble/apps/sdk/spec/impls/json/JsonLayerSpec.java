@@ -10,8 +10,10 @@ import com.bluenimble.apps.sdk.Lang;
 import com.bluenimble.apps.sdk.Spec;
 import com.bluenimble.apps.sdk.json.JsonArray;
 import com.bluenimble.apps.sdk.json.JsonObject;
+import com.bluenimble.apps.sdk.spec.ApplicationSpec;
 import com.bluenimble.apps.sdk.spec.ComponentSpec;
 import com.bluenimble.apps.sdk.spec.LayerSpec;
+import com.bluenimble.apps.sdk.spec.PageSpec;
 import com.bluenimble.apps.sdk.spec.StyleSpec;
 import com.bluenimble.apps.sdk.spec.ThemeSpec;
 import com.bluenimble.apps.sdk.ui.components.ComponentsRegistry;
@@ -33,7 +35,7 @@ public class JsonLayerSpec extends JsonEventAwareSpec implements LayerSpec {
 	
 	private 	List<ComponentSpec>		components		= null;
 	
-	public JsonLayerSpec (String id, JsonObject spec, ThemeSpec appTheme) {
+	public JsonLayerSpec (String id, JsonObject spec, ApplicationSpec application) {
 		super (Json.getObject (spec, Spec.Events));
 		
 		this.id 	= id;
@@ -41,10 +43,12 @@ public class JsonLayerSpec extends JsonEventAwareSpec implements LayerSpec {
 		if (this.spec == null || this.spec.isEmpty ()) {
 			return;
 		}
+
+		ThemeSpec theme = application.theme ();
 		
 		String [] styles = Lang.split (Json.getString (spec, Spec.page.layer.component.Style), Lang.BLANK, true);
 		
-		style = new JsonStyleSpec (appTheme, Lang.add (new String [] { Lang.STAR, ComponentsRegistry.Default.Layer, id () }, styles));
+		style = new JsonStyleSpec (theme, Lang.add (new String [] { Lang.STAR, ComponentsRegistry.Default.Layer, id () }, styles));
 
 		JsonArray oComponents = Json.getArray (spec, Spec.page.layer.Components);
 		if (oComponents == null || oComponents.isEmpty ()) {
@@ -54,13 +58,60 @@ public class JsonLayerSpec extends JsonEventAwareSpec implements LayerSpec {
 		this.components = new ArrayList<ComponentSpec> ();
 		
 		for (int i = 0; i < oComponents.count (); i++) {
-			JsonObject oComponent = (JsonObject)oComponents.get (i);
-			add (oComponent, i, appTheme);
+			Object xComponent = oComponents.get (i);
+			JsonObject oComponent = null;
+			if (xComponent instanceof JsonObject) {
+				oComponent = (JsonObject)xComponent;
+			} else if (xComponent instanceof String) {
+				oComponent = toComponentSpec ((String)xComponent);
+			}
+
+			if (oComponent == null) {
+				continue;
+			}
+
+			String ref = Json.getString (oComponent, Spec.page.layer.component.Ref);
+			if (!Lang.isNullOrEmpty (ref)) {
+				String [] tokens = Lang.split (ref, Lang.DOT, true);
+				if (tokens.length < 3) {
+					continue;
+				}
+				String pageId 		= tokens [0];
+				String layerId 		= tokens [1];
+				String componentId 	= tokens [2];
+				// resolve
+				PageSpec page = application.page (pageId);
+				if (page == null) {
+					continue;
+				}
+				LayerSpec layer = page.layer (layerId);
+				if (layer == null) {
+					continue;
+				}
+				JsonComponentSpec component = (JsonComponentSpec)layer.component (componentId);
+				if (component == null) {
+					continue;
+				}
+				oComponent = component.spec ();
+			}
+
+			add (oComponent, i, theme);
+
 			// add break if declared at the component level
 			if (Json.getBoolean (oComponent, Spec.page.layer.component.Break, false)) {
-				add (Break, Integer.MAX_VALUE, appTheme);
+				add (Break, Integer.MAX_VALUE, theme);
 			}
 		}
+	}
+
+	private JsonObject toComponentSpec (String spec) {
+		// txt:id Hello
+		// btn:id Press Me
+		// inp:id a.b.c 	e.g.h	Enter your...
+		// chk:id ? 		e.g.h
+		// lst:id a.b.c 	tpl1>g.d.c=2
+
+		return null;
 	}
 	
 	@Override

@@ -11,7 +11,7 @@ import com.bluenimble.apps.sdk.json.JsonObject;
 import android.content.res.AssetManager;
 import android.graphics.Typeface;
 
-public class AssetsApplicationSpec extends JsonBasedApplicationSpec {
+public class AssetsApplicationSpec extends JsonApplicationSpec {
 
 	private static final long serialVersionUID = -5392390555922025109L;
 

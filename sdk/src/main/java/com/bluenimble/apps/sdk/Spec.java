@@ -46,6 +46,7 @@ public interface Spec {
 				String Style 		= "style";
 				String Break 		= "break";
 				String Custom 		= "custom";
+				String Ref			= "ref";
 				interface binding {
 					String Set 		= "set";
 					String Get 		= "get";

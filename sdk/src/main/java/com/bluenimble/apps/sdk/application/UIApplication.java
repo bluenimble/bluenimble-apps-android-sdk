@@ -23,12 +23,16 @@ public abstract class UIApplication extends Application {
 		String Application 		= "bluenimble.app.folder";
 	}
 
+	public static final String ArchiveExtension = ".app";
+
 	public interface Defaults {
-		String Archive 	= "bluenimble.app";
 		String Folder 	= "bluenimble";
+		String Archive 	= Folder + ArchiveExtension;
 	}
 
 	public interface Resources {
+		String Apps 		= "apps";
+
 		String Pages 		= "pages";
 
 		String Themes 		= "themes";

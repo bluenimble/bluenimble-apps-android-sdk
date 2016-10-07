@@ -63,7 +63,7 @@ public class JsonPageSpec extends JsonEventAwareSpec implements PageSpec {
 		Iterator<String> layers = oLayers.keys ();
 		while (layers.hasNext ()) {
 			String lyrId = layers.next ();
-			addLayer (lyrId, Json.getObject (oLayers, lyrId), application.theme ());
+			addLayer (lyrId, Json.getObject (oLayers, lyrId), application);
 		}
 		
 	}
@@ -107,11 +107,11 @@ public class JsonPageSpec extends JsonEventAwareSpec implements PageSpec {
 		return layers.get (id);
 	}
 	
-	public void addLayer (String id, JsonObject layer, ThemeSpec appTheme) {
+	public void addLayer (String id, JsonObject layer, ApplicationSpec application) {
 		if (layers == null) {
 			layers = new HashMap<String, LayerSpec> ();
 		}
-		layers.put (id, new JsonLayerSpec (id, layer, appTheme));
+		layers.put (id, new JsonLayerSpec (id, layer, application));
 	}
 
 }
