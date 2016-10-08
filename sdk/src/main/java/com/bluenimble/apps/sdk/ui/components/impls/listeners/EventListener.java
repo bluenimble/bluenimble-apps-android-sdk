@@ -12,9 +12,12 @@ public class EventListener implements Serializable {
 		onTextChanged,
 		beforeTextChanged,
 		afterTextChanged,
-		check,
+
+		select,
+
 		press,
 		longPress,
+
 		move,
 		markerPress
 	}

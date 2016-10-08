@@ -16,6 +16,7 @@ import com.bluenimble.apps.sdk.ui.components.impls.checkbox.CheckboxFactory;
 import com.bluenimble.apps.sdk.ui.components.impls.generic.BreakFactory;
 import com.bluenimble.apps.sdk.ui.components.impls.image.ImageFactory;
 import com.bluenimble.apps.sdk.ui.components.impls.input.InputTextFactory;
+import com.bluenimble.apps.sdk.ui.components.impls.generic.LayerFactory;
 import com.bluenimble.apps.sdk.ui.components.impls.map.MapFactory;
 import com.bluenimble.apps.sdk.ui.components.impls.radio.RadioGroupFactory;
 import com.bluenimble.apps.sdk.ui.components.impls.text.TextFactory;
@@ -32,9 +33,11 @@ public class DefaultComponentsRegistry implements ComponentsRegistry {
 		register (new InputTextFactory ());
 		register (new ButtonFactory ());
 		register (new RadioGroupFactory ());
-		register (new BreakFactory ());
 		register (new ImageFactory ());
-		
+
+		register (new BreakFactory ());
+		register (new LayerFactory ());
+
 		register (new MapFactory ());
 
 		register (new BarChartFactory ());

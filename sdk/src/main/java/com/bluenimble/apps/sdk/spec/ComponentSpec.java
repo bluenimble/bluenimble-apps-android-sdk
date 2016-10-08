@@ -7,10 +7,12 @@ public interface ComponentSpec extends EventAwareSpec, StylishSpec {
 		Get
 	}
 	
-	String 				id();
-	String 				type();
-	Object 				get(String name);
+	String 				id 		();
+	String 				type 	();
+	Object 				get 	(String name);
+
+	LayerSpec			layer 	();
 	
-	BindingSpec			binding(Binding binding);
+	BindingSpec			binding	(Binding binding);
 
 }

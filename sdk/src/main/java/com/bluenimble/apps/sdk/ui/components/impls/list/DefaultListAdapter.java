@@ -73,7 +73,7 @@ public class DefaultListAdapter extends RecyclerView.Adapter<DefaultListAdapter.
 	@Override
 	public ViewHolder onCreateViewHolder (ViewGroup group, int itemViewType) {
 		// Normally we should do: if (viewType == 0) { view = Inflator.inflate (headerView);} else { // inflate child view }
-		return new ViewHolder (application.renderer ().render (application, layer, group, (UIActivity)context));
+		return new ViewHolder (application.renderer ().render (application, layer, null /* DataHolder in here */, group, (UIActivity)context));
 	}
 
 

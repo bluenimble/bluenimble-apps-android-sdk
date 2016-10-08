@@ -18,12 +18,12 @@ public interface DataHolder extends VariableResolver, Serializable {
 		String Device 	= "device";
 	}
 	
-	Exception 	exception();
+	Exception 	exception ();
 	void 		exception(Exception exception);
+
+	DataHolder	set (String namespace, Object value, String... property);
+	Object		get (String namespace, String... property);
 	
-	void		set(String namespace, Object value, String... property);
-	Object		get(String namespace, String... property);
-	
-	Object		valueOf(ApplicationSpec applicationSpec, BindingSpec bindingSpec);
+	Object		valueOf (ApplicationSpec applicationSpec, BindingSpec bindingSpec);
 	
 }

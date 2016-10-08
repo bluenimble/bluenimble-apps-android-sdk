@@ -30,19 +30,20 @@ public class DefaultDataHolder implements DataHolder  {
 	}
 
 	@Override
-	public void set (String namespace, Object value, String... property) {
+	public DataHolder set (String namespace, Object value, String... property) {
 		if (this.data == null) {
 			this.data = new JsonObject ();
 		}
 		if (property == null || property.length == 0) {
 			this.data.set (namespace, value);
-			return; 
+			return this;
 		}
 		JsonObject nsData = Json.getObject (data, namespace);
 		if (nsData == null) {
 			nsData = new JsonObject ();
 		}
 		Json.set (nsData, value, property);
+		return this;
 	}
 
 	@Override

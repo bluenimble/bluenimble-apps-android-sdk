@@ -24,7 +24,7 @@ public class CheckboxFactory extends AbstractComponentFactory {
 	private static final String Id = "checkbox";
 	
 	public CheckboxFactory () {
-		supportEvent (EventListener.Event.check);
+		supportEvent (EventListener.Event.select);
 	}
 
 	@Override

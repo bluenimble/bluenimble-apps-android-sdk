@@ -21,44 +21,32 @@ import android.widget.ArrayAdapter;
 
 public class DefaultDropDownAdapter extends ArrayAdapter<DataHolder> {
 
-	private static final String Namespace = "record";
-	
-	protected ApplicationSpec 	application;
-	protected LayerSpec 		layer;
-	protected PageSpec 			page;
-	protected JsonArray 		records;
-	protected DataHolder 		one;
-	protected Context 			context;
-	
-	public DefaultDropDownAdapter (Context context, JsonArray records) {
-		super (context, 0);
-		this.records	= records;
-		this.one 		= new DefaultDataHolder ();
+	interface DefaultRecord {
+		String Id 		= "id";
+		String Value 	= "value";
 	}
+
+	protected LayerSpec 		template;
+	protected JsonArray 		records;
+
+	protected DataHolder 		one;
+	protected String			recordNs;
+
+	protected UIActivity 		activity;
 	
-	public DefaultDropDownAdapter (Context context, ApplicationSpec application, ComponentSpec component, JsonArray records) {
-		super (context, 0);
+	public DefaultDropDownAdapter (UIActivity activity, ComponentSpec component, LayerSpec template, String recordNs) {
+		super (activity, 0);
 		
-		this.context 		= context;
-		this.records		= records;
+		this.activity 		= activity;
+		this.recordNs		= recordNs;
+
 		this.one 			= new DefaultDataHolder ();
 		
-		this.application 	= application;
-		this.page 			= application.renderer ().current ();
-		
-		String template 	= (String) component.get (Custom.Template);
-		String layerId		= template;
-		
-		int indexOfDot		= template.indexOf (Lang.DOT);
-		if (indexOfDot > 0) {
-			page 			= application.page (template.substring (0, indexOfDot));
-			layerId			= template.substring (indexOfDot + 1);
-		} 
-		if (page == null) {
-			return;
-		}
-		
-		this.layer 			= page.layer (layerId);
+		this.template 		= template;
+	}
+
+	void load (JsonArray records) {
+		this.records = records;
 	}
 	
 	@Override
@@ -76,48 +64,40 @@ public class DefaultDropDownAdapter extends ArrayAdapter<DataHolder> {
 		}
 		// here get the value used in getView / getDropDownView
 		Object oRecord = records.get (position);
-		if (oRecord == null || !(oRecord instanceof JsonObject)) {
+		if (oRecord == null) {
 			return null;
 		}
+
+		if (oRecord instanceof JsonObject) {
+			return one.set (recordNs, oRecord);
+		}
+
+		if (oRecord instanceof String) {
+			return one.set (recordNs, new JsonObject ().set (DefaultRecord.Id, position).set (DefaultRecord.Value, oRecord));
+		}
 		
-		one.set (Namespace, oRecord);
-		
-		return one;
+		return one.set (recordNs, JsonObject.Blank);
 	}
 	
 	@Override
 	public View getView (int position, View convertView, ViewGroup parent) {
-		DataHolder dh 	= getItem (position);
-		JsonObject data = (JsonObject)dh.get (Namespace);
-		
+		ApplicationSpec application = activity.getSpec ();
+
 		if (convertView == null) {
-			convertView = application.renderer ().render (application, layer, parent, (UIActivity)context);
+			convertView = application.renderer ().render (application, template, getItem (position), parent, activity);
 		}
-		
-		Iterator<String> iter = data.keys ();
-		while (iter.hasNext ()) {
-			View v = convertView.findViewWithTag (layer.id () + Lang.DOT + iter.next ()); 
-			// v.setText // how to bind value for each view on the record
-		}
-		
+
 		return convertView;
 	}
 	
 	@Override
 	public View getDropDownView (int position, View convertView, ViewGroup parent) {
-		DataHolder dh 	= getItem (position);
-		JsonObject data = (JsonObject)dh.get (Namespace);
-		
+		ApplicationSpec application = activity.getSpec ();
+
 		if (convertView == null) {
-			convertView = application.renderer ().render (application, layer, parent, (UIActivity)context);
+			convertView = application.renderer ().render (application, template, getItem (position), parent, activity);
 		}
-		
-		Iterator<String> iter = data.keys ();
-		while (iter.hasNext ()) {
-			View v = convertView.findViewWithTag (layer.id () + Lang.DOT + iter.next ()); 
-			// v.setText // how to bind value for each view on the record
-		}
-		
+
 		return convertView;
 	}
 }

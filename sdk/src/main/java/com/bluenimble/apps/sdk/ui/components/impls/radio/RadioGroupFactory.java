@@ -31,7 +31,7 @@ public class RadioGroupFactory extends AbstractComponentFactory {
 	}
 
 	public RadioGroupFactory () {
-		supportEvent (EventListener.Event.check);
+		supportEvent (EventListener.Event.select);
 	}
 
 	@Override
@@ -125,7 +125,7 @@ public class RadioGroupFactory extends AbstractComponentFactory {
 		
 		RadioGroup radioGroup = (RadioGroup)view;
 		
-		radioGroup.setOnCheckedChangeListener (new OnRadioSelectedListenerImpl (EventListener.Event.check, eventSpec));
+		radioGroup.setOnCheckedChangeListener (new OnRadioSelectedListenerImpl (EventListener.Event.select, eventSpec));
 		
 	}
 	

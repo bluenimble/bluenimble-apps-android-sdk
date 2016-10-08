@@ -53,7 +53,7 @@ public class UILayer extends Fragment {
 		
 		ApplicationSpec application = ((UIApplication)activity.getApplication ()).getSpec ();
 		
-		return application.renderer ().render (application, layer, container, activity);
+		return application.renderer ().render (application, layer, null, container, activity);
     }
 	
 	@Override

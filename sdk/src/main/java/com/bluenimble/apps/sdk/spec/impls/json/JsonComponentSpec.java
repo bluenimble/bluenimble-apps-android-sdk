@@ -5,27 +5,31 @@ import com.bluenimble.apps.sdk.Lang;
 import com.bluenimble.apps.sdk.Spec;
 import com.bluenimble.apps.sdk.controller.DataHolder;
 import com.bluenimble.apps.sdk.json.JsonObject;
+import com.bluenimble.apps.sdk.spec.ApplicationSpec;
 import com.bluenimble.apps.sdk.spec.BindingSpec;
 import com.bluenimble.apps.sdk.spec.ComponentSpec;
+import com.bluenimble.apps.sdk.spec.LayerSpec;
 import com.bluenimble.apps.sdk.spec.StyleSpec;
-import com.bluenimble.apps.sdk.spec.ThemeSpec;
 import com.bluenimble.apps.sdk.ui.components.ComponentsRegistry;
+import com.bluenimble.apps.sdk.ui.components.impls.generic.LayerFactory;
 import com.bluenimble.apps.sdk.ui.themes.impls.JsonStyleSpec;
 
 public class JsonComponentSpec extends JsonEventAwareSpec implements ComponentSpec {
 
 	private static final long serialVersionUID = 6704442381425657398L;
 	
-	protected JsonObject spec;
+	protected JsonObject 	spec;
 
-	protected BindingSpec bindingSet;
-	protected BindingSpec bindingGet;
+	protected BindingSpec 	bindingSet;
+	protected BindingSpec 	bindingGet;
 	
-	private StyleSpec 	style;
+	private StyleSpec		style;
 
-	protected String id;
+	protected String 		id;
+
+	protected LayerSpec 	layer;
 	
-	public JsonComponentSpec (JsonObject spec, ThemeSpec appTheme) {
+	public JsonComponentSpec (JsonObject spec, ApplicationSpec application) {
 		super (Json.getObject (spec, Spec.Events));
 		this.spec = spec;
 		
@@ -43,13 +47,22 @@ public class JsonComponentSpec extends JsonEventAwareSpec implements ComponentSp
 		
 		String [] styles = Lang.split (Json.getString (spec, Spec.page.layer.component.Style), Lang.BLANK, true);
 		
-		style = new JsonStyleSpec (appTheme, Lang.add (new String [] { Lang.STAR, type (), id () }, styles));
+		style = new JsonStyleSpec (application.theme (), Lang.add (new String [] { Lang.STAR, type (), id () }, styles));
+
+		if (LayerFactory.Id.equals (type ())) {
+			layer = new JsonLayerSpec (id, spec, application);
+		}
 		
 	}
 
 	@Override
 	public String id () {
 		return id;
+	}
+
+	@Override
+	public LayerSpec layer () {
+		return layer;
 	}
 
 	@Override

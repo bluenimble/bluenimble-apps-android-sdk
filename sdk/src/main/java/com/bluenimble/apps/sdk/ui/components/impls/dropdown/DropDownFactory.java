@@ -1,6 +1,7 @@
 package com.bluenimble.apps.sdk.ui.components.impls.dropdown;
 
 import com.bluenimble.apps.sdk.Json;
+import com.bluenimble.apps.sdk.Lang;
 import com.bluenimble.apps.sdk.application.UIActivity;
 import com.bluenimble.apps.sdk.controller.DataHolder;
 import com.bluenimble.apps.sdk.json.JsonArray;
@@ -9,10 +10,13 @@ import com.bluenimble.apps.sdk.spec.ApplicationSpec;
 import com.bluenimble.apps.sdk.spec.BindingSpec;
 import com.bluenimble.apps.sdk.spec.ComponentSpec;
 import com.bluenimble.apps.sdk.spec.LayerSpec;
+import com.bluenimble.apps.sdk.spec.PageSpec;
 import com.bluenimble.apps.sdk.ui.components.AbstractComponentFactory;
 import com.bluenimble.apps.sdk.ui.components.impls.listeners.EventListener;
 import com.bluenimble.apps.sdk.ui.components.impls.listeners.OnItemSelectedListenerImpl;
+import com.bluenimble.apps.sdk.ui.utils.SpecHelper;
 
+import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RadioGroup;
@@ -23,19 +27,16 @@ public class DropDownFactory extends AbstractComponentFactory {
 	private static final long serialVersionUID = 8437367345924192857L;
 	
 	private static final String Id = "dropdown";
-	
-	public interface Custom {
-		String Template = "template";
-	}
 
-	interface Record {
-		String Id 		= "id";
-		String Value 	= "value";
-		String Current 	= "current";
+	private static final String DefaultRecordNs = "record";
+
+	public interface Custom {
+		String Template 	= "template";
+		String Namespace 	= "recordNs";
 	}
 
 	public DropDownFactory () {
-		supportEvent (EventListener.Event.check);
+		supportEvent (EventListener.Event.select);
 	}
 
 	@Override
@@ -45,13 +46,26 @@ public class DropDownFactory extends AbstractComponentFactory {
 	
 	@Override
 	public View create (UIActivity activity, ViewGroup group, LayerSpec layer, ComponentSpec spec) {
-		return applyStyle (group, new Spinner (activity), spec);
+
+		Spinner dropdown = new Spinner (activity);
+
+		LayerSpec template = SpecHelper.template (activity.getSpec (), (String)spec.get (Custom.Template));
+
+		String recordNs = (String)spec.get (Custom.Namespace);
+		if (Lang.isNullOrEmpty (recordNs)) {
+			recordNs = DefaultRecordNs;
+		}
+
+		DefaultDropDownAdapter adapter = new DefaultDropDownAdapter (activity, spec, template, recordNs);
+		dropdown.setAdapter (adapter);
+
+		return applyStyle (group, dropdown, spec);
 	}
 
 	@Override
 	public void bind (ComponentSpec.Binding binding, View view, ApplicationSpec applicationSpec, ComponentSpec spec, DataHolder dh) {
 		
-		if (view == null || !(view instanceof RadioGroup)) {
+		if (view == null || !(view instanceof Spinner)) {
 			// TODO: log
 			return;
 		}
@@ -63,7 +77,7 @@ public class DropDownFactory extends AbstractComponentFactory {
 		
 		String [] property = bindingSpec.property ();
 		
-		Spinner dropDown = (Spinner)view;
+		Spinner dropdown = (Spinner)view;
 		
 		switch (binding) {
 			case Set:
@@ -76,19 +90,15 @@ public class DropDownFactory extends AbstractComponentFactory {
 					// TODO: log
 					return;
 				}
-				
-				JsonArray array = (JsonArray)value;
-				if (array.count () < 1) {
-					// TODO: log
-					return;
-				}
-				
-				DefaultDropDownAdapter adapter = new DefaultDropDownAdapter (view.getContext (), applicationSpec, spec, (JsonArray)value);
-				dropDown.setAdapter (adapter);
-							
+
+				// adapter shouldn't be created in here, because the bind method could be called through an event to populate data
+				// load data in Adapter
+				DefaultDropDownAdapter adapter = (DefaultDropDownAdapter)dropdown.getAdapter ();
+				adapter.load ((JsonArray)value);
+
 				break;
 			case Get:
-				Json.set ((JsonObject)dh.get (bindingSpec.source ()), dropDown.getSelectedItem (), property);
+				Json.set ((JsonObject)dh.get (bindingSpec.source ()), dropdown.getSelectedItem (), property);
 				break;
 			default:
 				break;
@@ -110,6 +120,6 @@ public class DropDownFactory extends AbstractComponentFactory {
 		
 		Spinner dropDown = (Spinner)view;
 		
-		dropDown.setOnItemSelectedListener (new OnItemSelectedListenerImpl (EventListener.Event.check, eventSpec));
+		dropDown.setOnItemSelectedListener (new OnItemSelectedListenerImpl (EventListener.Event.select, eventSpec));
 	}
 }

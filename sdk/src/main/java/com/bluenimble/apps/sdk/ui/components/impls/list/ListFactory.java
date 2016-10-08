@@ -27,7 +27,7 @@ public class ListFactory extends AbstractComponentFactory {
 	private static final String Id = "list";
 
 	public ListFactory () {
-		//supportEvent (EventListener.Event.check);
+		supportEvent (EventListener.Event.select);
 	}
 
 	@Override
@@ -100,7 +100,7 @@ public class ListFactory extends AbstractComponentFactory {
 		
 		RadioGroup radioGroup = (RadioGroup)view;
 		
-		radioGroup.setOnCheckedChangeListener (new OnRadioSelectedListenerImpl (EventListener.Event.check, eventSpec));
+		radioGroup.setOnCheckedChangeListener (new OnRadioSelectedListenerImpl (EventListener.Event.select, eventSpec));
 		
 	}
 	

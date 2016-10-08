@@ -7,6 +7,7 @@ import com.bluenimble.apps.sdk.application.UIActivity;
 import com.bluenimble.apps.sdk.application.UIApplication;
 import com.bluenimble.apps.sdk.application.UILayer;
 import com.bluenimble.apps.sdk.controller.ActionProcessor;
+import com.bluenimble.apps.sdk.controller.DataHolder;
 import com.bluenimble.apps.sdk.json.JsonObject;
 import com.bluenimble.apps.sdk.spec.ApplicationSpec;
 import com.bluenimble.apps.sdk.spec.ComponentSpec;
@@ -38,7 +39,7 @@ public class DefaultRenderer implements Renderer {
 		error
 	}
 	
-	private PageSpec 				page;
+	private PageSpec page;
 
 	@Override
 	public void render (PageSpec page, UIActivity activity) {
@@ -75,7 +76,7 @@ public class DefaultRenderer implements Renderer {
 	}
 
 	@Override
-	public View render (ApplicationSpec application, LayerSpec layer, ViewGroup container, UIActivity activity) {
+	public View render (ApplicationSpec application, LayerSpec layer, DataHolder dh, ViewGroup container, UIActivity activity) {
 		
 		LinearLayout layout = new LinearLayout (activity);
 		layout.setId (UIApplication.newId ());
@@ -163,7 +164,7 @@ public class DefaultRenderer implements Renderer {
 		
 		JsonObject eventSpec = layer.event (LifeCycleEvent.create.name ());
 		if (eventSpec != null) {
-			ActionProcessor.process (LifeCycleEvent.create.name (), eventSpec, activity, layout, null);
+			ActionProcessor.process (LifeCycleEvent.create.name (), eventSpec, activity, layout, dh);
 		}
 		
 		return layout;

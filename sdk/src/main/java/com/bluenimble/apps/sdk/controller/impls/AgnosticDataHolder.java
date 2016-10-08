@@ -21,7 +21,8 @@ public class AgnosticDataHolder implements DataHolder  {
 	}
 
 	@Override
-	public void set (String namespace, Object value, String... property) {
+	public DataHolder set (String namespace, Object value, String... property) {
+		return this;
 	}
 
 	@Override
