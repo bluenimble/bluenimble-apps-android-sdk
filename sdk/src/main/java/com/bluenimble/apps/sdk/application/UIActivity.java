@@ -7,11 +7,13 @@ import com.bluenimble.apps.sdk.spec.ApplicationSpec;
 import com.bluenimble.apps.sdk.spec.PageSpec;
 import com.bluenimble.apps.sdk.ui.renderer.impls.DefaultRenderer.LifeCycleEvent;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
@@ -59,14 +61,14 @@ public class UIActivity extends AppCompatActivity {
 		// create a relative layout and attach to the activity
 
 		RelativeLayout mainLayout = new RelativeLayout (this);
-		RelativeLayout.LayoutParams layoutparams = new RelativeLayout.LayoutParams (
+		RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams (
 			ViewGroup.LayoutParams.MATCH_PARENT,
 			ViewGroup.LayoutParams.MATCH_PARENT
 		);
 		
 		mainLayout.setId (UIApplication.newId ());
 
-		mainLayout.setLayoutParams (layoutparams);
+		mainLayout.setLayoutParams (layoutParams);
 		
 		setContentView (mainLayout);
 		
@@ -75,8 +77,13 @@ public class UIActivity extends AppCompatActivity {
 
 		spec.renderer ().render (page, this);
 
+		// run page create event if any
+		JsonObject eventSpec = spec.renderer ().current ().event (LifeCycleEvent.create.name ());
+		if (eventSpec != null) {
+			ActionProcessor.process (LifeCycleEvent.create.name (), eventSpec, this, root (), null);
+		}
 	}
-	
+
 	@Override
 	public void onConfigurationChanged (Configuration config) {
 		super.onConfigurationChanged (config);
@@ -88,12 +95,6 @@ public class UIActivity extends AppCompatActivity {
 				ActionProcessor.process (LifeCycleEvent.rotate.name (), eventSpec, this, root, null);
 			}
 		}
-	    
-		if (config.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-	        Toast.makeText (this, "turn to landscape", Toast.LENGTH_SHORT).show ();
-	    } else if (config.orientation == Configuration.ORIENTATION_PORTRAIT){
-	        Toast.makeText (this, "portrait", Toast.LENGTH_SHORT).show ();
-	    }
 	}
 	
 	public ApplicationSpec getSpec () {

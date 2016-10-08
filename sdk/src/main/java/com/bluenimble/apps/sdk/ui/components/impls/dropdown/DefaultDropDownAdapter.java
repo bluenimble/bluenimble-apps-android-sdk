@@ -4,6 +4,7 @@ import java.util.Iterator;
 
 import com.bluenimble.apps.sdk.Lang;
 import com.bluenimble.apps.sdk.application.UIActivity;
+import com.bluenimble.apps.sdk.controller.ActionProcessor;
 import com.bluenimble.apps.sdk.controller.DataHolder;
 import com.bluenimble.apps.sdk.controller.impls.DefaultDataHolder;
 import com.bluenimble.apps.sdk.json.JsonArray;
@@ -13,6 +14,8 @@ import com.bluenimble.apps.sdk.spec.ComponentSpec;
 import com.bluenimble.apps.sdk.spec.LayerSpec;
 import com.bluenimble.apps.sdk.spec.PageSpec;
 import com.bluenimble.apps.sdk.ui.components.impls.dropdown.DropDownFactory.Custom;
+import com.bluenimble.apps.sdk.ui.renderer.impls.DefaultRenderer;
+import com.bluenimble.apps.sdk.ui.utils.SpecHelper;
 
 import android.content.Context;
 import android.view.View;
@@ -83,9 +86,14 @@ public class DefaultDropDownAdapter extends ArrayAdapter<DataHolder> {
 	public View getView (int position, View convertView, ViewGroup parent) {
 		ApplicationSpec application = activity.getSpec ();
 
+		DataHolder dh = getItem (position);
+
 		if (convertView == null) {
-			convertView = application.renderer ().render (application, template, getItem (position), parent, activity);
+			convertView = application.renderer ().render (application, template, dh, parent, activity);
 		}
+
+		// binding data and any other additional effects
+		SpecHelper.fireCreateEvent (template, activity, parent, dh);
 
 		return convertView;
 	}

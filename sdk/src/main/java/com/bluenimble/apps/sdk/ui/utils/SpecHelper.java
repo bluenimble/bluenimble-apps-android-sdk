@@ -1,16 +1,40 @@
 package com.bluenimble.apps.sdk.ui.utils;
 
+import android.view.View;
+
 import com.bluenimble.apps.sdk.Json;
 import com.bluenimble.apps.sdk.Lang;
 import com.bluenimble.apps.sdk.Spec;
+import com.bluenimble.apps.sdk.application.UIActivity;
+import com.bluenimble.apps.sdk.controller.ActionProcessor;
+import com.bluenimble.apps.sdk.controller.DataHolder;
 import com.bluenimble.apps.sdk.json.JsonObject;
 import com.bluenimble.apps.sdk.spec.ApplicationSpec;
 import com.bluenimble.apps.sdk.spec.LayerSpec;
 import com.bluenimble.apps.sdk.spec.PageSpec;
 import com.bluenimble.apps.sdk.ui.components.impls.dropdown.DropDownFactory;
 import com.bluenimble.apps.sdk.ui.components.impls.generic.BreakFactory;
+import com.bluenimble.apps.sdk.ui.effects.impls.BindEffect;
+import com.bluenimble.apps.sdk.ui.renderer.impls.DefaultRenderer;
 
 public class SpecHelper {
+
+    public static void fireCreateEvent (LayerSpec layer, UIActivity activity, View parent, DataHolder dh) {
+        // run default layer create event / bind all
+        ActionProcessor.process (DefaultRenderer.LifeCycleEvent.create.name (), SpecHelper.newCreateEvent (layer), activity, parent, dh);
+
+        // run page create event if any
+        JsonObject eventSpec = layer.event (DefaultRenderer.LifeCycleEvent.create.name ());
+        if (eventSpec != null) {
+            ActionProcessor.process (DefaultRenderer.LifeCycleEvent.create.name (), eventSpec, activity, parent, dh);
+        }
+    }
+
+    public static JsonObject newCreateEvent (LayerSpec layer) {
+        return (JsonObject)new JsonObject ()
+                .set (Spec.Action.OnStart, new JsonObject ()
+                        .set (BindEffect.Id, layer.id ()));
+    }
 
     public static LayerSpec template (ApplicationSpec application, String sTemplate) {
         LayerSpec template = null;

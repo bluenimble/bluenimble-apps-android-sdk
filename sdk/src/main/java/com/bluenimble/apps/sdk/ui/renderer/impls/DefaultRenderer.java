@@ -162,11 +162,6 @@ public class DefaultRenderer implements Renderer {
 			}
 		}
 		
-		JsonObject eventSpec = layer.event (LifeCycleEvent.create.name ());
-		if (eventSpec != null) {
-			ActionProcessor.process (LifeCycleEvent.create.name (), eventSpec, activity, layout, dh);
-		}
-		
 		return layout;
 		
 	}
