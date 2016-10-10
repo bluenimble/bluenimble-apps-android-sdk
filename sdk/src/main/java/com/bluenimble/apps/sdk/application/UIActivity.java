@@ -5,6 +5,7 @@ import com.bluenimble.apps.sdk.controller.ActionProcessor;
 import com.bluenimble.apps.sdk.json.JsonObject;
 import com.bluenimble.apps.sdk.spec.ApplicationSpec;
 import com.bluenimble.apps.sdk.spec.PageSpec;
+import com.bluenimble.apps.sdk.ui.renderer.ViewResolver;
 import com.bluenimble.apps.sdk.ui.renderer.impls.DefaultRenderer.LifeCycleEvent;
 
 import android.content.Context;
@@ -19,7 +20,7 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
-public class UIActivity extends AppCompatActivity {
+public class UIActivity extends AppCompatActivity implements ViewResolver {
 	
 	public interface Exchange {
 		String Page = "page";
@@ -96,7 +97,16 @@ public class UIActivity extends AppCompatActivity {
 			}
 		}
 	}
-	
+
+	@Override
+	public View layer (String layerId) {
+		return root.findViewWithTag (layerId);
+	}
+	@Override
+	public View component (String layerId, String componentId) {
+		return root.findViewWithTag (layerId + Lang.DOT + componentId);
+	}
+
 	public ApplicationSpec getSpec () {
 		return ((UIApplication) getApplication ()).getSpec ();
 	}
@@ -104,15 +114,7 @@ public class UIActivity extends AppCompatActivity {
 	public ViewGroup root () {
 		return root;
 	}
-	
-	public View component (String layerId, String componentId) {
-		return root.findViewWithTag (layerId + Lang.DOT + componentId);
-	}
 
-	public View layer (String layerId) {
-		return root.findViewWithTag (layerId);
-	}
-	
 	public Location getLocation () {
 		return null;
 	}

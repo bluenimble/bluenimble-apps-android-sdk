@@ -1,5 +1,6 @@
 package com.bluenimble.apps.sdk.ui.utils;
 
+import android.util.Log;
 import android.view.View;
 
 import com.bluenimble.apps.sdk.Json;
@@ -8,14 +9,19 @@ import com.bluenimble.apps.sdk.Spec;
 import com.bluenimble.apps.sdk.application.UIActivity;
 import com.bluenimble.apps.sdk.controller.ActionProcessor;
 import com.bluenimble.apps.sdk.controller.DataHolder;
+import com.bluenimble.apps.sdk.controller.impls.AgnosticDataHolder;
 import com.bluenimble.apps.sdk.json.JsonObject;
 import com.bluenimble.apps.sdk.spec.ApplicationSpec;
+import com.bluenimble.apps.sdk.spec.ComponentSpec;
 import com.bluenimble.apps.sdk.spec.LayerSpec;
 import com.bluenimble.apps.sdk.spec.PageSpec;
 import com.bluenimble.apps.sdk.ui.components.impls.dropdown.DropDownFactory;
 import com.bluenimble.apps.sdk.ui.components.impls.generic.BreakFactory;
 import com.bluenimble.apps.sdk.ui.effects.impls.BindEffect;
+import com.bluenimble.apps.sdk.ui.renderer.ViewResolver;
 import com.bluenimble.apps.sdk.ui.renderer.impls.DefaultRenderer;
+
+import java.util.Iterator;
 
 public class SpecHelper {
 
@@ -151,7 +157,5 @@ public class SpecHelper {
 
         return oComponent;
     }
-
-
 
 }

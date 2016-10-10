@@ -30,7 +30,7 @@ public class DropDownFactory extends AbstractComponentFactory {
 
 	private static final String DefaultRecordNs = "record";
 
-	public interface Custom {
+	interface Custom {
 		String Template 	= "template";
 		String Namespace 	= "recordNs";
 	}
@@ -94,7 +94,16 @@ public class DropDownFactory extends AbstractComponentFactory {
 				// adapter shouldn't be created in here, because the bind method could be called through an event to populate data
 				// load data in Adapter
 				DefaultDropDownAdapter adapter = (DefaultDropDownAdapter)dropdown.getAdapter ();
+
+				boolean hasData = adapter.getRecords () != null;
+
+				// load data in adapter
 				adapter.load ((JsonArray)value);
+
+				// notify the view with data change
+				if (hasData) {
+					adapter.notifyDataSetChanged ();
+				}
 
 				break;
 			case Get:

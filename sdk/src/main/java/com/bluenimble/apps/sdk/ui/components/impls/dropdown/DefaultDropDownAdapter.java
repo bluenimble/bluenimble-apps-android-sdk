@@ -51,7 +51,11 @@ public class DefaultDropDownAdapter extends ArrayAdapter<DataHolder> {
 	void load (JsonArray records) {
 		this.records = records;
 	}
-	
+
+	JsonArray getRecords () {
+		return records;
+	}
+
 	@Override
 	public int getCount () {
 		if (records == null) {

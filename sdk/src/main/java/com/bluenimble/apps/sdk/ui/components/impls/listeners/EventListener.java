@@ -15,6 +15,8 @@ public class EventListener implements Serializable {
 
 		select,
 
+		swipe,
+
 		press,
 		longPress,
 

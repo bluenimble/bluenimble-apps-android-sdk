@@ -15,6 +15,7 @@ import com.bluenimble.apps.sdk.spec.ComponentSpec.Binding;
 import com.bluenimble.apps.sdk.spec.LayerSpec;
 import com.bluenimble.apps.sdk.spec.PageSpec;
 import com.bluenimble.apps.sdk.ui.effects.Effect;
+import com.bluenimble.apps.sdk.ui.utils.BindingHelper;
 
 import android.util.Log;
 import android.view.View;
@@ -60,7 +61,7 @@ public class BindEffect implements Effect {
 		Set<String> sUis = new HashSet<String>(Arrays.asList (uis));
 		
 		if (sUis.contains (Lang.STAR)) {
-			bindPage (tag, activity, application, page, dh);
+			BindingHelper.bindPage (tag, activity, application, page, dh, useDh);
 			return;
 		}
 		
@@ -95,48 +96,13 @@ public class BindEffect implements Effect {
 			}
 			
 			if (component != null) {
-				bindComponent (tag, activity, application, layer, component, dh);
+				BindingHelper.bindComponent (tag, activity, application, layer, component, dh, useDh);
 			} else {
-				bindLayer (tag, activity, application, layer, dh);
+				BindingHelper.bindLayer (tag, application, layer, activity.layer (layer.id ()), dh, useDh);
 			}
 			
 		}
 		
-	}
-	
-	private void bindComponent (String tag, UIActivity activity, ApplicationSpec application, LayerSpec layer, ComponentSpec component, DataHolder dh) {
-		Log.d (tag, "\t\t    -> Bind Component [" + component.type () + "/" + component.id () + "]");
-		View view = activity.component (layer.id (), component.id ());
-		if (view == null) {
-			Log.d (BindEffect.class.getSimpleName (), "\t\t    -> ERR: View Not found [" + layer.id () + Lang.DOT + component.id () + "]");
-			return;
-		}
-		application.componentsRegistry ().lookup (component.type ()).bind (Binding.Set, view, application, component, useDh ? dh : AgnosticDataHolder.Instance);
-	}
-
-	private void bindLayer (String tag, UIActivity activity, ApplicationSpec application, LayerSpec layer, DataHolder dh) {
-		if (activity.layer (layer.id ()) == null || layer.count () == 0) {
-			return;
-		}
-		
-		Log.d (tag, "\t\t  -> Bind Layer [" + layer.id () + "]");
-
-		for (int i = 0; i < layer.count (); i++) {
-			bindComponent (tag, activity, application, layer, layer.component (i), dh);
-		}
-	}
-	
-	private void bindPage (String tag, UIActivity activity, ApplicationSpec application, PageSpec page, DataHolder dh) {
-		if (page.count () == 0) {
-			return;
-		}
-		
-		Log.d (tag, "\t\t-> Bind Page ...");
-
-		Iterator<String> layers = page.layers ();
-		while (layers.hasNext ()) {
-			bindLayer (tag, activity, application, page.layer (layers.next ()), dh);
-		}
 	}
 
 }
