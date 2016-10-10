@@ -26,6 +26,8 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.Iterator;
+
 public class MapFactory extends AbstractComponentFactory {
 
 	private static final long serialVersionUID = 8437367345924192857L;
@@ -51,7 +53,7 @@ public class MapFactory extends AbstractComponentFactory {
 	@Override
 	public View create (final UIActivity activity, ViewGroup group, LayerSpec layer, final ComponentSpec spec) {
 		
-		final MapFragment fragment = MapFragment.create (spec.id ());
+		final MapFragment fragment = MapFragment.create (spec);
 		
 		FragmentManager manager = activity.getSupportFragmentManager ();
 		FragmentTransaction transaction = manager.beginTransaction ();
@@ -65,8 +67,20 @@ public class MapFactory extends AbstractComponentFactory {
 				fragment.setMap (map);
 				// bind data
 				bind (ComponentSpec.Binding.Set, fragment.getView (), activity.getSpec (), spec, fragment.getData ());
-				// set events
 
+				// set events
+				Iterator<String> events = spec.events ();
+				if (events == null) {
+					return;
+				}
+				while (events.hasNext ()) {
+					String eventId = events.next ();
+					if (!isEventSupported (eventId)) {
+						continue;
+					}
+					JsonObject event = spec.event (eventId);
+					addEvent (activity, fragment.getView (), activity.getSpec (), spec, eventId, event);
+				}
 			}
 		});
 
@@ -161,6 +175,19 @@ public class MapFactory extends AbstractComponentFactory {
 	public void addEvent (final UIActivity activity, View view, final ApplicationSpec applicationSpec, final ComponentSpec component, String eventName, JsonObject eventSpec) {
 		FragmentManager manager = activity.getSupportFragmentManager ();
 		final MapFragment mapFragment = (MapFragment)manager.findFragmentByTag (component.id ());
+
+		GoogleMap map = mapFragment.getMap ();
+
+		if (map == null) {
+			// TODO: log
+			return;
+		}
+
+		// register event
+
+
+
+
 	}
 
 }

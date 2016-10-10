@@ -2,6 +2,8 @@ package com.bluenimble.apps.sdk.ui.components.impls.map;
 
 import com.bluenimble.apps.sdk.Lang;
 import com.bluenimble.apps.sdk.controller.DataHolder;
+import com.bluenimble.apps.sdk.json.JsonObject;
+import com.bluenimble.apps.sdk.spec.ComponentSpec;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 
@@ -9,6 +11,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import java.util.Map;
 
 public class MapFragment extends SupportMapFragment {
 
@@ -18,9 +22,11 @@ public class MapFragment extends SupportMapFragment {
 	private GoogleMap  map;
 	private DataHolder data;
 
-	private String component;
+	private ComponentSpec component;
 
-	public static MapFragment create (String component) {
+	private Map<String, JsonObject> events = null;
+
+	public static MapFragment create (ComponentSpec component) {
 		MapFragment f = new MapFragment ();
 		f.component 	= component;
 		return f;
@@ -34,7 +40,7 @@ public class MapFragment extends SupportMapFragment {
 		
 		// set the id of the component as the tag of the view "layerId.componentId"
 		if (component != null) {
-			view.setTag (component);
+			view.setTag (component.id ());
 		}
 		
 		return touchable;
@@ -59,6 +65,10 @@ public class MapFragment extends SupportMapFragment {
 
 	public void setData (DataHolder data) {
 		this.data = data;
+	}
+
+	public ComponentSpec setComponent () {
+		return component;
 	}
 
 }
