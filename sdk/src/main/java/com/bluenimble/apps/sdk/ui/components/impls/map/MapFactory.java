@@ -114,6 +114,10 @@ public class MapFactory extends AbstractComponentFactory {
 		
 		switch (binding) {
 			case Set:
+				if (dh == null) {
+					map.clear ();
+					return;
+				}
 				Object value = dh.valueOf (applicationSpec, bindingSpec);
 				if (value == null) {
 					return;

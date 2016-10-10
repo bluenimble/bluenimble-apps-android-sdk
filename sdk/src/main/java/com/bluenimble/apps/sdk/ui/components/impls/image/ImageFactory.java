@@ -66,6 +66,10 @@ public class ImageFactory extends AbstractComponentFactory {
 		
 		switch (binding) {
 			case Set:
+				if (dh == null) {
+					// default image
+					return;
+				}
 				Object value = dh.valueOf (applicationSpec, bindingSpec);
 				if (value == null) {
 					return;

@@ -89,6 +89,16 @@ public class ListFactory extends AbstractComponentFactory {
 		
 		switch (binding) {
 			case Set:
+				// adapter shouldn't be created in here, because the bind method could be called through an event to populate data
+				// load data in Adapter
+				DefaultListAdapter adapter = (DefaultListAdapter)list.getAdapter ();
+
+				if (dh == null) {
+					adapter.load (null);
+					adapter.notifyDataSetChanged ();
+					return;
+				}
+
 				Object value = dh.valueOf (applicationSpec, bindingSpec);
 				if (value == null) {
 					return;
@@ -100,10 +110,6 @@ public class ListFactory extends AbstractComponentFactory {
 				}
 				
 				// reload data
-				// adapter shouldn't be created in here, because the bind method could be called through an event to populate data
-				// load data in Adapter
-				DefaultListAdapter adapter = (DefaultListAdapter)list.getAdapter ();
-
 				boolean hasData = adapter.getRecords () != null;
 
 				// load data in adapter

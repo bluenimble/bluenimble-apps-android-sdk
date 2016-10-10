@@ -81,6 +81,15 @@ public class DropDownFactory extends AbstractComponentFactory {
 		
 		switch (binding) {
 			case Set:
+				// adapter shouldn't be created in here, because the bind method could be called through an event to populate data
+				// load data in Adapter
+				DefaultDropDownAdapter adapter = (DefaultDropDownAdapter)dropdown.getAdapter ();
+
+				if (dh == null) {
+					adapter.load (null);
+					adapter.notifyDataSetChanged ();
+					return;
+				}
 				Object value = dh.valueOf (applicationSpec, bindingSpec);
 				if (value == null) {
 					return;
@@ -90,10 +99,6 @@ public class DropDownFactory extends AbstractComponentFactory {
 					// TODO: log
 					return;
 				}
-
-				// adapter shouldn't be created in here, because the bind method could be called through an event to populate data
-				// load data in Adapter
-				DefaultDropDownAdapter adapter = (DefaultDropDownAdapter)dropdown.getAdapter ();
 
 				boolean hasData = adapter.getRecords () != null;
 

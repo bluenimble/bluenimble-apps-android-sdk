@@ -79,6 +79,10 @@ public class InputTextFactory extends AbstractComponentFactory {
 		
 		switch (binding) {
 			case Set:
+				if (dh == null) {
+					((EditText)view).setText (null);
+					return;
+				}
 				Object value = dh.valueOf (application, bindingSpec);
 				application.logger ().debug (InputTextFactory.class.getSimpleName (), "Binding." + binding + Lang.ARRAY_OPEN + spec.id () + Lang.SPACE + view.getId () + Lang.ARRAY_CLOSE + Lang.EQUALS + value);
 				if (value == null) {

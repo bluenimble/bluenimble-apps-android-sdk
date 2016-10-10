@@ -54,6 +54,10 @@ public class CheckboxFactory extends AbstractComponentFactory {
 		
 		switch (binding) {
 			case Set:
+				if (dh == null) {
+					((CheckBox)view).setChecked (false);
+					return;
+				}
 				Object value = dh.valueOf (applicationSpec, bindingSpec);
 				if (value == null) {
 					return;

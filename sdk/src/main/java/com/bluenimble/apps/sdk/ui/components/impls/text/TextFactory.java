@@ -64,6 +64,10 @@ public class TextFactory extends AbstractComponentFactory {
 		
 		switch (binding) {
 			case Set:
+				if (dh == null) {
+					text.setText (null);
+					return;
+				}
 				Object value = dh.valueOf (applicationSpec, bindingSpec);
 				Log.d (TextFactory.class.getSimpleName (), "Binding." + binding + Lang.ARRAY_OPEN + spec.id () + Lang.SPACE + view.getId () + Lang.ARRAY_CLOSE + Lang.EQUALS + value);
 				if (value == null) {
