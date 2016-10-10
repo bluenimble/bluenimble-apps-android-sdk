@@ -21,6 +21,8 @@ public class EventListener implements Serializable {
 		longPress,
 
 		move,
+
+		markerMove,
 		markerPress
 	}
 	

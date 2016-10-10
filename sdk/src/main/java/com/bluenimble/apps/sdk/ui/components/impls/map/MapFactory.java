@@ -42,6 +42,8 @@ public class MapFactory extends AbstractComponentFactory {
 
 	public MapFactory () {
 		supportEvent (EventListener.Event.move);
+		supportEvent (EventListener.Event.markerMove);
+		supportEvent (EventListener.Event.press);
 		supportEvent (EventListener.Event.markerPress);
 	}
 
@@ -184,7 +186,9 @@ public class MapFactory extends AbstractComponentFactory {
 		}
 
 		// register event
-
+			// view events
+			// map  events
+			// markers events
 
 
 
