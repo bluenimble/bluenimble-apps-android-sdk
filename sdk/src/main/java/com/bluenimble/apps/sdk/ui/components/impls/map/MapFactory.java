@@ -11,6 +11,8 @@ import com.bluenimble.apps.sdk.spec.ComponentSpec;
 import com.bluenimble.apps.sdk.spec.LayerSpec;
 import com.bluenimble.apps.sdk.ui.components.AbstractComponentFactory;
 import com.bluenimble.apps.sdk.ui.components.impls.listeners.EventListener;
+import com.bluenimble.apps.sdk.ui.components.impls.listeners.OnLongPressListenerImpl;
+import com.bluenimble.apps.sdk.ui.components.impls.listeners.OnPressListenerImpl;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -25,6 +27,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import java.util.Iterator;
 
@@ -67,6 +70,7 @@ public class MapFactory extends AbstractComponentFactory {
 			@Override
 			public void onMapReady (final GoogleMap map) {
 				fragment.setMap (map);
+
 				// bind data
 				bind (ComponentSpec.Binding.Set, fragment.getView (), activity.getSpec (), spec, fragment.getData ());
 
@@ -77,11 +81,7 @@ public class MapFactory extends AbstractComponentFactory {
 				}
 				while (events.hasNext ()) {
 					String eventId = events.next ();
-					if (!isEventSupported (eventId)) {
-						continue;
-					}
-					JsonObject event = spec.event (eventId);
-					addEvent (activity, fragment.getView (), activity.getSpec (), spec, eventId, event);
+					addEvent (activity, fragment.getView (), activity.getSpec (), spec, eventId, spec.event (eventId));
 				}
 			}
 		});
@@ -183,6 +183,29 @@ public class MapFactory extends AbstractComponentFactory {
 		if (map == null) {
 			// TODO: log
 			return;
+		}
+
+		if (!isEventSupported (eventName)) {
+			// TODO: log
+			return;
+		}
+
+		EventListener.Event event = EventListener.Event.valueOf (eventName);
+		switch (event) {
+			case press:
+
+				break;
+			case move:
+
+				break;
+			case markerMove:
+
+				break;
+			case markerPress:
+
+				break;
+			default:
+				break;
 		}
 
 		// register event
