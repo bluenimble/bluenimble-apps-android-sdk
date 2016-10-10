@@ -1,0 +1,36 @@
+{
+	"defaultLanguage": "en",
+
+	"pages": {
+		"hello": {
+			"layers": {
+				"main": {
+					"components": [
+						{
+							"binding": { "set": "firstName" }
+						}, {
+							"type": "input", "id": "fName", "break": "true",
+							"custom": { "hint": "Enter something that makes sense!" }
+						}, {
+							"type": "button", "binding": { "set": "action" },
+							"events": {
+								"press": {
+									"scope": "main",
+									"onStart": {
+										"render": "message"
+									}
+								}
+							}
+						}
+					]
+				},
+				"message": {
+					"render": "false",
+					"components": [{
+						"binding": { "set": "app.fName" }
+					}]
+				}
+			}
+		}
+	}
+}

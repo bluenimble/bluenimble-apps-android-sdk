@@ -94,6 +94,7 @@ public class DefaultDropDownAdapter extends ArrayAdapter<DataHolder> {
 
 		if (convertView == null) {
 			convertView = application.renderer ().render (application, template, dh, parent, activity);
+			convertView.setTag (null);
 		}
 
 		// binding data and any other additional effects

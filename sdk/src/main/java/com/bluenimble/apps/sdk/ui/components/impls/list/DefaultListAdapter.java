@@ -172,6 +172,7 @@ public class DefaultListAdapter extends RecyclerView.Adapter<DefaultListAdapter.
 		ViewGroup 	group;
 		public GenericViewHolder (View view, ViewGroup group, String template) {
             super (view);
+			view.setTag (null);
 			this.group = group;
 			this.template = template;
         }

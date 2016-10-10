@@ -34,8 +34,7 @@ public class MapFactory extends AbstractComponentFactory {
 
 	interface Record {
 		String Id 		= "id";
-		String Lat 		= "lat";
-		String Lng 		= "lng";
+		String Loc 		= "loc";
 		String Name 	= "name";
 	}
 
@@ -50,16 +49,27 @@ public class MapFactory extends AbstractComponentFactory {
 	}
 	
 	@Override
-	public View create (UIActivity activity, ViewGroup group, LayerSpec layer, ComponentSpec spec) {
+	public View create (final UIActivity activity, ViewGroup group, LayerSpec layer, final ComponentSpec spec) {
 		
-		MapFragment fragment = new MapFragment (layer.id (), spec.id ());
+		final MapFragment fragment = MapFragment.create (spec.id ());
 		
 		FragmentManager manager = activity.getSupportFragmentManager ();
 		FragmentTransaction transaction = manager.beginTransaction ();
 		transaction.add (group.getId (), fragment, spec.id ());
 		
 		transaction.commit ();
-		
+
+		fragment.getMapAsync (new OnMapReadyCallback () {
+			@Override
+			public void onMapReady (final GoogleMap map) {
+				fragment.setMap (map);
+				// bind data
+				bind (ComponentSpec.Binding.Set, fragment.getView (), activity.getSpec (), spec, fragment.getData ());
+				// set events
+
+			}
+		});
+
 		return null;
 	}
 
@@ -67,17 +77,18 @@ public class MapFactory extends AbstractComponentFactory {
 	public void bind (ComponentSpec.Binding binding, View view, ApplicationSpec applicationSpec, ComponentSpec spec, DataHolder dh) {
 		Log.d (MapFactory.class.getSimpleName (), " .bind > view: " + String.valueOf (view));
 	
-		if (view == null) {
-			// TODO: log
-			return;
-		}
-		
 		FragmentManager manager = ((UIActivity)view.getContext ()).getSupportFragmentManager ();
 		
 		MapFragment mapFragment = (MapFragment)manager.findFragmentByTag (spec.id ());
 		
-		GoogleMap map = null; //mapFragment.getMap ();
-		
+		GoogleMap map = mapFragment.getMap ();
+
+		if (map == null) {
+			mapFragment.setData (dh);
+			// TODO: log
+			return;
+		}
+
 		BindingSpec bindingSpec = spec.binding (binding);
 		if (bindingSpec == null) {
 			return;
@@ -106,12 +117,30 @@ public class MapFactory extends AbstractComponentFactory {
 				
 				for (int i = 0; i < array.count (); i++) {
 					JsonObject record = (JsonObject)array.get (i);
+					JsonArray loc = Json.getArray (record, Record.Loc);
+					if (loc == null || loc.isEmpty ()) {
+						continue;
+					}
+
+					double lat = 0, lng = 0;
+					try {
+						lat = Double.valueOf ((String)loc.get (0));
+					} catch (Exception ex) {
+						continue;
+					}
+					try {
+						lng = Double.valueOf ((String)loc.get (1));
+					} catch (Exception ex) {
+						continue;
+					}
+
 					MarkerOptions markerOptions = new MarkerOptions ()
-                            .position (new LatLng (Json.getDouble (record, Record.Lat, 0), Json.getDouble (record, Record.Lng, 0)))
+                            .position (new LatLng (lat, lng))
                             .title (Json.getString (record, Record.Name));
                             //.icon (BitmapDescriptorFactory.fromResource (0)); // need to review based on "custom": { "icon": "house_icon": { "name": "houseType", "value": "Home" } }
 					Marker marker = map.addMarker (markerOptions);
-                    marker.setTitle (Json.getString (record, Record.Id));
+                    marker.setTag (Json.getString (record, Record.Id));
+
                     builder.include (marker.getPosition ());
 				}
 				
@@ -129,23 +158,9 @@ public class MapFactory extends AbstractComponentFactory {
 	}
 
 	@Override
-	public void addEvent (UIActivity activity, View view, ApplicationSpec applicationSpec, ComponentSpec component, String eventName, JsonObject eventSpec) {
+	public void addEvent (final UIActivity activity, View view, final ApplicationSpec applicationSpec, final ComponentSpec component, String eventName, JsonObject eventSpec) {
 		FragmentManager manager = activity.getSupportFragmentManager ();
-		
-		MapFragment mapFragment = (MapFragment)manager.findFragmentByTag (component.id ());
-		
-		mapFragment.getMapAsync (new OnMapReadyCallback () {
-			@Override
-			public void onMapReady (GoogleMap map) {
-				map.setOnMapLoadedCallback (new GoogleMap.OnMapLoadedCallback () {
-					@Override
-					public void onMapLoaded () {
-
-					}
-				});
-			}
-		});
-		
+		final MapFragment mapFragment = (MapFragment)manager.findFragmentByTag (component.id ());
 	}
 
 }
