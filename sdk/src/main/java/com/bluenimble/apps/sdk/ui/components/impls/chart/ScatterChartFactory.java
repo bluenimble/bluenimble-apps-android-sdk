@@ -14,6 +14,7 @@ import com.bluenimble.apps.sdk.spec.ComponentSpec;
 import com.bluenimble.apps.sdk.spec.LayerSpec;
 import com.github.mikephil.charting.charts.ScatterChart;
 import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.RadarData;
 import com.github.mikephil.charting.data.ScatterData;
 import com.github.mikephil.charting.data.ScatterDataSet;
 
@@ -76,6 +77,10 @@ public class ScatterChartFactory extends ChartFactory {
 		
 		switch (binding) {
 			case Set:
+				if (dh == null) {
+					chart.clear ();
+					return;
+				}
 				Object value = dh.valueOf (applicationSpec, bindingSpec);
 				if (value == null) {
 					return;
@@ -91,9 +96,13 @@ public class ScatterChartFactory extends ChartFactory {
 					// TODO: log
 					return;
 				}
-				
-				List<ScatterDataSet> dataSets = null;
-				
+
+				ScatterData data = chart.getData ();
+				if (data == null) {
+					data = new ScatterData ();
+					chart.setData (data);
+				}
+
 				for (int i = 0; i < array.count (); i++) {
 					JsonObject series = (JsonObject)array.get (i);
 					if (Json.isNullOrEmpty (series)) {
@@ -109,22 +118,11 @@ public class ScatterChartFactory extends ChartFactory {
 						JsonArray record = (JsonArray)values.get (j);
 						entries.add (new Entry (Float.valueOf ((String)record.get (0)), Float.valueOf ((String)record.get (1))));
 					}
-					if (dataSets == null) {
-						dataSets = new ArrayList<ScatterDataSet> ();
-					}
-					dataSets.add ( new ScatterDataSet (entries, Json.getString (series, Custom.Title)) );
+					data.addDataSet ( new ScatterDataSet (entries, Json.getString (series, Custom.Title)) );
 				}
-				
-				if (dataSets.isEmpty ()) {
-					return;
-				}
-				
-				ScatterDataSet [] aDataSets = new ScatterDataSet [dataSets.size ()];
-				dataSets.toArray (aDataSets);
 
-				ScatterData data = new ScatterData (aDataSets);
-				chart.setData (data);
 				chart.invalidate (); // refresh
+
 				break;
 			default:
 				break;

@@ -89,6 +89,11 @@ public class BarChartFactory extends ChartFactory {
 		
 		switch (binding) {
 			case Set:
+				if (dh == null) {
+					chart.clear ();
+					return;
+				}
+
 				Object value = dh.valueOf (applicationSpec, bindingSpec);
 				if (value == null) {
 					return;
@@ -104,9 +109,15 @@ public class BarChartFactory extends ChartFactory {
 					// TODO: log
 					return;
 				}
-				
-				List<BarDataSet> dataSets = null;
-				
+
+				BarData data = chart.getData ();
+				if (data == null) {
+					data = new BarData ();
+					chart.setData (data);
+					// set bar width
+					data.setBarWidth (Json.getFloat (style, Style.bar.Width, 0.9f));
+				}
+
 				for (int i = 0; i < array.count (); i++) {
 					JsonObject series = (JsonObject)array.get (i);
 					if (Json.isNullOrEmpty (series)) {
@@ -134,26 +145,12 @@ public class BarChartFactory extends ChartFactory {
 						entries.add (new BarEntry (i, fValues, String.valueOf (record.get (0))));
 						
 					}
-					if (dataSets == null) {
-						dataSets = new ArrayList<BarDataSet> ();
-					}
-					dataSets.add ( new BarDataSet (entries, Json.getString (series, Custom.Title)) );
+					// add data set
+					data.addDataSet (new BarDataSet (entries, Json.getString (series, Custom.Title)));
 				}
-				
-				if (dataSets.isEmpty ()) {
-					return;
-				}
-				
-				BarDataSet [] aDataSets = new BarDataSet [dataSets.size ()];
-				dataSets.toArray (aDataSets);
-				
-				BarData data = new BarData (aDataSets);
-				chart.setData (data);
-				
-				// set bar width
-				data.setBarWidth (Json.getFloat (style, Style.bar.Width, 0.9f));
-				
+
 				chart.invalidate (); // refresh
+
 				break;
 			default:
 				break;

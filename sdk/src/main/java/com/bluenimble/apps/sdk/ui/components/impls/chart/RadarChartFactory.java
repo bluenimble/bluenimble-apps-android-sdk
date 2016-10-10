@@ -13,6 +13,7 @@ import com.bluenimble.apps.sdk.spec.BindingSpec;
 import com.bluenimble.apps.sdk.spec.ComponentSpec;
 import com.bluenimble.apps.sdk.spec.LayerSpec;
 import com.github.mikephil.charting.charts.RadarChart;
+import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.RadarData;
 import com.github.mikephil.charting.data.RadarDataSet;
 import com.github.mikephil.charting.data.RadarEntry;
@@ -77,6 +78,10 @@ public class RadarChartFactory extends ChartFactory {
 		
 		switch (binding) {
 			case Set:
+				if (dh == null) {
+					chart.clear ();
+					return;
+				}
 				Object value = dh.valueOf (applicationSpec, bindingSpec);
 				if (value == null) {
 					return;
@@ -92,8 +97,12 @@ public class RadarChartFactory extends ChartFactory {
 					// TODO: log
 					return;
 				}
-				
-				List<RadarDataSet> dataSets = null;
+
+				RadarData data = chart.getData ();
+				if (data == null) {
+					data = new RadarData ();
+					chart.setData (data);
+				}
 				
 				for (int i = 0; i < array.count (); i++) {
 					JsonObject series = (JsonObject)array.get (i);
@@ -109,22 +118,11 @@ public class RadarChartFactory extends ChartFactory {
 					for (int j = 0; j < values.count (); j++) {
 						entries.add (new RadarEntry (Float.valueOf ((String)values.get (j))));
 					}
-					if (dataSets == null) {
-						dataSets = new ArrayList<RadarDataSet> ();
-					}
-					dataSets.add ( new RadarDataSet (entries, Json.getString (series, Custom.Title)) );
+					data.addDataSet ( new RadarDataSet (entries, Json.getString (series, Custom.Title)) );
 				}
-				
-				if (dataSets.isEmpty ()) {
-					return;
-				}
-				
-				RadarDataSet [] aDataSets = new RadarDataSet [dataSets.size ()];
-				dataSets.toArray (aDataSets);
 
-				RadarData data = new RadarData (aDataSets);
-				chart.setData (data);
 				chart.invalidate (); // refresh
+
 				break;
 			default:
 				break;

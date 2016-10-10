@@ -13,6 +13,7 @@ import com.bluenimble.apps.sdk.spec.BindingSpec;
 import com.bluenimble.apps.sdk.spec.ComponentSpec;
 import com.bluenimble.apps.sdk.spec.LayerSpec;
 import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.data.BubbleData;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
@@ -77,6 +78,10 @@ public class LineChartFactory extends ChartFactory {
 		
 		switch (binding) {
 			case Set:
+				if (dh == null) {
+					chart.clear ();
+					return;
+				}
 				Object value = dh.valueOf (applicationSpec, bindingSpec);
 				if (value == null) {
 					return;
@@ -92,9 +97,13 @@ public class LineChartFactory extends ChartFactory {
 					// TODO: log
 					return;
 				}
-				
-				List<LineDataSet> dataSets = null;
-				
+
+				LineData data = chart.getData ();
+				if (data == null) {
+					data = new LineData ();
+					chart.setData (data);
+				}
+
 				for (int i = 0; i < array.count (); i++) {
 					JsonObject series = (JsonObject)array.get (i);
 					if (Json.isNullOrEmpty (series)) {
@@ -110,23 +119,11 @@ public class LineChartFactory extends ChartFactory {
 						JsonArray record = (JsonArray)values.get (j);
 						entries.add (new Entry (Float.valueOf ((String)record.get (0)), Float.valueOf ((String)record.get (1))));
 					}
-					if (dataSets == null) {
-						dataSets = new ArrayList<LineDataSet> ();
-					}
-					dataSets.add ( new LineDataSet (entries, Json.getString (series, Custom.Title)) );
+					data.addDataSet ( new LineDataSet (entries, Json.getString (series, Custom.Title)) );
 				}
-				
-				if (dataSets.isEmpty ()) {
-					return;
-				}
-				
-				LineDataSet [] aDataSets = new LineDataSet [dataSets.size ()];
-				dataSets.toArray (aDataSets);
 
-				LineData data = new LineData (aDataSets);
-				chart.setData (data);
-				
 				chart.invalidate (); // refresh
+
 				break;
 			default:
 				break;

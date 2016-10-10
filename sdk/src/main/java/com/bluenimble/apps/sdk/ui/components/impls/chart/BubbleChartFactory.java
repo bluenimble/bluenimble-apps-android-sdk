@@ -76,6 +76,10 @@ public class BubbleChartFactory extends ChartFactory {
 		
 		switch (binding) {
 			case Set:
+				if (dh == null) {
+					chart.clear ();
+					return;
+				}
 				Object value = dh.valueOf (applicationSpec, bindingSpec);
 				if (value == null) {
 					return;
@@ -91,9 +95,13 @@ public class BubbleChartFactory extends ChartFactory {
 					// TODO: log
 					return;
 				}
-				
-				List<BubbleDataSet> dataSets = null;
-				
+
+				BubbleData data = chart.getData ();
+				if (data == null) {
+					data = new BubbleData ();
+					chart.setData (data);
+				}
+
 				for (int i = 0; i < array.count (); i++) {
 					JsonObject series = (JsonObject)array.get (i);
 					if (Json.isNullOrEmpty (series)) {
@@ -109,22 +117,12 @@ public class BubbleChartFactory extends ChartFactory {
 						JsonArray record = (JsonArray)values.get (j);
 						entries.add (new BubbleEntry (j, Float.valueOf ((String)record.get (0)), Float.valueOf ((String)record.get (1))));
 					}
-					if (dataSets == null) {
-						dataSets = new ArrayList<BubbleDataSet> ();
-					}
-					dataSets.add ( new BubbleDataSet (entries, Json.getString (series, Custom.Title)) );
+					// add data set
+					data.addDataSet ( new BubbleDataSet (entries, Json.getString (series, Custom.Title)) );
 				}
 				
-				if (dataSets.isEmpty ()) {
-					return;
-				}
-				
-				BubbleDataSet [] aDataSets = new BubbleDataSet [dataSets.size ()];
-				dataSets.toArray (aDataSets);
-
-				BubbleData data = new BubbleData (aDataSets);
-				chart.setData (data);
 				chart.invalidate (); // refresh
+
 				break;
 			default:
 				break;

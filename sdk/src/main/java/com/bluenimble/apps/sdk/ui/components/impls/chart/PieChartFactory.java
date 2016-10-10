@@ -13,6 +13,7 @@ import com.bluenimble.apps.sdk.spec.BindingSpec;
 import com.bluenimble.apps.sdk.spec.ComponentSpec;
 import com.bluenimble.apps.sdk.spec.LayerSpec;
 import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
@@ -76,6 +77,10 @@ public class PieChartFactory extends ChartFactory {
 		
 		switch (binding) {
 			case Set:
+				if (dh == null) {
+					chart.clear ();
+					return;
+				}
 				Object value = dh.valueOf (applicationSpec, bindingSpec);
 				if (value == null) {
 					return;
@@ -91,17 +96,23 @@ public class PieChartFactory extends ChartFactory {
 					// TODO: log
 					return;
 				}
-				
+
+				PieData data = chart.getData ();
+				if (data == null) {
+					data = new PieData ();
+					chart.setData (data);
+				}
+
 				List<PieEntry> entries = new ArrayList<PieEntry> ();
 				for (int i = 0; i < array.count (); i++) {
 					JsonArray record = (JsonArray)array.get (i);
 					entries.add (new PieEntry (Float.valueOf ((String)record.get (1)), (String)record.get (0)));
 				}
 
-				PieDataSet set = new PieDataSet (entries, (String)spec.get (Custom.Title));
-				PieData data = new PieData (set);
-				chart.setData (data);
+				data.addDataSet (new PieDataSet (entries, (String)spec.get (Custom.Title)));
+
 				chart.invalidate (); // refresh
+
 				break;
 			default:
 				break;
