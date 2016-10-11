@@ -22,7 +22,9 @@ public class EventListener implements Serializable {
 
 		move,
 
-		markerMove,
+		markerStartDrag,
+		markerDrag,
+		markerEndDrag,
 		markerPress
 	}
 	

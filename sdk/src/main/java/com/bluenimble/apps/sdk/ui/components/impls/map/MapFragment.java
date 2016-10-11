@@ -1,6 +1,5 @@
 package com.bluenimble.apps.sdk.ui.components.impls.map;
 
-import com.bluenimble.apps.sdk.Lang;
 import com.bluenimble.apps.sdk.controller.DataHolder;
 import com.bluenimble.apps.sdk.json.JsonObject;
 import com.bluenimble.apps.sdk.spec.ComponentSpec;
@@ -21,6 +20,8 @@ public class MapFragment extends SupportMapFragment {
 	
 	private GoogleMap  map;
 	private DataHolder data;
+
+	private JsonObject state;
 
 	private ComponentSpec component;
 
@@ -51,6 +52,10 @@ public class MapFragment extends SupportMapFragment {
 		return view;
 	}
 
+	public MapTouchableWrapper getTouchableView () {
+		return touchable;
+	}
+
 	public GoogleMap getMap () {
 		return map;
 	}
@@ -65,6 +70,14 @@ public class MapFragment extends SupportMapFragment {
 
 	public void setData (DataHolder data) {
 		this.data = data;
+	}
+
+	public JsonObject getState () {
+		return state;
+	}
+
+	public void setState (JsonObject state) {
+		this.state = state;
 	}
 
 	public ComponentSpec setComponent () {

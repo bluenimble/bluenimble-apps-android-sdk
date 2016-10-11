@@ -41,8 +41,12 @@ public class MapTouchableWrapper extends FrameLayout {
 		return super.dispatchTouchEvent(ev);
 	}
 
+	public void setOnMapUpdated (UserInteraction interaction) {
+		this.interaction = interaction;
+	}
+
 	// Map Activity must implement this interface
 	public interface UserInteraction {
-		void onMapUpdated();
+		void onMapUpdated ();
 	}
 }
