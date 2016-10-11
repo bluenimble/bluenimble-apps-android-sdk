@@ -51,6 +51,10 @@ public class MapFragment extends SupportMapFragment {
 		return view;
 	}
 
+	public MapTouchableWrapper getTouchableView () {
+		return touchable;
+	}
+
 	public GoogleMap getMap () {
 		return map;
 	}

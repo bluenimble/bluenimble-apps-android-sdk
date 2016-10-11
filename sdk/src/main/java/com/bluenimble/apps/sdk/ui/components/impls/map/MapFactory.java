@@ -11,9 +11,11 @@ import com.bluenimble.apps.sdk.spec.ComponentSpec;
 import com.bluenimble.apps.sdk.spec.LayerSpec;
 import com.bluenimble.apps.sdk.ui.components.AbstractComponentFactory;
 import com.bluenimble.apps.sdk.ui.components.impls.listeners.EventListener;
-import com.bluenimble.apps.sdk.ui.components.impls.listeners.OnLongPressListenerImpl;
-import com.bluenimble.apps.sdk.ui.components.impls.listeners.OnPressListenerImpl;
-import com.google.android.gms.maps.CameraUpdate;
+import com.bluenimble.apps.sdk.ui.components.impls.listeners.OnMapLongPressListenerImpl;
+import com.bluenimble.apps.sdk.ui.components.impls.listeners.OnMapMoveListenerImpl;
+import com.bluenimble.apps.sdk.ui.components.impls.listeners.OnMapPressListenerImpl;
+import com.bluenimble.apps.sdk.ui.components.impls.listeners.OnMarkerMoveListenerImpl;
+import com.bluenimble.apps.sdk.ui.components.impls.listeners.OnMarkerPressListenerImpl;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -27,7 +29,6 @@ import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 
 import java.util.Iterator;
 
@@ -37,16 +38,21 @@ public class MapFactory extends AbstractComponentFactory {
 	
 	private static final String Id = "map";
 
-	interface Record {
+	public interface Record {
 		String Id 		= "id";
 		String Loc 		= "loc";
 		String Name 	= "name";
+		String Marker 	= "marker";
+		String Lat 		= "lat";
+		String Lng 		= "lng";
+		String Status 	= "status";
 	}
 
 	public MapFactory () {
 		supportEvent (EventListener.Event.move);
 		supportEvent (EventListener.Event.markerMove);
 		supportEvent (EventListener.Event.press);
+		supportEvent (EventListener.Event.longPress);
 		supportEvent (EventListener.Event.markerPress);
 	}
 
@@ -142,7 +148,7 @@ public class MapFactory extends AbstractComponentFactory {
 						continue;
 					}
 
-					double lat = 0, lng = 0;
+					double lat, lng;
 					try {
 						lat = Double.valueOf ((String)loc.get (0));
 					} catch (Exception ex) {
@@ -197,28 +203,22 @@ public class MapFactory extends AbstractComponentFactory {
 		EventListener.Event event = EventListener.Event.valueOf (eventName);
 		switch (event) {
 			case press:
-
+				map.setOnMapClickListener (new OnMapPressListenerImpl (mapFragment, event, eventSpec));
+				break;
+			case longPress:
+				map.setOnMapLongClickListener (new OnMapLongPressListenerImpl (mapFragment, event, eventSpec));
 				break;
 			case move:
-
+				mapFragment.getTouchableView ().setOnMapUpdated (new OnMapMoveListenerImpl (mapFragment, event, eventSpec));
 				break;
 			case markerMove:
-
+				map.setOnMarkerDragListener (new OnMarkerMoveListenerImpl (mapFragment, event, eventSpec));
 				break;
 			case markerPress:
-
+				map.setOnMarkerClickListener (new OnMarkerPressListenerImpl (mapFragment, event, eventSpec));
 				break;
 			default:
 				break;
 		}
-
-		// register event
-			// view events
-			// map  events
-			// markers events
-
-
-
 	}
-
 }
