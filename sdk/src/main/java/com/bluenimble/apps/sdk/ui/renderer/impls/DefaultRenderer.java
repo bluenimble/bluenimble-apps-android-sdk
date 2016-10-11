@@ -68,7 +68,13 @@ public class DefaultRenderer implements Renderer {
 		}
 		
 		transaction.commit ();
-		
+
+		// run page create event if any
+		JsonObject eventSpec = activity.getSpec ().renderer ().current ().event (LifeCycleEvent.create.name ());
+		if (eventSpec != null) {
+			ActionProcessor.process (LifeCycleEvent.create.name (), eventSpec, activity, activity.root (), null);
+		}
+
 		if (page.style () != null) {
 			page.style ().apply (page, activity.root (), null);
 		}

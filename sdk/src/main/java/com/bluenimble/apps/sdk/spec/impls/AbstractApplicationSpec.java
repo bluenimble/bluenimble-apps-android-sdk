@@ -129,6 +129,11 @@ public abstract class AbstractApplicationSpec extends JsonEventAwareSpec impleme
 		return version;
 	}
 
+	@Override
+	public boolean isDiskBased () {
+		return false;
+	}
+
 	public AbstractApplicationSpec componentsRegistry (ComponentsRegistry componentsRegistry) {
 		this.componentsRegistry = componentsRegistry;
 		return this;

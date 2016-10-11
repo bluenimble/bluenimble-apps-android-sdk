@@ -140,9 +140,13 @@ public class DiskApplicationSpec extends JsonApplicationSpec {
 		// load all pages
 		for (File fPage : pages) {
 			String name = fPage.getName ();
-			InputStream stream = null;
 			add (name.substring (0, name.indexOf (Lang.DOT)), Json.load (fPage));
 		}
 	}
-	
+
+	@Override
+	public boolean isDiskBased () {
+		return true;
+	}
+
 }

@@ -18,6 +18,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.RelativeLayout;
@@ -92,11 +93,6 @@ public class UIActivity extends AppCompatActivity implements ViewResolver {
 
 		spec.renderer ().render (page, this);
 
-		// run page create event if any
-		JsonObject eventSpec = spec.renderer ().current ().event (LifeCycleEvent.create.name ());
-		if (eventSpec != null) {
-			ActionProcessor.process (LifeCycleEvent.create.name (), eventSpec, this, root (), null);
-		}
 	}
 
 	@Override

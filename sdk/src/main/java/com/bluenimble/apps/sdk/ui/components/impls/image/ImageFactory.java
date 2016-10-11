@@ -20,6 +20,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import java.io.File;
+
 public class ImageFactory extends AbstractComponentFactory {
 
 	private static final long serialVersionUID = 8437367345924192857L;
@@ -50,7 +52,7 @@ public class ImageFactory extends AbstractComponentFactory {
 	}
 
 	@Override
-	public void bind (ComponentSpec.Binding binding, View view, ApplicationSpec applicationSpec, ComponentSpec spec, DataHolder dh) {
+	public void bind (ComponentSpec.Binding binding, View view, ApplicationSpec application, ComponentSpec spec, DataHolder dh) {
 		
 		if (view == null || !(view instanceof ImageView)) {
 			// TODO: log
@@ -70,7 +72,7 @@ public class ImageFactory extends AbstractComponentFactory {
 					// default image
 					return;
 				}
-				Object value = dh.valueOf (applicationSpec, bindingSpec);
+				Object value = dh.valueOf (application, bindingSpec);
 				if (value == null) {
 					return;
 				}
@@ -82,8 +84,14 @@ public class ImageFactory extends AbstractComponentFactory {
 					if (AppResources.exists (url)) {
 						Picasso.with (view.getContext ()).load (AppResources.id (url)).into (image);
 					} else {
-						Picasso.with (view.getContext ()).load (Assets + applicationSpec.id () + Lang.SLASH + UIApplication.Resources.Themes + Lang.SLASH + url).into (image);
-					}
+						if (application.isDiskBased ()) {
+							Picasso.with (view.getContext ()).load (
+								new File (UIApplication.Resources.Apps + Lang.SLASH + application.id () + Lang.SLASH + UIApplication.Resources.Themes + Lang.SLASH + url)
+							).into (image);
+						} else {
+							Picasso.with (view.getContext ()).load (Assets + application.id () + Lang.SLASH + UIApplication.Resources.Themes + Lang.SLASH + url).into (image);
+						}
+ 					}
 				}
 				break;
 			case Get:

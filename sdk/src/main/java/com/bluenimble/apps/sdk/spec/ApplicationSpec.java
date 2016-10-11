@@ -42,5 +42,6 @@ public interface ApplicationSpec extends EventAwareSpec {
 	Renderer 			renderer();
 
 	Logger 				logger();
+	boolean				isDiskBased ();
 
 }
