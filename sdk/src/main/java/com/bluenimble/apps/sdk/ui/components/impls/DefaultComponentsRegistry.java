@@ -19,6 +19,7 @@ import com.bluenimble.apps.sdk.ui.components.impls.input.InputTextFactory;
 import com.bluenimble.apps.sdk.ui.components.impls.generic.LayerFactory;
 import com.bluenimble.apps.sdk.ui.components.impls.map.MapFactory;
 import com.bluenimble.apps.sdk.ui.components.impls.radio.RadioGroupFactory;
+import com.bluenimble.apps.sdk.ui.components.impls.tabs.TabsFactory;
 import com.bluenimble.apps.sdk.ui.components.impls.text.TextFactory;
 
 public class DefaultComponentsRegistry implements ComponentsRegistry {
@@ -39,6 +40,8 @@ public class DefaultComponentsRegistry implements ComponentsRegistry {
 		register (new LayerFactory ());
 
 		register (new MapFactory ());
+
+		register (new TabsFactory());
 
 		register (new BarChartFactory ());
 		register (new BubbleChartFactory ());
