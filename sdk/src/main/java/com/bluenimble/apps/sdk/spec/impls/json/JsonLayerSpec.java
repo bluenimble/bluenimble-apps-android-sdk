@@ -20,7 +20,7 @@ import com.bluenimble.apps.sdk.ui.components.ComponentsRegistry;
 import com.bluenimble.apps.sdk.ui.components.impls.generic.BreakFactory;
 import com.bluenimble.apps.sdk.ui.components.impls.generic.LayerFactory;
 import com.bluenimble.apps.sdk.ui.themes.impls.JsonStyleSpec;
-import com.bluenimble.apps.sdk.ui.utils.SpecHelper;
+import com.bluenimble.apps.sdk.utils.SpecHelper;
 
 public class JsonLayerSpec extends JsonEventAwareSpec implements LayerSpec {
 
@@ -68,6 +68,8 @@ public class JsonLayerSpec extends JsonEventAwareSpec implements LayerSpec {
 			JsonObject oComponent = null;
 			if (xComponent instanceof JsonObject) {
 				oComponent = (JsonObject)xComponent;
+			} else if (xComponent instanceof JsonArray) {
+				oComponent = (JsonObject)new JsonObject ().set (Spec.page.layer.Components, xComponent);
 			} else if (xComponent instanceof String) {
 				oComponent = SpecHelper.toComponentSpec ((String)xComponent);
 			}
@@ -128,6 +130,11 @@ public class JsonLayerSpec extends JsonEventAwareSpec implements LayerSpec {
 	@Override
 	public String id () {
 		return id;
+	}
+
+	@Override
+	public Object get (String name) {
+		return Json.find (spec, Spec.page.layer.component.Custom, name);
 	}
 
 	@Override

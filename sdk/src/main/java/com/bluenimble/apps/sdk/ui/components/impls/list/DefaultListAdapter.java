@@ -9,8 +9,8 @@ import com.bluenimble.apps.sdk.json.JsonArray;
 import com.bluenimble.apps.sdk.json.JsonObject;
 import com.bluenimble.apps.sdk.spec.ComponentSpec;
 import com.bluenimble.apps.sdk.spec.LayerSpec;
-import com.bluenimble.apps.sdk.ui.utils.BindingHelper;
-import com.bluenimble.apps.sdk.ui.utils.SpecHelper;
+import com.bluenimble.apps.sdk.utils.BindingHelper;
+import com.bluenimble.apps.sdk.utils.SpecHelper;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;

@@ -10,16 +10,13 @@ import com.bluenimble.apps.sdk.spec.ApplicationSpec;
 import com.bluenimble.apps.sdk.spec.BindingSpec;
 import com.bluenimble.apps.sdk.spec.ComponentSpec;
 import com.bluenimble.apps.sdk.spec.LayerSpec;
-import com.bluenimble.apps.sdk.spec.PageSpec;
 import com.bluenimble.apps.sdk.ui.components.AbstractComponentFactory;
 import com.bluenimble.apps.sdk.ui.components.impls.listeners.EventListener;
 import com.bluenimble.apps.sdk.ui.components.impls.listeners.OnItemSelectedListenerImpl;
-import com.bluenimble.apps.sdk.ui.utils.SpecHelper;
+import com.bluenimble.apps.sdk.utils.SpecHelper;
 
-import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.RadioGroup;
 import android.widget.Spinner;
 
 public class DropDownFactory extends AbstractComponentFactory {

@@ -1,10 +1,6 @@
 package com.bluenimble.apps.sdk.ui.components.impls.dropdown;
 
-import java.util.Iterator;
-
-import com.bluenimble.apps.sdk.Lang;
 import com.bluenimble.apps.sdk.application.UIActivity;
-import com.bluenimble.apps.sdk.controller.ActionProcessor;
 import com.bluenimble.apps.sdk.controller.DataHolder;
 import com.bluenimble.apps.sdk.controller.impls.DefaultDataHolder;
 import com.bluenimble.apps.sdk.json.JsonArray;
@@ -12,12 +8,8 @@ import com.bluenimble.apps.sdk.json.JsonObject;
 import com.bluenimble.apps.sdk.spec.ApplicationSpec;
 import com.bluenimble.apps.sdk.spec.ComponentSpec;
 import com.bluenimble.apps.sdk.spec.LayerSpec;
-import com.bluenimble.apps.sdk.spec.PageSpec;
-import com.bluenimble.apps.sdk.ui.components.impls.dropdown.DropDownFactory.Custom;
-import com.bluenimble.apps.sdk.ui.renderer.impls.DefaultRenderer;
-import com.bluenimble.apps.sdk.ui.utils.SpecHelper;
+import com.bluenimble.apps.sdk.utils.SpecHelper;
 
-import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;

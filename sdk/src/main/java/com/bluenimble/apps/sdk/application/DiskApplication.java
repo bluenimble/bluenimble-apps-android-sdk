@@ -5,9 +5,8 @@ import android.util.Log;
 
 import com.bluenimble.apps.sdk.IOUtils;
 import com.bluenimble.apps.sdk.Lang;
-import com.bluenimble.apps.sdk.spec.impls.json.AssetsApplicationSpec;
 import com.bluenimble.apps.sdk.spec.impls.json.DiskApplicationSpec;
-import com.bluenimble.apps.sdk.ui.utils.AppResources;
+import com.bluenimble.apps.sdk.utils.AppResources;
 
 import java.io.File;
 import java.io.FileInputStream;

@@ -79,7 +79,6 @@ public class DefaultDataHolder implements DataHolder  {
 	public Object valueOf (ApplicationSpec applicationSpec, BindingSpec bindingSpec) {
 		String source 		= bindingSpec.source ();
 		String [] property 	= bindingSpec.property ();
-		Log.d (DefaultDataHolder.class.getSimpleName (), "\t\t    -> valueOf [" + source + "/" + Lang.join (property, Lang.DOT) + "]");
 		if (source == null || Namespace.Static.equals (source)) {
 			return applicationSpec.i18nProvider ().get (property, this);
 		}

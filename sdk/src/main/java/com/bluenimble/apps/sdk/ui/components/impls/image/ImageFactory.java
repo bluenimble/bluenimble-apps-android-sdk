@@ -13,7 +13,7 @@ import com.bluenimble.apps.sdk.ui.components.AbstractComponentFactory;
 import com.bluenimble.apps.sdk.ui.components.impls.listeners.EventListener;
 import com.bluenimble.apps.sdk.ui.components.impls.listeners.OnLongPressListenerImpl;
 import com.bluenimble.apps.sdk.ui.components.impls.listeners.OnPressListenerImpl;
-import com.bluenimble.apps.sdk.ui.utils.AppResources;
+import com.bluenimble.apps.sdk.utils.AppResources;
 import com.squareup.picasso.Picasso;
 
 import android.view.View;

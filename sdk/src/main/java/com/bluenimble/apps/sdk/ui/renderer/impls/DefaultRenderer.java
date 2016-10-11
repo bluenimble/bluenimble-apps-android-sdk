@@ -117,8 +117,8 @@ public class DefaultRenderer implements Renderer {
 			if (Lang.isNullOrEmpty (type)) {
 				type = ComponentsRegistry.Default.Text;
 			}
-			
-			Log.d (DefaultRenderer.class.getSimpleName (), "Render Component " + Lang.ARRAY_OPEN + type + Lang.SLASH + spec.id () + Lang.ARRAY_CLOSE);
+
+			application.logger ().debug (DefaultRenderer.class.getSimpleName (), "Render Component " + Lang.ARRAY_OPEN + type + Lang.SLASH + spec.id () + Lang.ARRAY_CLOSE);
 
 			// back to new line
 			if (type.equals (ComponentsRegistry.Default.Break)) {
@@ -147,8 +147,12 @@ public class DefaultRenderer implements Renderer {
 			if (view != null) {
 				relativeLayout.addView (view);
 			}
-			
-			Log.d (DefaultRenderer.class.getSimpleName (), "Component Added to Layout " + Lang.ARRAY_OPEN + type + Lang.SLASH + spec.id () + Lang.SPACE + (view != null ? view.getId () : "NullView") + Lang.ARRAY_CLOSE);
+
+			application.logger ().debug (
+				DefaultRenderer.class.getSimpleName (),
+				"Component Added to Layout " + Lang.ARRAY_OPEN + type + Lang.SLASH + spec.id () + Lang.SPACE + (view != null ? view.getId () : "NullView") +
+				Lang.SPACE + "tag: " + layer.id () + Lang.DOT + spec.id () + Lang.ARRAY_CLOSE
+			);
 
 			// attach component events
 			addEvents  (application, spec, factory, view, activity);

@@ -43,7 +43,7 @@ public class TextFactory extends AbstractComponentFactory {
 	}
 
 	@Override
-	public void bind (ComponentSpec.Binding binding, View view, ApplicationSpec applicationSpec, ComponentSpec spec, DataHolder dh) {
+	public void bind (ComponentSpec.Binding binding, View view, ApplicationSpec application, ComponentSpec spec, DataHolder dh) {
 		
 		if (view == null || !(view instanceof TextView)) {
 			// TODO: log
@@ -68,8 +68,8 @@ public class TextFactory extends AbstractComponentFactory {
 					text.setText (null);
 					return;
 				}
-				Object value = dh.valueOf (applicationSpec, bindingSpec);
-				Log.d (TextFactory.class.getSimpleName (), "Binding." + binding + Lang.ARRAY_OPEN + spec.id () + Lang.SPACE + view.getId () + Lang.ARRAY_CLOSE + Lang.EQUALS + value);
+				Object value = dh.valueOf (application, bindingSpec);
+				application.logger ().debug (TextFactory.class.getSimpleName (), "Binding." + binding + Lang.ARRAY_OPEN + spec.id () + Lang.SPACE + view.getId () + Lang.ARRAY_CLOSE + Lang.EQUALS + value);
 				if (value == null) {
 					return;
 				}

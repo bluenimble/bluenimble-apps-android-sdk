@@ -1,14 +1,10 @@
 package com.bluenimble.apps.sdk.application;
 
-import com.bluenimble.apps.sdk.Spec;
-import com.bluenimble.apps.sdk.controller.ActionProcessor;
 import com.bluenimble.apps.sdk.controller.DataHolder;
 import com.bluenimble.apps.sdk.json.JsonObject;
 import com.bluenimble.apps.sdk.spec.ApplicationSpec;
 import com.bluenimble.apps.sdk.spec.LayerSpec;
-import com.bluenimble.apps.sdk.ui.effects.impls.BindEffect;
-import com.bluenimble.apps.sdk.ui.renderer.impls.DefaultRenderer.LifeCycleEvent;
-import com.bluenimble.apps.sdk.ui.utils.SpecHelper;
+import com.bluenimble.apps.sdk.utils.SpecHelper;
 
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
@@ -18,16 +14,15 @@ import android.view.ViewGroup;
 
 public class UILayer extends Fragment {
 		
+/*
 	public interface Exchange {
 		String Event 	= "event";
 		String Data 	= "data";
-		String Layer 	= "layer";
 	}
-	
-	private 	JsonObject 	createEvent;
-	private 	DataHolder 	dh;
-	
+*/
+
 	protected 	LayerSpec 	layer;
+	protected 	DataHolder 	dh;
 
 	public UILayer () {
 	}
@@ -51,7 +46,7 @@ public class UILayer extends Fragment {
 		
 		ApplicationSpec application = ((UIApplication)activity.getApplication ()).getSpec ();
 		
-		return application.renderer ().render (application, layer, null, container, activity);
+		return application.renderer ().render (application, layer, dh, container, activity);
     }
 	
 	@Override

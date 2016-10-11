@@ -49,7 +49,7 @@ public class ButtonFactory extends AbstractComponentFactory {
 	}
 
 	@Override
-	public void bind (ComponentSpec.Binding binding, View view, ApplicationSpec applicationSpec, ComponentSpec spec, DataHolder dh) {
+	public void bind (ComponentSpec.Binding binding, View view, ApplicationSpec application, ComponentSpec spec, DataHolder dh) {
 		
 		if (view == null || !(view instanceof Button)) {
 			// TODO: log
@@ -74,9 +74,10 @@ public class ButtonFactory extends AbstractComponentFactory {
 					button.setText (null);
 					return;
 				}
-				Object value = dh.valueOf (applicationSpec, bindingSpec);
-				Log.d (ButtonFactory.class.getSimpleName (), "Binding.Set " + Lang.ARRAY_OPEN + spec.id () + Lang.SPACE + view.getId () + Lang.ARRAY_CLOSE + Lang.EQUALS + value);
+				Object value = dh.valueOf (application, bindingSpec);
+				application.logger ().debug (ButtonFactory.class.getSimpleName (), "Binding.Set " + Lang.ARRAY_OPEN + spec.id () + Lang.SPACE + view.getId () + Lang.ARRAY_CLOSE + Lang.EQUALS + value);
 				if (value == null) {
+					button.setText (DefaultText);
 					return;
 				}
 				button.setText (value.toString ());

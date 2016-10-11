@@ -13,10 +13,13 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.location.Location;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
@@ -31,6 +34,11 @@ public class UIActivity extends AppCompatActivity implements ViewResolver {
 	@Override
 	protected void onCreate (Bundle state) {
 		super.onCreate (state);
+
+		// remove bar
+		requestWindowFeature (Window.FEATURE_NO_TITLE);
+
+		//getWindow ().setFlags (WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 		
 		// get app spec
 		ApplicationSpec spec = getSpec ();
@@ -75,6 +83,12 @@ public class UIActivity extends AppCompatActivity implements ViewResolver {
 		
 		// remember the root view / layout
 		root = mainLayout;
+
+		// remove action bar
+		ActionBar actionBar = getSupportActionBar ();
+		if (actionBar != null) {
+			actionBar.hide ();
+		}
 
 		spec.renderer ().render (page, this);
 

@@ -1,4 +1,4 @@
-package com.bluenimble.apps.sdk.ui.utils;
+package com.bluenimble.apps.sdk.utils;
 
 import com.bluenimble.apps.sdk.Lang;
 

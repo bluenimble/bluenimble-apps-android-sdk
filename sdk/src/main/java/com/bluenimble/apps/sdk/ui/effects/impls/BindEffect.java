@@ -2,23 +2,17 @@ package com.bluenimble.apps.sdk.ui.effects.impls;
 
 import java.util.Arrays;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Set;
 
 import com.bluenimble.apps.sdk.Lang;
 import com.bluenimble.apps.sdk.application.UIActivity;
 import com.bluenimble.apps.sdk.controller.DataHolder;
-import com.bluenimble.apps.sdk.controller.impls.AgnosticDataHolder;
 import com.bluenimble.apps.sdk.spec.ApplicationSpec;
 import com.bluenimble.apps.sdk.spec.ComponentSpec;
-import com.bluenimble.apps.sdk.spec.ComponentSpec.Binding;
 import com.bluenimble.apps.sdk.spec.LayerSpec;
 import com.bluenimble.apps.sdk.spec.PageSpec;
 import com.bluenimble.apps.sdk.ui.effects.Effect;
-import com.bluenimble.apps.sdk.ui.utils.BindingHelper;
-
-import android.util.Log;
-import android.view.View;
+import com.bluenimble.apps.sdk.utils.BindingHelper;
 
 public class BindEffect implements Effect {
 
@@ -49,7 +43,7 @@ public class BindEffect implements Effect {
 		
 		String tag = this.getClass ().getSimpleName ();
 
-		Log.d (tag, "\t-> Process Effect [" + getClass ().getSimpleName () + "] Spec => " + spec);
+		application.logger ().debug (tag, "\t-> Process Effect [" + getClass ().getSimpleName () + "] Spec => " + spec);
 
 		String list = (String)spec;
 		
@@ -66,7 +60,7 @@ public class BindEffect implements Effect {
 		}
 		
 		for (String ui : uis) {
-			Log.d (tag, "\t-> Bind [" + ui + "] ");
+			application.logger ().debug (tag, "\t-> Bind [" + ui + "] ");
 			if (ui.equals (Lang.STAR)) {
 				continue;
 			}
@@ -77,12 +71,12 @@ public class BindEffect implements Effect {
 				layerId = ui.substring (0, indexOfDot);
 				componentId = ui.substring (indexOfDot + 1);
 			}
-			Log.d (tag, "\t-> Bind [" + layerId + " . " + componentId + "] ");
+			application.logger ().debug (tag, "\t-> Bind [" + layerId + " . " + componentId + "] ");
 			
 			LayerSpec layer = page.layer (layerId);
 			if (layer == null) {
 				// TODO log
-				Log.d (tag, "\t-> Layer [" + layerId + "] not found");
+				application.logger ().error (tag, "\t-> Layer [" + layerId + "] not found");
 				continue;
 			}
 			ComponentSpec component = null;
@@ -90,7 +84,7 @@ public class BindEffect implements Effect {
 				component = layer.component (componentId);
 				if (component == null) {
 					// TODO log
-					Log.d (tag, "\t-> Component [" + componentId + "] not found");
+					application.logger ().error (tag, "\t-> Component [" + componentId + "] not found");
 					continue;
 				}
 			}

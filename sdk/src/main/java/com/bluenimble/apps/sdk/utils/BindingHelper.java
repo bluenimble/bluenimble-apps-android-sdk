@@ -1,4 +1,4 @@
-package com.bluenimble.apps.sdk.ui.utils;
+package com.bluenimble.apps.sdk.utils;
 
 import android.util.Log;
 import android.view.View;
@@ -21,7 +21,7 @@ public class BindingHelper {
         Log.d (tag, "\t\t    -> Bind Component [" + component.type () + "/" + component.id () + "]");
         View view = resolver.component (layer.id (), component.id ());
         if (view == null) {
-            Log.d (BindEffect.class.getSimpleName (), "\t\t    -> ERR: View Not found [" + layer.id () + Lang.DOT + component.id () + "]");
+            application.logger ().debug (BindEffect.class.getSimpleName (), "\t\t    -> ERR: View Not found [" + layer.id () + Lang.DOT + component.id () + "]");
             return;
         }
         application.componentsRegistry ().lookup (component.type ()).bind (ComponentSpec.Binding.Set, view, application, component, useDh ? dh : AgnosticDataHolder.Instance);
@@ -33,7 +33,7 @@ public class BindingHelper {
             return;
         }
 
-        Log.d (tag, "\t\t  -> Bind Layer [" + layer.id () + "]");
+        application.logger ().debug (tag, "\t\t  -> Bind Layer [" + layer.id () + "]");
 
         final View fLayerView = layerView;
         ViewResolver vr = new ViewResolver () {
@@ -44,7 +44,7 @@ public class BindingHelper {
 
             @Override
             public View component (String layerId, String componentId) {
-                return fLayerView.findViewWithTag (componentId);
+                return fLayerView.findViewWithTag (layerId + Lang.DOT + componentId);
             }
         };
         for (int i = 0; i < layer.count (); i++) {
@@ -57,7 +57,7 @@ public class BindingHelper {
             return;
         }
 
-        Log.d (tag, "\t\t-> Bind Page ...");
+        application.logger ().debug (tag, "\t\t-> Bind Page ...");
 
         Iterator<String> layers = page.layers ();
         while (layers.hasNext ()) {

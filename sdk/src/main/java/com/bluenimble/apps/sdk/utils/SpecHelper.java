@@ -1,6 +1,5 @@
-package com.bluenimble.apps.sdk.ui.utils;
+package com.bluenimble.apps.sdk.utils;
 
-import android.util.Log;
 import android.view.View;
 
 import com.bluenimble.apps.sdk.Json;
@@ -9,19 +8,13 @@ import com.bluenimble.apps.sdk.Spec;
 import com.bluenimble.apps.sdk.application.UIActivity;
 import com.bluenimble.apps.sdk.controller.ActionProcessor;
 import com.bluenimble.apps.sdk.controller.DataHolder;
-import com.bluenimble.apps.sdk.controller.impls.AgnosticDataHolder;
 import com.bluenimble.apps.sdk.json.JsonObject;
 import com.bluenimble.apps.sdk.spec.ApplicationSpec;
-import com.bluenimble.apps.sdk.spec.ComponentSpec;
 import com.bluenimble.apps.sdk.spec.LayerSpec;
 import com.bluenimble.apps.sdk.spec.PageSpec;
-import com.bluenimble.apps.sdk.ui.components.impls.dropdown.DropDownFactory;
 import com.bluenimble.apps.sdk.ui.components.impls.generic.BreakFactory;
 import com.bluenimble.apps.sdk.ui.effects.impls.BindEffect;
-import com.bluenimble.apps.sdk.ui.renderer.ViewResolver;
 import com.bluenimble.apps.sdk.ui.renderer.impls.DefaultRenderer;
-
-import java.util.Iterator;
 
 public class SpecHelper {
 
@@ -43,23 +36,25 @@ public class SpecHelper {
     }
 
     public static LayerSpec template (ApplicationSpec application, String sTemplate) {
+        if (Lang.isNullOrEmpty (sTemplate)) {
+            return null;
+        }
+
         LayerSpec template = null;
 
-        if (!Lang.isNullOrEmpty (sTemplate)) {
-            PageSpec page  = null;
+        PageSpec page  = null;
 
-            String layerId = sTemplate;
+        String layerId = sTemplate;
 
-            int indexOfDot = sTemplate.indexOf (Lang.DOT);
-            if (indexOfDot > 0) {
-                page 	= application.page (sTemplate.substring (0, indexOfDot));
-                layerId = sTemplate.substring (indexOfDot + 1);
-            }
-            if (page == null) {
-                page = application.renderer ().current ();
-            }
-            template = page.layer (layerId);
+        int indexOfDot = sTemplate.indexOf (Lang.DOT);
+        if (indexOfDot > 0) {
+            page 	= application.page (sTemplate.substring (0, indexOfDot));
+            layerId = sTemplate.substring (indexOfDot + 1);
         }
+        if (page == null) {
+            page = application.renderer ().current ();
+        }
+        template = page.layer (layerId);
 
         return template;
     }

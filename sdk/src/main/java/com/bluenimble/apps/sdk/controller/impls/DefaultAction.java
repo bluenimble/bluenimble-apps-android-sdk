@@ -65,8 +65,8 @@ public class DefaultAction implements Action {
 			
 			// collect data even if there is no call. use-case: copy data between layers
 			collect (activity, application, page, scope, dh);
-			
-			Log.d (DefaultAction.class.getSimpleName (), "DataHolder \n" + dh.toString ());
+
+			application.logger ().debug (DefaultAction.class.getSimpleName (), "DataHolder \n" + dh.toString ());
 		}
 		
 		final DataHolder fdh = dh;
@@ -111,8 +111,8 @@ public class DefaultAction implements Action {
 	}
 	
 	void applyEffects (JsonObject effects, UIActivity activity, ApplicationSpec application, PageSpec page, DataHolder dh) {
-		
-		Log.d (DefaultAction.class.getSimpleName (), "Apply Effects \n" + effects);
+
+		application.logger ().debug (DefaultAction.class.getSimpleName (), "Apply Effects \n" + effects);
 
 		if (effects == null || effects.isEmpty ()) {
 			return;
@@ -121,13 +121,13 @@ public class DefaultAction implements Action {
 		Iterator<String> ids = effects.keys ();
 		while (ids.hasNext ()) {
 			String effectId = ids.next ();
-			Log.d (DefaultAction.class.getSimpleName (), "\tApply Effect [" + effectId + "]");
+			application.logger ().debug (DefaultAction.class.getSimpleName (), "\tApply Effect [" + effectId + "]");
 			Effect effect = application.effectsRegistry ().lockup (effectId);
 			if (effect == null) {
 				// TODO: log warning
 				continue;
 			}
-			Log.d (DefaultAction.class.getSimpleName (), "\t-> Effect found in registry [" + effect.getClass ().getSimpleName () + "]");
+			application.logger ().debug (DefaultAction.class.getSimpleName (), "\t-> Effect found in registry [" + effect.getClass ().getSimpleName () + "]");
 			effect.apply (activity, application, page, effects.get (effectId), dh);
 		}
 	}
@@ -190,15 +190,15 @@ public class DefaultAction implements Action {
 		if (layer == null || layer.count () == 0) {
 			return;
 		}
-		
-		Log.d (DefaultAction.class.getSimpleName (), "Collect Data from Scope [" + layer.id () + "]");
+
+		application.logger ().debug (DefaultAction.class.getSimpleName (), "Collect Data from Scope [" + layer.id () + "]");
 		
 		ComponentsRegistry registry = application.componentsRegistry ();
 		
 		for (int i = 0; i < layer.count (); i++) {
 			ComponentSpec c = layer.component (i);
-			
-			Log.d (DefaultAction.class.getSimpleName (), "Collect Data from   Cmp [" + c.id () + "]");
+
+			application.logger ().debug (DefaultAction.class.getSimpleName (), "Collect Data from   Cmp [" + c.id () + "]");
 
 			if (Lang.isNullOrEmpty (c.id ())) {
 				continue;
@@ -207,11 +207,11 @@ public class DefaultAction implements Action {
 			if (factory == null) {
 				continue;
 			}
-			
-			Log.d (DefaultAction.class.getSimpleName (), "\tFactory [" + factory.id () + "]");
+
+			application.logger ().debug (DefaultAction.class.getSimpleName (), "\tFactory [" + factory.id () + "]");
 			
 			View cView = activity.component (layer.id (), c.id ());
-			Log.d (DefaultAction.class.getSimpleName (), "\tView [" + cView + "]");
+			application.logger ().debug (DefaultAction.class.getSimpleName (), "\tView [" + cView + "]");
 			if (cView == null) {
 				continue;
 			}

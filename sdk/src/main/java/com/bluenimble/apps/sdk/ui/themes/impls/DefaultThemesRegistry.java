@@ -12,7 +12,7 @@ import com.bluenimble.apps.sdk.application.UIApplication;
 import com.bluenimble.apps.sdk.json.JsonObject;
 import com.bluenimble.apps.sdk.spec.ThemeSpec;
 import com.bluenimble.apps.sdk.ui.themes.ThemesRegistry;
-import com.bluenimble.apps.sdk.ui.utils.AppResources;
+import com.bluenimble.apps.sdk.utils.AppResources;
 
 import android.util.Log;
 
@@ -140,7 +140,6 @@ public class DefaultThemesRegistry implements ThemesRegistry {
 			if (!AppResources.exists (image)) {
 				Json.set (style, id + Lang.SLASH + UIApplication.Resources.Images + Lang.SLASH + resolution + Lang.SLASH + image);
 			}
-			// change font path
 		}
 
 	}
