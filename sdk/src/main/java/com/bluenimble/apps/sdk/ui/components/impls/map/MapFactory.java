@@ -12,9 +12,9 @@ import com.bluenimble.apps.sdk.spec.LayerSpec;
 import com.bluenimble.apps.sdk.ui.components.AbstractComponentFactory;
 import com.bluenimble.apps.sdk.ui.components.impls.listeners.EventListener;
 import com.bluenimble.apps.sdk.ui.components.impls.listeners.OnMapLongPressListenerImpl;
-import com.bluenimble.apps.sdk.ui.components.impls.listeners.OnMapMoveListenerImpl;
+import com.bluenimble.apps.sdk.ui.components.impls.listeners.OnMapDragListenerImpl;
 import com.bluenimble.apps.sdk.ui.components.impls.listeners.OnMapPressListenerImpl;
-import com.bluenimble.apps.sdk.ui.components.impls.listeners.OnMarkerMoveListenerImpl;
+import com.bluenimble.apps.sdk.ui.components.impls.listeners.OnMarkerDragListenerImpl;
 import com.bluenimble.apps.sdk.ui.components.impls.listeners.OnMarkerPressListenerImpl;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -42,17 +42,15 @@ public class MapFactory extends AbstractComponentFactory {
 		String Id 		= "id";
 		String Loc 		= "loc";
 		String Name 	= "name";
-		String Marker 	= "marker";
-		String Lat 		= "lat";
-		String Lng 		= "lng";
-		String Status 	= "status";
 	}
 
 	public MapFactory () {
 		supportEvent (EventListener.Event.move);
-		supportEvent (EventListener.Event.markerMove);
 		supportEvent (EventListener.Event.press);
 		supportEvent (EventListener.Event.longPress);
+		supportEvent (EventListener.Event.markerDrag);
+		supportEvent (EventListener.Event.markerStartDrag);
+		supportEvent (EventListener.Event.markerEndDrag);
 		supportEvent (EventListener.Event.markerPress);
 	}
 
@@ -175,7 +173,7 @@ public class MapFactory extends AbstractComponentFactory {
                 
 				break;
 			case Get:
-				Json.set ((JsonObject)dh.get (bindingSpec.source ()), view.getTag (), property);
+				Json.set ((JsonObject)dh.get (bindingSpec.source ()), mapFragment.getState (), property);
 				break;
 			default:
 				break;
@@ -209,10 +207,16 @@ public class MapFactory extends AbstractComponentFactory {
 				map.setOnMapLongClickListener (new OnMapLongPressListenerImpl (mapFragment, event, eventSpec));
 				break;
 			case move:
-				mapFragment.getTouchableView ().setOnMapUpdated (new OnMapMoveListenerImpl (mapFragment, event, eventSpec));
+				mapFragment.getTouchableView ().setOnMapUpdated (new OnMapDragListenerImpl (mapFragment, event, eventSpec));
 				break;
-			case markerMove:
-				map.setOnMarkerDragListener (new OnMarkerMoveListenerImpl (mapFragment, event, eventSpec));
+			case markerStartDrag:
+				map.setOnMarkerDragListener (new OnMarkerDragListenerImpl (mapFragment, event, eventSpec));
+				break;
+			case markerDrag:
+				map.setOnMarkerDragListener (new OnMarkerDragListenerImpl (mapFragment, event, eventSpec));
+				break;
+			case markerEndDrag:
+				map.setOnMarkerDragListener (new OnMarkerDragListenerImpl (mapFragment, event, eventSpec));
 				break;
 			case markerPress:
 				map.setOnMarkerClickListener (new OnMarkerPressListenerImpl (mapFragment, event, eventSpec));

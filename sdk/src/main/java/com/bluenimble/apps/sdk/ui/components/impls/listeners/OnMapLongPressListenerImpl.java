@@ -2,8 +2,7 @@ package com.bluenimble.apps.sdk.ui.components.impls.listeners;
 
 import com.bluenimble.apps.sdk.application.UIActivity;
 import com.bluenimble.apps.sdk.controller.ActionProcessor;
-import com.bluenimble.apps.sdk.controller.DataHolder;
-import com.bluenimble.apps.sdk.controller.impls.DefaultDataHolder;
+import com.bluenimble.apps.sdk.json.JsonArray;
 import com.bluenimble.apps.sdk.json.JsonObject;
 import com.bluenimble.apps.sdk.ui.components.impls.map.MapFactory;
 import com.bluenimble.apps.sdk.ui.components.impls.map.MapFragment;
@@ -25,16 +24,15 @@ public class OnMapLongPressListenerImpl extends EventListener implements GoogleM
 
 	@Override
 	public void onMapLongClick (LatLng latLng) {
-		DataHolder dh = null;
-		if (latLng != null) {
-			JsonObject loc 	= new JsonObject ();
-			loc.set (MapFactory.Record.Lat, latLng.latitude);
-			loc.set (MapFactory.Record.Lng, latLng.longitude);
+		JsonObject state 	= new JsonObject ();
+		JsonArray loc 		= new JsonArray ();
 
-			dh 	= new DefaultDataHolder ();
-			dh.set (MapFactory.Record.Loc, loc);
-		}
+		loc.add (latLng.latitude);
+		loc.add (latLng.longitude);
+		state.set (MapFactory.Record.Loc, loc);
 
-		ActionProcessor.process (event.name (), eventSpec, (UIActivity)mapFragment.getActivity (), mapFragment.getView (), dh);
+		mapFragment.setState (state);
+
+		ActionProcessor.process (event.name (), eventSpec, (UIActivity)mapFragment.getActivity (), mapFragment.getView (), null);
 	}
 }
