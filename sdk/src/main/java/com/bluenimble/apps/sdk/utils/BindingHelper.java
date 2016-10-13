@@ -5,7 +5,7 @@ import android.view.View;
 
 import com.bluenimble.apps.sdk.Lang;
 import com.bluenimble.apps.sdk.controller.DataHolder;
-import com.bluenimble.apps.sdk.controller.impls.AgnosticDataHolder;
+import com.bluenimble.apps.sdk.controller.impls.data.AgnosticDataHolder;
 import com.bluenimble.apps.sdk.spec.ApplicationSpec;
 import com.bluenimble.apps.sdk.spec.ComponentSpec;
 import com.bluenimble.apps.sdk.spec.LayerSpec;

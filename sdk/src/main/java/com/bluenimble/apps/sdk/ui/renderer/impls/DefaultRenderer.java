@@ -128,7 +128,7 @@ public class DefaultRenderer implements Renderer {
 
 			// back to new line
 			if (type.equals (ComponentsRegistry.Default.Break)) {
-				Log.d (DefaultRenderer.class.getSimpleName (), "\tCreate A Break - RelativeLayout");
+				application.logger ().debug (DefaultRenderer.class.getSimpleName (), "\tCreate A Break - RelativeLayout");
 				relativeLayout = new RelativeLayout (activity); 
 				relativeLayout.setLayoutParams (layoutparams);
 				layout.addView (relativeLayout);

@@ -1,13 +1,19 @@
-package com.bluenimble.apps.sdk.controller.impls;
+package com.bluenimble.apps.sdk.controller.impls.data;
 
 import com.bluenimble.apps.sdk.Json;
 import com.bluenimble.apps.sdk.Lang;
 import com.bluenimble.apps.sdk.controller.DataHolder;
+import com.bluenimble.apps.sdk.controller.StreamSource;
 import com.bluenimble.apps.sdk.json.JsonObject;
 import com.bluenimble.apps.sdk.spec.ApplicationSpec;
 import com.bluenimble.apps.sdk.spec.BindingSpec;
 
 import android.util.Log;
+
+import java.io.InputStream;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 public class DefaultDataHolder implements DataHolder  {
 
@@ -15,6 +21,8 @@ public class DefaultDataHolder implements DataHolder  {
 	
 	private Exception 	exception;
 	private JsonObject 	data;
+
+	private Map<String, StreamSource> streams;
 	
 	@Override
 	public Exception exception () {
@@ -35,12 +43,17 @@ public class DefaultDataHolder implements DataHolder  {
 			this.data = new JsonObject ();
 		}
 		if (property == null || property.length == 0) {
-			this.data.set (namespace, value);
+			if (value == null) {
+				this.data.remove (namespace);
+			} else {
+				this.data.set (namespace, value);
+			}
 			return this;
 		}
 		JsonObject nsData = Json.getObject (data, namespace);
 		if (nsData == null) {
 			nsData = new JsonObject ();
+			data.set (namespace, nsData);
 		}
 		Json.set (nsData, value, property);
 		return this;
@@ -84,7 +97,20 @@ public class DefaultDataHolder implements DataHolder  {
 		}
 		return get (bindingSpec.source (), property);
 	}
-	
+
+	@Override
+	public void stream (StreamSource stream) {
+		if (streams == null) {
+			streams = new HashMap<String, StreamSource> ();
+		}
+		streams.put (stream.id (), stream);
+	}
+
+	@Override
+	public StreamSource stream (String name) {
+		return streams.get (name);
+	}
+
 	@Override
 	public String toString () {
 		if (data == null) {
@@ -92,4 +118,28 @@ public class DefaultDataHolder implements DataHolder  {
 		}
 		return data.toString (2);
 	}
+
+	@Override
+	public void close () {
+		if (data == null && streams == null) {
+			return;
+		}
+		// clear data
+		if (data != null) {
+			data.clear ();
+			data = null;
+		}
+		// close/clear streams
+		if (streams != null && !streams.isEmpty ()) {
+			for (StreamSource ss : streams.values ()) {
+				ss.close ();
+			}
+		}
+
+		if (streams != null) {
+			streams.clear ();
+			streams = null;
+		}
+	}
+
 }

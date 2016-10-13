@@ -8,13 +8,13 @@ import java.util.Map;
 import com.bluenimble.apps.sdk.Json;
 import com.bluenimble.apps.sdk.Lang;
 import com.bluenimble.apps.sdk.Spec;
+import com.bluenimble.apps.sdk.controller.Action;
 import com.bluenimble.apps.sdk.json.JsonArray;
 import com.bluenimble.apps.sdk.json.JsonObject;
 import com.bluenimble.apps.sdk.spec.ApplicationSpec;
 import com.bluenimble.apps.sdk.spec.LayerSpec;
 import com.bluenimble.apps.sdk.spec.PageSpec;
 import com.bluenimble.apps.sdk.spec.StyleSpec;
-import com.bluenimble.apps.sdk.spec.ThemeSpec;
 import com.bluenimble.apps.sdk.ui.components.ComponentsRegistry;
 import com.bluenimble.apps.sdk.ui.themes.impls.JsonStyleSpec;
 
@@ -33,7 +33,7 @@ public class JsonPageSpec extends JsonEventAwareSpec implements PageSpec {
 	}
 	
 	public JsonPageSpec (String id, JsonObject spec, ApplicationSpec application) {
-		super (Json.getObject (spec, Spec.Events));
+		super (Json.getObject (spec, Spec.Events), Action.Scope.None);
 		
 		JsonObject oLayers = Json.getObject (spec, Spec.page.Layers);
 		

@@ -29,8 +29,8 @@ public class JsonComponentSpec extends JsonEventAwareSpec implements ComponentSp
 
 	protected LayerSpec 	layer;
 	
-	public JsonComponentSpec (JsonObject spec, ApplicationSpec application) {
-		super (Json.getObject (spec, Spec.Events));
+	public JsonComponentSpec (JsonObject spec, String layerId, ApplicationSpec application) {
+		super (Json.getObject (spec, Spec.Events), layerId);
 		this.spec = spec;
 		
 		id = Json.getString (spec, Spec.page.layer.component.Id);

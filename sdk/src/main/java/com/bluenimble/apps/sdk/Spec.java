@@ -28,7 +28,13 @@ public interface Spec {
 		String Name 	= "name";
 		String Theme 	= "theme";
 		String Layers 	= "layers";
-		
+
+		interface event {
+			String Scope 	= "scope";
+			String Action 	= "action";
+			String Data 	= "data";
+		}
+
 		interface layer {
 			
 			String Type 		= "type";
@@ -52,10 +58,6 @@ public interface Spec {
 					String Get 		= "get";
 					String Source	= "source";
 					String Property	= "property";
-				}
-				interface event {
-					String Scope 	= "scope";
-					String Action 	= "action";
 				}
 			}
 			

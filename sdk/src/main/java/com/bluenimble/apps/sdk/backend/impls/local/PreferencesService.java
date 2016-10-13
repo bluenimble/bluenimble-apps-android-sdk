@@ -1,10 +1,10 @@
-package com.bluenimble.apps.sdk.backend.impls;
+package com.bluenimble.apps.sdk.backend.impls.local;
 
 import com.bluenimble.apps.sdk.backend.Service;
 import com.bluenimble.apps.sdk.controller.DataHolder;
 import com.bluenimble.apps.sdk.json.JsonObject;
 
-public class LocalService implements Service {
+public class PreferencesService implements Service {
 
 	private static final long serialVersionUID = 2077148821012512850L;
 

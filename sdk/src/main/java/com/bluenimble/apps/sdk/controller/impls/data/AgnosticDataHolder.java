@@ -1,6 +1,7 @@
-package com.bluenimble.apps.sdk.controller.impls;
+package com.bluenimble.apps.sdk.controller.impls.data;
 
 import com.bluenimble.apps.sdk.controller.DataHolder;
+import com.bluenimble.apps.sdk.controller.StreamSource;
 import com.bluenimble.apps.sdk.spec.ApplicationSpec;
 import com.bluenimble.apps.sdk.spec.BindingSpec;
 
@@ -17,6 +18,15 @@ public class AgnosticDataHolder implements DataHolder  {
 
 	@Override
 	public Object get (String namespace, String... property) {
+		return null;
+	}
+
+	@Override
+	public void stream (StreamSource stream) {
+	}
+
+	@Override
+	public StreamSource stream (String name) {
 		return null;
 	}
 
@@ -38,5 +48,9 @@ public class AgnosticDataHolder implements DataHolder  {
 	public Object valueOf (ApplicationSpec applicationSpec, BindingSpec bindingSpec) {
 		return null;
 	}
-	
+
+	@Override
+	public void close() {
+	}
+
 }

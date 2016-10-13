@@ -35,7 +35,7 @@ public abstract class AbstractApplicationSpec extends JsonEventAwareSpec impleme
 
 	protected SdkVersion 			version;
 	
-	protected ComponentsRegistry 	componentsRegistry 	= new DefaultComponentsRegistry ();
+	protected ComponentsRegistry 	componentsRegistry 	= new DefaultComponentsRegistry (this);
 	protected EffectsRegistry 		effectsRegistry		= new DefaultEffectsRegistry	();
 	
 	protected Controller 			controller			= new DefaultController 		();

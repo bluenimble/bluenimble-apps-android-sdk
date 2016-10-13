@@ -1,4 +1,4 @@
-package com.bluenimble.apps.sdk.http.utils;
+package com.bluenimble.apps.sdk.backend.impls.remote;
 
 public interface ContentTypes {
 	

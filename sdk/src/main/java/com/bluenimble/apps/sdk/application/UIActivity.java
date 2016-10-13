@@ -8,21 +8,16 @@ import com.bluenimble.apps.sdk.spec.PageSpec;
 import com.bluenimble.apps.sdk.ui.renderer.ViewResolver;
 import com.bluenimble.apps.sdk.ui.renderer.impls.DefaultRenderer.LifeCycleEvent;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 import android.view.Window;
-import android.view.WindowManager;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
 
 public class UIActivity extends AppCompatActivity implements ViewResolver {
 	

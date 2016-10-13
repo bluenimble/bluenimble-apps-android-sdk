@@ -1,4 +1,4 @@
-package com.bluenimble.apps.sdk.controller.impls;
+package com.bluenimble.apps.sdk.controller.impls.actions;
 
 import java.util.Iterator;
 
@@ -6,11 +6,9 @@ import com.bluenimble.apps.sdk.Json;
 import com.bluenimble.apps.sdk.Lang;
 import com.bluenimble.apps.sdk.Spec;
 import com.bluenimble.apps.sdk.application.UIActivity;
-import com.bluenimble.apps.sdk.backend.Backend;
-import com.bluenimble.apps.sdk.backend.DataVisitor;
-import com.bluenimble.apps.sdk.backend.Service;
 import com.bluenimble.apps.sdk.controller.Action;
 import com.bluenimble.apps.sdk.controller.DataHolder;
+import com.bluenimble.apps.sdk.controller.impls.data.DefaultDataHolder;
 import com.bluenimble.apps.sdk.json.JsonObject;
 import com.bluenimble.apps.sdk.spec.ApplicationSpec;
 import com.bluenimble.apps.sdk.spec.ComponentSpec;
@@ -20,10 +18,10 @@ import com.bluenimble.apps.sdk.spec.PageSpec;
 import com.bluenimble.apps.sdk.ui.components.ComponentFactory;
 import com.bluenimble.apps.sdk.ui.components.ComponentsRegistry;
 import com.bluenimble.apps.sdk.ui.effects.Effect;
+import com.bluenimble.apps.sdk.utils.BackendHelper;
 
 import android.location.Location;
 import android.os.AsyncTask;
-import android.util.Log;
 import android.view.View;
 
 public class DefaultAction implements Action {
@@ -31,18 +29,6 @@ public class DefaultAction implements Action {
 	private static final long serialVersionUID = 1572206118405797117L;
 	
 	private static final String Default = "default";
-	
-	interface Scope {
-		String Page = "page";
-	}
-	
-	interface Device {
-		String Geo 			= "geo";
-			String Latitude 	= "lat";
-			String Longitude 	= "long";
-		String Ids 			= "ids";
-			String Provider = "provider";
-	}
 	
 	@Override
 	public String id () {
@@ -56,30 +42,38 @@ public class DefaultAction implements Action {
 		
 		final PageSpec 		page 		= application.renderer ().current ();
 		
-		String [] scope = Lang.split (spec.getString (Spec.page.layer.component.event.Scope), Lang.COMMA, true);
+		String [] scope = Lang.split (spec.getString (Spec.page.event.Scope), Lang.COMMA, true);
 		
 		if (dh == null) {
-			dh = new DefaultDataHolder ();
+			dh = new DefaultDataHolder();
 			dh.set (DataHolder.Namespace.Device, 	getDevice (activity));
 			dh.set (DataHolder.Namespace.App, 		new JsonObject ());
-			
-			// collect data even if there is no call. use-case: copy data between layers
-			collect (activity, application, page, scope, dh);
-
-			application.logger ().debug (DefaultAction.class.getSimpleName (), "DataHolder \n" + dh.toString ());
 		}
-		
-		final DataHolder fdh = dh;
-		
+
+		// collect data even if there is no call. use-case: copy data between layers
+		collect (activity, application, page, scope, dh);
+
+		// add event declared data
+		JsonObject o = Json.getObject (spec, Spec.page.event.Data);
+		if (Json.isNullOrEmpty (o)) {
+			dh.set (Spec.page.event.class.getSimpleName (), Json.resolve (o, dh));
+		}
+
+		application.logger ().debug (DefaultAction.class.getSimpleName (), "DataHolder \n" + dh.toString ());
+
 		applyEffects (Json.getObject (spec, Spec.Action.OnStart), activity, application, page, dh);
 
 		final JsonObject oCall = Json.getObject (spec, Spec.Action.call.class.getSimpleName ());
 		final String sServices = Json.getString (oCall, Spec.Action.call.Services);
 		
 		if (oCall == null || oCall.isEmpty () || Lang.isNullOrEmpty (sServices)) {
+			// close result
+			dh.close ();// close result
 			return;
 		}
-		
+
+		final DataHolder fdh = dh;
+
 		new AsyncTask<Void, Void, DataHolder> () {
 			@Override
 			protected DataHolder doInBackground (Void... params) {
@@ -87,7 +81,7 @@ public class DefaultAction implements Action {
 				String [] services = Lang.split (sServices, Lang.COMMA, true);
 				try {
 					for (String s : services) {
-						callService (s, fdh, application, page);
+						BackendHelper.callService (s, fdh, application);
 					}
 				} catch (Exception ex) {
 					fdh.exception (ex);
@@ -105,6 +99,9 @@ public class DefaultAction implements Action {
 				applyEffects (Json.getObject (spec, (result.exception () != null) ? Spec.Action.call.OnError : Spec.Action.call.OnSuccess), activity, application, page, fdh);
 				// onFinish
 				applyEffects (Json.getObject (spec, Spec.Action.call.OnFinish), activity, application, page, result);
+
+				// close result
+				result.close ();
 			}
 		}.execute ();
 		
@@ -132,47 +129,15 @@ public class DefaultAction implements Action {
 		}
 	}
 
-	private void callService (String serviceId, DataHolder dh, ApplicationSpec application, PageSpec page) throws Exception {
-		
-		Backend backend = application.backend ();
-		if (backend == null) {
-			throw new Exception ("no backend attached to this application");
-		}
-		JsonObject spec = null;
-		
-		Service service = backend.lockup (serviceId);
-		if (service == null) {
-			spec = backend.getSpec (serviceId);
-			String type = Json.getString (spec, Spec.Service.Type, Service.Type.Remote);
-			service = application.backend ().lockup (type);
-		}
-		if (service == null) {
-			throw new Exception ("service " + serviceId + " not defined in backend");
-		}	
-		
-		String visitorId = Json.getString (spec, Spec.Service.Visitor);
-		DataVisitor visitor = null;
-		
-		if (!Lang.isNullOrEmpty (visitorId)) {
-			visitor = backend.getVisitor (visitorId);
-		}
-		if (visitor != null) {
-			visitor.onRequest (dh);
-		}
-		
-		service.execute (serviceId, spec, dh);
-		
-		if (visitor != null) {
-			visitor.onResponse (dh);
-		}
-		
-	}
-
 	private void collect (UIActivity activity, ApplicationSpec application, PageSpec page, String [] scope, DataHolder dh) {
 		if (scope == null || scope.length == 0) {
 			return;
 		}
-		
+
+		if (scope.length == 1 && Scope.None.equals (scope [0])) {
+			return;
+		}
+
 		if (scope.length == 1 && Scope.Page.equals (scope [0])) {
 			Iterator<String> layers = page.layers ();
 			while (layers.hasNext ()) {

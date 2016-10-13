@@ -8,11 +8,11 @@ import com.bluenimble.apps.sdk.json.JsonObject;
 public interface Service extends Serializable {
 	
 	interface Type {
-		String Local 	= "local";
+		String Local 	= "prefs";
 		String Remote 	= "remote";
 		String Storage 	= "storage";
 	}
 	
-	void execute(String id, JsonObject spec, DataHolder dh) throws Exception;
+	void execute	(String id, JsonObject spec, DataHolder dh) throws Exception;
 	
 }

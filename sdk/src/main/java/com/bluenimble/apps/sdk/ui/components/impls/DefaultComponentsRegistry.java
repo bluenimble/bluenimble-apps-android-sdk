@@ -3,6 +3,7 @@ package com.bluenimble.apps.sdk.ui.components.impls;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.bluenimble.apps.sdk.spec.ApplicationSpec;
 import com.bluenimble.apps.sdk.ui.components.ComponentFactory;
 import com.bluenimble.apps.sdk.ui.components.ComponentsRegistry;
 import com.bluenimble.apps.sdk.ui.components.impls.button.ButtonFactory;
@@ -28,13 +29,13 @@ public class DefaultComponentsRegistry implements ComponentsRegistry {
 
 	protected Map<String, ComponentFactory> factories = new HashMap<String, ComponentFactory> ();
 	
-	public DefaultComponentsRegistry () {
+	public DefaultComponentsRegistry (ApplicationSpec application) {
 		register (new TextFactory ());
 		register (new CheckboxFactory ());
 		register (new InputTextFactory ());
 		register (new ButtonFactory ());
 		register (new RadioGroupFactory ());
-		register (new ImageFactory ());
+		register (new ImageFactory (application));
 
 		register (new BreakFactory ());
 		register (new LayerFactory ());

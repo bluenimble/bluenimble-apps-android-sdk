@@ -2,7 +2,7 @@ package com.bluenimble.apps.sdk.ui.components.impls.dropdown;
 
 import com.bluenimble.apps.sdk.application.UIActivity;
 import com.bluenimble.apps.sdk.controller.DataHolder;
-import com.bluenimble.apps.sdk.controller.impls.DefaultDataHolder;
+import com.bluenimble.apps.sdk.controller.impls.data.DefaultDataHolder;
 import com.bluenimble.apps.sdk.json.JsonArray;
 import com.bluenimble.apps.sdk.json.JsonObject;
 import com.bluenimble.apps.sdk.spec.ApplicationSpec;

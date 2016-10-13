@@ -14,6 +14,8 @@ import com.bluenimble.apps.sdk.ui.components.impls.listeners.EventListener;
 import com.bluenimble.apps.sdk.ui.components.impls.listeners.OnLongPressListenerImpl;
 import com.bluenimble.apps.sdk.ui.components.impls.listeners.OnPressListenerImpl;
 import com.bluenimble.apps.sdk.utils.AppResources;
+import com.bluenimble.apps.sdk.utils.BackendHelper;
+import com.bluenimble.apps.sdk.utils.ImageDownloader;
 import com.squareup.picasso.Picasso;
 
 import android.view.View;
@@ -31,12 +33,18 @@ public class ImageFactory extends AbstractComponentFactory {
 	private static final String Assets = "file:///android_asset/";
 	
 	interface Protocol {
+		String Service 	= "service://";
 		String File 	= "file://";
 		String Http 	= "http://";
 		String Https 	= "https://";
 	}
 
-	public ImageFactory () {
+	public ImageFactory (ApplicationSpec application) {
+
+		// create the downloader
+		ImageDownloader.create (application);
+
+		// register supported events
 		supportEvent (EventListener.Event.press);
 		supportEvent (EventListener.Event.longPress);
 	}
@@ -77,8 +85,11 @@ public class ImageFactory extends AbstractComponentFactory {
 					return;
 				}
 				String url = value.toString ().trim ();
-				
-				if (url.startsWith (Protocol.File) || url.startsWith (Protocol.Http) || url.startsWith (Protocol.Https)) {
+
+				if (url.startsWith (Protocol.Service)) {
+					// TODO with custom ImageDownloader
+					Picasso.with (view.getContext ()).load (url).into (image);
+				} else if (url.startsWith (Protocol.File) || url.startsWith (Protocol.Http) || url.startsWith (Protocol.Https)) {
 					Picasso.with (view.getContext ()).load (url).into (image);
 				} else {
 					if (AppResources.exists (url)) {

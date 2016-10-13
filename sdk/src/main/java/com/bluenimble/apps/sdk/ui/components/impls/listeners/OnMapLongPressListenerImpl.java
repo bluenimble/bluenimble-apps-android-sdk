@@ -29,6 +29,7 @@ public class OnMapLongPressListenerImpl extends EventListener implements GoogleM
 
 		loc.add (latLng.latitude);
 		loc.add (latLng.longitude);
+
 		state.set (MapFactory.Record.Loc, loc);
 
 		mapFragment.setState (state);

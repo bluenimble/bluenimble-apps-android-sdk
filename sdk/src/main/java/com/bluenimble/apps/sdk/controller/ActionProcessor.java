@@ -8,7 +8,6 @@ import com.bluenimble.apps.sdk.Spec;
 import com.bluenimble.apps.sdk.application.UIActivity;
 import com.bluenimble.apps.sdk.json.JsonObject;
 
-import android.util.Log;
 import android.view.View;
 
 public class ActionProcessor implements Serializable {
@@ -16,12 +15,12 @@ public class ActionProcessor implements Serializable {
 	private static final long serialVersionUID = 6926039907807796916L;
 	
 	public static void process (String eventName, JsonObject eventSpec, UIActivity activity, View view, DataHolder dh) {
-		
-		Log.d (ActionProcessor.class.getSimpleName (), "Process Event [" + eventName + "] with\n" + eventSpec.toString (2));
+
+		activity.getSpec ().logger ().debug (ActionProcessor.class.getSimpleName (), "Process Event [" + eventName + "] with\n" + eventSpec.toString (2));
 		
 		Action action = null; 
 		
-		String actionId = Json.getString (eventSpec, Spec.page.layer.component.event.Action);
+		String actionId = Json.getString (eventSpec, Spec.page.event.Action);
 		
 		Controller controller = activity.getSpec ().controller ();
 		

@@ -3,23 +3,15 @@ package com.bluenimble.apps.sdk.ui.components.impls.generic;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 
-import com.bluenimble.apps.sdk.Json;
 import com.bluenimble.apps.sdk.Lang;
 import com.bluenimble.apps.sdk.application.UIActivity;
 import com.bluenimble.apps.sdk.application.UIApplication;
 import com.bluenimble.apps.sdk.controller.DataHolder;
-import com.bluenimble.apps.sdk.controller.impls.AgnosticDataHolder;
-import com.bluenimble.apps.sdk.json.JsonObject;
 import com.bluenimble.apps.sdk.spec.ApplicationSpec;
-import com.bluenimble.apps.sdk.spec.BindingSpec;
 import com.bluenimble.apps.sdk.spec.ComponentSpec;
 import com.bluenimble.apps.sdk.spec.LayerSpec;
 import com.bluenimble.apps.sdk.ui.components.AbstractComponentFactory;
-import com.bluenimble.apps.sdk.ui.components.impls.listeners.EventListener;
-import com.bluenimble.apps.sdk.ui.components.impls.listeners.OnLongPressListenerImpl;
-import com.bluenimble.apps.sdk.ui.components.impls.listeners.OnPressListenerImpl;
 import com.bluenimble.apps.sdk.ui.effects.impls.BindEffect;
 
 public class LayerFactory extends AbstractComponentFactory {

@@ -6,6 +6,7 @@ import com.bluenimble.apps.sdk.Json;
 import com.bluenimble.apps.sdk.Lang;
 import com.bluenimble.apps.sdk.Spec;
 import com.bluenimble.apps.sdk.application.UIActivity;
+import com.bluenimble.apps.sdk.controller.Action;
 import com.bluenimble.apps.sdk.controller.ActionProcessor;
 import com.bluenimble.apps.sdk.controller.DataHolder;
 import com.bluenimble.apps.sdk.json.JsonObject;
@@ -31,6 +32,7 @@ public class SpecHelper {
 
     public static JsonObject newCreateEvent (LayerSpec layer) {
         return (JsonObject)new JsonObject ()
+                .set (Spec.Action.Scope, Action.Scope.None)
                 .set (Spec.Action.OnStart, new JsonObject ()
                         .set (BindEffect.Id, layer.id ()));
     }
