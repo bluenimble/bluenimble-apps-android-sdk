@@ -11,11 +11,6 @@
 					"type": "button", "binding": { "set": "action" },
 					"events": {
 						"press": {
-							"scope": "main",
-							"data": {
-								"a": "a",
-								"b": "b"
-							},
 							"onStart": {
 								"render": "message"
 							}

@@ -16,6 +16,7 @@ import com.bluenimble.apps.sdk.spec.PageSpec;
 import com.bluenimble.apps.sdk.spec.StyleSpec;
 import com.bluenimble.apps.sdk.spec.StylishSpec;
 import com.bluenimble.apps.sdk.spec.ThemeSpec;
+import com.bluenimble.apps.sdk.spec.ViewSize;
 import com.bluenimble.apps.sdk.ui.components.impls.generic.BreakFactory;
 
 import android.graphics.Color;
@@ -49,6 +50,7 @@ public class JsonStyleSpec implements StyleSpec {
 	}
 	
 	private static final String 	Zero 				= "0";
+	private static final String 	Unknown 			= "?";
 
 	private static final int 		UndefinedInteger 	= Integer.MAX_VALUE;
 	
@@ -180,11 +182,9 @@ public class JsonStyleSpec implements StyleSpec {
 			if (style == null) {
 				continue;
 			}
-			if (appTheme != null) {
-				JsonObject sAppStyle = appTheme.style (style);
-				if (sAppStyle != null) {
-					styles.add (sAppStyle);
-				}
+			JsonObject sAppStyle = appTheme.style (style);
+			if (sAppStyle != null) {
+				styles.add (sAppStyle);
 			}
 		}
 		style = merge (styles);
@@ -207,34 +207,44 @@ public class JsonStyleSpec implements StyleSpec {
 		
 		return merged.shrink ();
 	}
-	
+
 	@Override
-	public void apply (StylishSpec stylish, final View view, final ViewGroup group) {
+	public Object get (String name) {
+		if (Json.isNullOrEmpty (style)) {
+			return null;
+		}
+		return style.get (name);
+	}
+
+	@Override
+	public void apply (StylishSpec stylish, final View view, final ViewGroup parent) {
 		
-		Log.d (JsonStyleSpec.class.getSimpleName (), "Json of > " + view.getClass ().getSimpleName () + Lang.ENDLN + String.valueOf (style));
+		Log.d (JsonStyleSpec.class.getSimpleName (), "Style of > " + view.getClass ().getSimpleName () + Lang.SLASH + stylish.id () + Lang.ENDLN + String.valueOf (style));
 		
 		if (Json.isNullOrEmpty (style) || stylish == null || view == null) {
 			return;
 		}
-		
-		float [] screenSize = UIApplication.getScreenSize ();
-		Log.d (JsonStyleSpec.class.getSimpleName (), "\tScreen Size > width:" + screenSize [0] + Lang.COMMA + Lang.SPACE + "height: " + screenSize [1]);
+
+		UIApplication application = (UIApplication)((UIActivity)view.getContext ()).getApplication ();
+
+		ViewSize maxSize = application.getScreenSize ();
+
+		Log.d (JsonStyleSpec.class.getSimpleName (), "\t Max Size > " + maxSize);
 		
 		boolean isPage 		= isPage 	(stylish);
 		boolean isLayer 	= isLayer 	(stylish);
 		boolean isBreak 	= isBreak 	(stylish);
 		
-		Log.d (JsonStyleSpec.class.getSimpleName (), "Styling View " + Lang.ARRAY_OPEN + (group == null ? "Activity" : group.getId ()) + Lang.SLASH + view.getId () + Lang.COLON + stylish.getClass ().getSimpleName () + Lang.ARRAY_CLOSE);
-		
+		Log.d (JsonStyleSpec.class.getSimpleName (), "Styling View " + Lang.ARRAY_OPEN + (parent == null ? "Activity" : parent.getId ()) + Lang.SLASH + view.getId () + Lang.COLON + stylish.getClass ().getSimpleName () + Lang.ARRAY_CLOSE);
+
 		// set width & height / default to width->match , height (layout->wrap, all->match)
 		if (!isPage) {
 			ViewGroup.LayoutParams params = view.getLayoutParams ();
 			JsonObject oSize = Json.getObject (style, Group.Size);
-			
-			int width = (int)parseFloat (oSize, Size.Width, isLayer ? (int)screenSize [0] : group.getWidth (), UndefinedInteger);
+
+			int width = (int)parseFloat (oSize, Size.Width, (int)maxSize.getWidth (), UndefinedInteger);
 			if (width < 0) {
-				int groupWidth = group.getLayoutParams ().width;
-				width = (groupWidth > 0 ? groupWidth : group.getWidth ()) + width;
+				width = (int)maxSize.getWidth () + width;
 			}
 			
 			if (width == UndefinedInteger) {
@@ -246,10 +256,9 @@ public class JsonStyleSpec implements StyleSpec {
 			}
 			Log.d (JsonStyleSpec.class.getSimpleName (), "\t-> width " + Lang.ARRAY_OPEN + width + Lang.ARRAY_CLOSE);
 			
-			int height = (int)parseFloat (oSize, Size.Height, isLayer ? (int)screenSize [1] : group.getHeight (), UndefinedInteger);
+			int height = (int)parseFloat (oSize, Size.Height, (int)maxSize.getHeight (), UndefinedInteger);
 			if (height < 0) {
-				int groupHeight = group.getLayoutParams ().height;
-				height = (groupHeight > 0 ? groupHeight : group.getHeight ()) + height;
+				height = (int)maxSize.getHeight () + height;
 			}
 
 			if (height == UndefinedInteger) {
@@ -260,15 +269,15 @@ public class JsonStyleSpec implements StyleSpec {
 				}
 			}
 			Log.d (JsonStyleSpec.class.getSimpleName (), "\t-> height " + Lang.ARRAY_OPEN + height + Lang.ARRAY_CLOSE);
-			
+
 			if (params == null) {
 				if (isLayer) {
 					params = new LinearLayout.LayoutParams (width, height);
 				} else {
 					params = new RelativeLayout.LayoutParams (width, height);
 				}
-				if (params instanceof RelativeLayout.LayoutParams && !isBreak && group.getChildCount () > 0) {
-					int sibling = group.getChildAt (group.getChildCount () - 1).getId ();
+				if (params instanceof RelativeLayout.LayoutParams && !isBreak && parent.getChildCount () > 0) {
+					int sibling = parent.getChildAt (parent.getChildCount () - 1).getId ();
 					Log.d (JsonStyleSpec.class.getSimpleName (), "\t-> addRule RIGHT_OF sibling " + Lang.ARRAY_OPEN + sibling + Lang.ARRAY_CLOSE);
 					((RelativeLayout.LayoutParams)params).addRule (RelativeLayout.RIGHT_OF, sibling);
 				}
@@ -282,12 +291,10 @@ public class JsonStyleSpec implements StyleSpec {
 			applyAlign (params);
 			
 			// apply margins
-			applyMargin (params, isLayer, group);
-			
+			applyMargin (params, isLayer, maxSize);
+
 		}
 
-		UIApplication application = (UIApplication)((UIActivity)view.getContext ()).getApplication ();
-		
 		// apply font
 		applyFont (view, application);
 		
@@ -320,17 +327,50 @@ public class JsonStyleSpec implements StyleSpec {
 		return stylish instanceof PageSpec;
 	}
 	
-	private void applyMargin (ViewGroup.LayoutParams params, boolean isLayout, ViewGroup group) {
+	private void applyMargin (ViewGroup.LayoutParams params, boolean isLayout, ViewSize maxSize) {
 		String margin = Json.getString (style, Group.Margin);
 		if (Lang.isNullOrEmpty (margin)) {
 			return;
 		}
-		float [] bounds = bounds (margin, group.getLayoutParams ().width, group.getLayoutParams ().height);
-		
-		((RelativeLayout.LayoutParams)params).topMargin 	= (int)bounds [0];
-		((RelativeLayout.LayoutParams)params).rightMargin 	= (int)bounds [1];
-		((RelativeLayout.LayoutParams)params).bottomMargin 	= (int)bounds [2];
-		((RelativeLayout.LayoutParams)params).leftMargin 	= (int)bounds [3];
+		float [] bounds = bounds (margin, maxSize.getWidth (), maxSize.getHeight (), UndefinedInteger);
+
+		if (params instanceof RelativeLayout.LayoutParams) {
+			if (bounds [0] != UndefinedInteger) {
+				Log.d (JsonStyleSpec.class.getSimpleName (), "\t-> apply topMargin " + Lang.ARRAY_OPEN + bounds [0] + Lang.ARRAY_CLOSE);
+				((RelativeLayout.LayoutParams)params).topMargin 	= (int)bounds [0];
+			}
+			if (bounds [1] != UndefinedInteger) {
+				Log.d (JsonStyleSpec.class.getSimpleName (), "\t-> apply rightMargin " + Lang.ARRAY_OPEN + bounds [1] + Lang.ARRAY_CLOSE);
+				((RelativeLayout.LayoutParams)params).rightMargin 	= (int)bounds [1];
+			}
+			if (bounds [2] != UndefinedInteger) {
+				Log.d (JsonStyleSpec.class.getSimpleName (), "\t-> apply bottomMargin " + Lang.ARRAY_OPEN + bounds [2] + Lang.ARRAY_CLOSE);
+				((RelativeLayout.LayoutParams)params).bottomMargin 	= (int)bounds [2];
+				// if sat, add allign bottom
+				((RelativeLayout.LayoutParams)params).addRule (RelativeLayout.ALIGN_PARENT_BOTTOM);
+			}
+			if (bounds [3] != UndefinedInteger) {
+				Log.d (JsonStyleSpec.class.getSimpleName (), "\t-> apply leftMargin " + Lang.ARRAY_OPEN + bounds [3] + Lang.ARRAY_CLOSE);
+				((RelativeLayout.LayoutParams)params).leftMargin 	= (int)bounds [3];
+			}
+		} else if (params instanceof LinearLayout.LayoutParams) {
+			if (bounds [0] != UndefinedInteger) {
+				Log.d (JsonStyleSpec.class.getSimpleName (), "\t-> apply topMargin " + Lang.ARRAY_OPEN + bounds [0] + Lang.ARRAY_CLOSE);
+				((LinearLayout.LayoutParams)params).topMargin 		= (int)bounds [0];
+			}
+			if (bounds [1] != UndefinedInteger) {
+				Log.d (JsonStyleSpec.class.getSimpleName (), "\t-> apply rightMargin " + Lang.ARRAY_OPEN + bounds [1] + Lang.ARRAY_CLOSE);
+				((LinearLayout.LayoutParams)params).rightMargin 	= (int)bounds [1];
+			}
+			if (bounds [2] != UndefinedInteger) {
+				Log.d (JsonStyleSpec.class.getSimpleName (), "\t-> apply bottomMargin " + Lang.ARRAY_OPEN + bounds [2] + Lang.ARRAY_CLOSE);
+				((LinearLayout.LayoutParams)params).bottomMargin 	= (int)bounds [2];
+			}
+			if (bounds [3] != UndefinedInteger) {
+				Log.d (JsonStyleSpec.class.getSimpleName (), "\t-> apply leftMargin " + Lang.ARRAY_OPEN + bounds [3] + Lang.ARRAY_CLOSE);
+				((LinearLayout.LayoutParams)params).leftMargin 		= (int)bounds [3];
+			}
+		}
 	}
 
 	private void applyAlign (ViewGroup.LayoutParams params) {
@@ -469,7 +509,7 @@ public class JsonStyleSpec implements StyleSpec {
 		float [] insets = null;
 		String sInsets = Json.getString (oBackground, Background.Insets);
 		if (Lang.isNullOrEmpty (sInsets)) {
-			insets = bounds (sInsets, view.getWidth (), view.getHeight ());
+			insets = bounds (sInsets, view.getWidth (), view.getHeight (), 0);
 		}
 
 		// shadow
@@ -557,7 +597,7 @@ public class JsonStyleSpec implements StyleSpec {
 		LayerDrawable layer = new LayerDrawable (new Drawable [] { shadow, gradient });
 		
 		// set shadow and background insets
-		float [] bounds = bounds (Json.getString (oShadow, Shadow.Tick, String.valueOf (DefaultShadowTick)), component.getWidth (), component.getHeight ());
+		float [] bounds = bounds (Json.getString (oShadow, Shadow.Tick, String.valueOf (DefaultShadowTick)), component.getWidth (), component.getHeight (), 0);
 		
 		int [] bgInsets = new int [4];
 		int [] shInsets = new int [4];
@@ -581,7 +621,7 @@ public class JsonStyleSpec implements StyleSpec {
 		return layer;
 	}
 
-	private void applyPadding (View component) {
+	private void applyPadding (View view) {
 		String padding = Json.getString (style, Group.Padding);
 		if (Lang.isNullOrEmpty (padding)) {
 			return;
@@ -589,23 +629,23 @@ public class JsonStyleSpec implements StyleSpec {
 		
 		Log.d (JsonStyleSpec.class.getSimpleName (), "\t-> Apply padding " + Lang.ARRAY_OPEN + padding + Lang.ARRAY_CLOSE);
 		
-		float [] bounds = bounds (padding, component.getLayoutParams ().width, component.getLayoutParams ().height);
+		float [] bounds = bounds (padding, view.getLayoutParams ().width, view.getLayoutParams ().height, 0);
 		
 		Log.d (JsonStyleSpec.class.getSimpleName (), "\t->               " + Lang.ARRAY_OPEN + (int)bounds [3] + Lang.COMMA + (int)bounds [0] + Lang.COMMA + (int)bounds [1] + Lang.COMMA + (int)bounds [2] + Lang.ARRAY_CLOSE);
-		
-		component.setPadding ((int)bounds [3], (int)bounds [0], (int)bounds [1], (int)bounds [2]);
+
+		view.setPadding ((int)bounds [3], (int)bounds [0], (int)bounds [1], (int)bounds [2]);
 	}
 	
 	private void applyVisible (View component) {
 		component.setVisibility (Json.getBoolean (style, Visible, true) ?  View.VISIBLE : View.GONE);
 	}
 
-	private void applyRadius (View component, GradientDrawable gradient, String radius) {
+	private void applyRadius (View view, GradientDrawable gradient, String radius) {
 		if (Lang.isNullOrEmpty (radius)) {
 			return;
 		}
 		
-		float [] bounds = bounds (radius, component.getLayoutParams ().width, component.getLayoutParams ().height);
+		float [] bounds = bounds (radius, view.getLayoutParams ().width, view.getLayoutParams ().height, 0);
 		
 		gradient.setCornerRadii (new float [] {
 			bounds [0], bounds [0],
@@ -619,8 +659,12 @@ public class JsonStyleSpec implements StyleSpec {
 		return parseFloat (Json.getString (source, name), max, defaultValue);
 	}
 	
-	private float parseFloat (String sValue, int max, float defaultValue) {
+	private float parseFloat (String sValue, float max, float defaultValue) {
 		if (Lang.isNullOrEmpty (sValue)) {
+			return defaultValue;
+		}
+
+		if (Unknown.equals (sValue)) {
 			return defaultValue;
 		}
 		
@@ -628,6 +672,15 @@ public class JsonStyleSpec implements StyleSpec {
 		
 		if (Lang.PERCENT.equals (sValue)) {
 			return defaultValue;
+		}
+
+		if (sValue.indexOf (Lang.PERCENT) < 0) {
+			try {
+				return Float.valueOf (sValue);
+			} catch (NumberFormatException nfex) {
+				// TODO : Log
+				return defaultValue;
+			}
 		}
 		
 		boolean isPercent = sValue.endsWith (Lang.PERCENT);
@@ -651,23 +704,23 @@ public class JsonStyleSpec implements StyleSpec {
 		}
 	}
 	
-	private float [] bounds (String sBounds, int wmax, int hmax) {
+	private float [] bounds (String sBounds, float wmax, float hmax, float defaultValue) {
 		
-		float [] bounds = new float [] {0f, 0f, 0f, 0f};
-		
+		float [] bounds = new float [4];
+
 		String [] aBounds = Lang.split (sBounds, Lang.SPACE, true);
 		if (aBounds == null) {
-			return bounds;
+			return null;
 		}
 		
 		if (aBounds.length == 1) {
 			aBounds = Lang.add (aBounds, new String [] { aBounds [0], aBounds [0], aBounds [0]});
 		} else if (aBounds.length < 4) {
-			aBounds = Lang.add (aBounds, new String [] { Zero, Zero});
+			aBounds = Lang.add (aBounds, new String [] { Unknown, Unknown});
 		}
 		
 		for (int i = 0; i < aBounds.length; i++) {
-			bounds [i] = parseFloat (aBounds [i], i % 2 == 0 ? hmax : wmax, 0);
+			bounds [i] = parseFloat (aBounds [i], i % 2 == 0 ? hmax : wmax, defaultValue);
 		}
 		
 		return bounds;
@@ -684,14 +737,6 @@ public class JsonStyleSpec implements StyleSpec {
 			iColors [i] = Color.parseColor (colors [i]);
 		}
 		return iColors;
-	}
-
-	@Override
-	public Object get (String name) {
-		if (Json.isNullOrEmpty (style)) {
-			return null;
-		}
-		return style.get (name);
 	}
 
 }

@@ -4,7 +4,6 @@ import com.bluenimble.apps.sdk.json.JsonObject;
 
 public interface LayerSpec extends EventAwareSpec, StylishSpec {
     
-	String 			id 			();
 	Object 			get 		(String name);
 	
 	int 			count		();

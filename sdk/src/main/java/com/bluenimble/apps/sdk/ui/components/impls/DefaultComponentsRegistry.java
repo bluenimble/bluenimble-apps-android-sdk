@@ -54,7 +54,11 @@ public class DefaultComponentsRegistry implements ComponentsRegistry {
 	
 	@Override
 	public ComponentFactory lookup (String id) {
-		return factories.get (id);
+		ComponentFactory cf = factories.get (id);
+		if (cf == null) {
+			cf = factories.get (TextFactory.Id);
+		}
+		return cf;
 	}
 
 	@Override

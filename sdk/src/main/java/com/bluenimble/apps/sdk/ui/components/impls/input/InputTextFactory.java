@@ -24,7 +24,7 @@ public class InputTextFactory extends AbstractComponentFactory {
 	private static final String Id = "input";
 
 	interface Custom {
-		String Hint 	= "hint";
+		String Placeholder 	= "placeholder";
 	}
 
 	public InputTextFactory () {
@@ -56,9 +56,7 @@ public class InputTextFactory extends AbstractComponentFactory {
 		
 		// bind the hit
 		if (binding.equals (ComponentSpec.Binding.Set)) {
-			String hint = (String)spec.get (Custom.Hint);
-			application.logger ().debug (InputTextFactory.class.getSimpleName (), "Hint " + hint + Lang.ARRAY_CLOSE);
-			
+			String hint = (String)spec.get (Custom.Placeholder);
 			if (!Lang.isNullOrEmpty (hint)) {
 				Object vHint = application.i18nProvider ().get (Lang.split (hint, Lang.DOT), dh);
 				if (vHint == null) {

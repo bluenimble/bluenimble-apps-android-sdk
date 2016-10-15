@@ -22,8 +22,8 @@ public class JsonPageSpec extends JsonEventAwareSpec implements PageSpec {
 
 	private static final long serialVersionUID = -5392390555922025109L;
 
+	private String		id;
 	private JsonObject 	spec;
-	
 	private StyleSpec	style;
 	
 	private Map<String, LayerSpec> layers;
@@ -34,6 +34,8 @@ public class JsonPageSpec extends JsonEventAwareSpec implements PageSpec {
 	
 	public JsonPageSpec (String id, JsonObject spec, ApplicationSpec application) {
 		super (Json.getObject (spec, Spec.Events), Action.Scope.None);
+
+		this.id = id;
 		
 		JsonObject oLayers = Json.getObject (spec, Spec.page.Layers);
 		
@@ -63,11 +65,27 @@ public class JsonPageSpec extends JsonEventAwareSpec implements PageSpec {
 		Iterator<String> layers = oLayers.keys ();
 		while (layers.hasNext ()) {
 			String lyrId = layers.next ();
-			addLayer (lyrId, Json.getObject (oLayers, lyrId), application);
+			JsonObject oLayer = null;
+			Object o = oLayers.get (lyrId);
+			if (o instanceof JsonObject) {
+				oLayer = (JsonObject)o;
+			} else if (o instanceof JsonArray) {
+				JsonArray aLayer = (JsonArray)o;
+				oLayer = (JsonObject)new JsonObject ().set (Spec.page.layer.Components, aLayer);
+			}
+			if (oLayer == null) {
+				oLayer = new JsonObject ();
+			}
+			addLayer (lyrId, oLayer, application);
 		}
 		
 	}
-	
+
+	@Override
+	public String id () {
+		return id;
+	}
+
 	@Override
 	public String name () {
 		return Json.getString (spec, Spec.Name);

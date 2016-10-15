@@ -4,6 +4,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import com.bluenimble.apps.sdk.logging.Logger.Level;
 import com.bluenimble.apps.sdk.spec.ApplicationSpec;
+import com.bluenimble.apps.sdk.spec.ViewSize;
 
 import android.app.Application;
 import android.content.pm.PackageManager;
@@ -24,6 +25,7 @@ public abstract class UIApplication extends Application {
 	}
 
 	public static final String ArchiveExtension = ".app";
+	public static final String PageExtension 	= ".json";
 
 	public interface Defaults {
 		String Folder 	= "bluenimble";
@@ -50,7 +52,7 @@ public abstract class UIApplication extends Application {
 	
 	protected 	ApplicationSpec spec;
 	
-	protected 	static float [] screenSize;
+	protected 	static ViewSize screenSize;
 	
 	@Override
 	public void onCreate () {
@@ -58,7 +60,7 @@ public abstract class UIApplication extends Application {
 		screenSize = getSize (false);
 	}
 
-	public static final float [] getScreenSize () {
+	public static final ViewSize getScreenSize () {
 		return screenSize;
 	}
 
@@ -77,14 +79,14 @@ public abstract class UIApplication extends Application {
 		return spec;
 	}
 	
-	public float [] getSize (boolean indp) {
+	public ViewSize getSize (boolean indp) {
 		DisplayMetrics metrics = new DisplayMetrics ();
 		WindowManager wm = (WindowManager) getSystemService (WINDOW_SERVICE);
 		wm.getDefaultDisplay ().getMetrics (metrics);
 		if (indp) {
-			return new float [] { metrics.xdpi, metrics.ydpi };
+			return new ViewSize ( metrics.xdpi, metrics.ydpi );
 		}
-		return new float [] { metrics.widthPixels, metrics.heightPixels };
+		return new ViewSize ( metrics.widthPixels, metrics.heightPixels );
 	}
 	
 	protected Bundle bundle () {

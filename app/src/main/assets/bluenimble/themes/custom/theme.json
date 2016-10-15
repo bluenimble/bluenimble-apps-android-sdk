@@ -1,6 +1,21 @@
 {
 
   "*": {
+
+    "header": {
+      "size": { "height": "100" },
+      "background": { "color": "#F03232" }
+    },
+    "main": {
+      "margin": "100 0 100 0",
+      "background": { "color": "#1CA80F" }
+    },
+    "footer": {
+      "size": { "height": "100" },
+      "margin": "? ? 0 ?",
+      "background": { "color": "#0A45C4" }
+    },
+
     "message": {
       "margin": "200",
       "size": { "width": "200", "height": "200" }

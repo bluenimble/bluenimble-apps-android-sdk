@@ -11,6 +11,7 @@ import com.bluenimble.apps.sdk.json.JsonObject;
 import com.bluenimble.apps.sdk.spec.PageSpec;
 import com.bluenimble.apps.sdk.spec.ThemeSpec;
 import com.bluenimble.apps.sdk.spec.impls.AbstractApplicationSpec;
+import com.bluenimble.apps.sdk.ui.renderer.impls.DefaultRenderer;
 
 import android.util.Log;
 
@@ -79,8 +80,10 @@ public class JsonApplicationSpec extends AbstractApplicationSpec {
 
 	@Override
 	public PageSpec main () {
+		logger ().debug (JsonApplicationSpec.class.getSimpleName (), "Get Main Page " + Lang.ARRAY_OPEN + Json.getString (spec, Spec.Main) + Lang.ARRAY_CLOSE);
 		PageSpec main = page (Json.getString (spec, Spec.Main));
 		if (main != null) {
+			logger ().debug (JsonApplicationSpec.class.getSimpleName (), "... Main Page Found ");
 			return main;
 		}
 		return first ();
@@ -88,6 +91,7 @@ public class JsonApplicationSpec extends AbstractApplicationSpec {
 	
 
 	public PageSpec add	(String id, JsonObject pageSpec) {
+		Log.d (JsonApplicationSpec.class.getSimpleName (), "Adding Page " + id);
 		if (Lang.isNullOrEmpty (id) || Json.isNullOrEmpty (pageSpec)) {
 			return null;
 		}

@@ -4,6 +4,7 @@ import com.bluenimble.apps.sdk.Lang;
 
 import android.R;
 import android.content.Context;
+import android.content.res.AssetManager;
 import android.graphics.drawable.Drawable;
 
 import java.lang.reflect.Field;

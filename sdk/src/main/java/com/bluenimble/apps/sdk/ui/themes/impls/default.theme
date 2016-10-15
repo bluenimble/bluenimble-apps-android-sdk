@@ -12,13 +12,6 @@
 			
 		},
 		
-		"layer": {
-			"size": { "height": "50%" },
-			"background": {
-				"color": "#82BDED"
-			}
-		},
-		
 		"break": {
 			"size": { "height": 1 }
 		},

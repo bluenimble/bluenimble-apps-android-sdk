@@ -11,6 +11,7 @@ import com.bluenimble.apps.sdk.Lang;
 import com.bluenimble.apps.sdk.application.UIApplication;
 import com.bluenimble.apps.sdk.json.JsonObject;
 import com.bluenimble.apps.sdk.spec.ThemeSpec;
+import com.bluenimble.apps.sdk.spec.ViewSize;
 import com.bluenimble.apps.sdk.ui.themes.ThemesRegistry;
 import com.bluenimble.apps.sdk.utils.AppResources;
 
@@ -40,7 +41,7 @@ public class DefaultThemesRegistry implements ThemesRegistry {
 	}
 	
 	@Override
-	public void load (String id, InputStream isTheme, float [] screenSize) throws Exception {
+	public void load (String id, InputStream isTheme, ViewSize screenSize) throws Exception {
 		ThemeSpec defaultTheme = lookup (ThemeSpec.Default);
 		if (defaultTheme == null) {
 			_load (ThemeSpec.Default, getClass ().getResourceAsStream (DefaultTheme), screenSize);
@@ -48,7 +49,7 @@ public class DefaultThemesRegistry implements ThemesRegistry {
 		_load (id, isTheme, screenSize);
 	}
 
-	private void _load (String id, InputStream isTheme, float [] screenSize) throws Exception {
+	private void _load (String id, InputStream isTheme, ViewSize screenSize) throws Exception {
 		
 		try {
 		
@@ -87,8 +88,6 @@ public class DefaultThemesRegistry implements ThemesRegistry {
 				resolveImagesAndFonts (id, selected, theme);
 			}
 			
-			Log.d ("ThemesRegistry > theme ", theme != null ? theme.toString (2) : null);
-			
 			if (theme != null) {
 				register (new JsonThemeSpec (id, theme));
 			}
@@ -98,7 +97,7 @@ public class DefaultThemesRegistry implements ThemesRegistry {
 		}
 	}
 
-	private float select (float [] size, String resolution) {
+	private float select (ViewSize size, String resolution) {
 		
 		if (Lang.STAR.equals (resolution)) {
 			return 1;
@@ -119,7 +118,7 @@ public class DefaultThemesRegistry implements ThemesRegistry {
 			return 1;
 		}
 		
-		return size [0] - resWidth;
+		return size.getWidth () - resWidth;
 	}
 
 	private void resolveImagesAndFonts (String id, String resolution, JsonObject theme) {

@@ -6,6 +6,7 @@ import com.bluenimble.apps.sdk.Json;
 import com.bluenimble.apps.sdk.Lang;
 import com.bluenimble.apps.sdk.application.UIApplication;
 import com.bluenimble.apps.sdk.json.JsonObject;
+import com.bluenimble.apps.sdk.spec.ViewSize;
 
 import java.io.File;
 import java.io.FileFilter;
@@ -50,7 +51,7 @@ public class DiskApplicationSpec extends JsonApplicationSpec {
 		init (Json.load (new File (root, UIApplication.Resources.App)));
 
 		// loadPages
-		loadPages 	(root);
+		loadPages 	(new File (root, UIApplication.Resources.Pages), null);
 
 		// load i18n
 		loadI18n (root);
@@ -79,7 +80,7 @@ public class DiskApplicationSpec extends JsonApplicationSpec {
 		backend.load (oBackend);
 	}
 	
-	private void loadThemes (File root, float [] screenSize) throws Exception {
+	private void loadThemes (File root, ViewSize screenSize) throws Exception {
 		File themesFolder = new File (root, UIApplication.Resources.Themes);
 		if (!themesFolder.exists () || !themesFolder.isDirectory ()) {
 			return;
@@ -127,20 +128,23 @@ public class DiskApplicationSpec extends JsonApplicationSpec {
 		}
 	}
 	
-	private void loadPages (File root) throws Exception {
+	private void loadPages (File folder, String path) throws Exception {
 		// load pages from pages folder
-		File pagesFolder = new File (root, UIApplication.Resources.Pages);
-		if (!pagesFolder.exists () || !pagesFolder.isDirectory ()) {
+		if (!folder.exists () || !folder.isDirectory ()) {
 			return;
 		}
-		File [] pages = pagesFolder.listFiles ();
+		File [] pages = folder.listFiles ();
 		if (pages == null || pages.length == 0) {
 			return;
 		}
 		// load all pages
 		for (File fPage : pages) {
 			String name = fPage.getName ();
-			add (name.substring (0, name.indexOf (Lang.DOT)), Json.load (fPage));
+			if (fPage.isDirectory ()) {
+				loadPages (fPage, path == null ? name : path + Lang.SLASH + name);
+				continue;
+			}
+			add ((path == null ? Lang.BLANK : path + Lang.SLASH) + name.substring (0, name.indexOf (Lang.DOT)), Json.load (fPage));
 		}
 	}
 

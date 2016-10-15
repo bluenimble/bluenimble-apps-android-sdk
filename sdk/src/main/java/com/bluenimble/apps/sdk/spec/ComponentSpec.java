@@ -7,7 +7,6 @@ public interface ComponentSpec extends EventAwareSpec, StylishSpec {
 		Get
 	}
 	
-	String 				id 		();
 	String 				type 	();
 	Object 				get 	(String name);
 

@@ -1,3 +1,5 @@
 {
-	"defaultLanguage": "en"
+  "defaultLanguage": "en",
+  "main": "layers/segments",
+  "theme": "custom"
 }

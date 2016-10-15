@@ -25,7 +25,7 @@ public class TextFactory extends AbstractComponentFactory {
 	
 	private static final String DefaultText = "Label";
 	
-	private static final String Id = "text";
+	public static final String Id = "text";
 
 	public TextFactory () {
 		supportEvent (EventListener.Event.press);

@@ -4,10 +4,10 @@ import java.util.Iterator;
 
 public interface PageSpec extends EventAwareSpec, StylishSpec {
 
-	String 				name();
+	String 				name	();
 	
-	int 				count();
-	Iterator<String> 	layers();
-	LayerSpec 			layer(String id);
+	int 				count	();
+	Iterator<String> 	layers	();
+	LayerSpec 			layer	(String id);
 	
 }

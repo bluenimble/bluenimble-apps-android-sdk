@@ -7,6 +7,7 @@ import com.bluenimble.apps.sdk.IOUtils;
 import com.bluenimble.apps.sdk.Lang;
 import com.bluenimble.apps.sdk.application.UIApplication;
 import com.bluenimble.apps.sdk.json.JsonObject;
+import com.bluenimble.apps.sdk.spec.ViewSize;
 
 import android.content.res.AssetManager;
 import android.graphics.Typeface;
@@ -15,7 +16,7 @@ public class AssetsApplicationSpec extends JsonApplicationSpec {
 
 	private static final long serialVersionUID = -5392390555922025109L;
 
-	public AssetsApplicationSpec(UIApplication application) throws Exception {
+	public AssetsApplicationSpec (UIApplication application) throws Exception {
 		
 		id = application.getString (UIApplication.Meta.Application, UIApplication.Defaults.Folder);
 		
@@ -39,7 +40,7 @@ public class AssetsApplicationSpec extends JsonApplicationSpec {
 		}
 			
 		// loadPages
-		loadPages 	(assetManager);
+		loadPages 	(assetManager, id + Lang.SLASH + UIApplication.Resources.Pages);
 		
 		// load i18n
 		loadI18n (assetManager);
@@ -91,7 +92,7 @@ public class AssetsApplicationSpec extends JsonApplicationSpec {
 		}
 	}
 	
-	private void loadThemes (AssetManager assetManager, float [] screenSize) throws Exception {
+	private void loadThemes (AssetManager assetManager, ViewSize screenSize) throws Exception {
 		String [] themes = assetManager.list (id + Lang.SLASH + UIApplication.Resources.Themes);
 		if (themes == null || themes.length == 0) {
 			return;
@@ -126,21 +127,51 @@ public class AssetsApplicationSpec extends JsonApplicationSpec {
 		}
 	}
 	
-	private void loadPages (AssetManager assetManager) throws Exception {
+	private void loadPages (AssetManager assetManager, String path) throws Exception {
 		// load pages from pages folder
-		String [] pagesIds = assetManager.list (id + Lang.SLASH + UIApplication.Resources.Pages);
+		//
+		String [] pagesIds = assetManager.list (path);
 		if (pagesIds == null || pagesIds.length == 0) {
 			return;
 		}
 		// load all pages
 		for (String fPage : pagesIds) {
+
+			String child = path + Lang.SLASH + fPage;
+
+			logger ().debug (AssetsApplicationSpec.class.getSimpleName (), "Load page " + child);
+
 			InputStream stream = null;
+
+			boolean isFolder = true;
+
 			try {
-				stream = assetManager.open (id + Lang.SLASH + UIApplication.Resources.Pages + Lang.SLASH + fPage);
-				if (stream == null) {
+				stream = assetManager.open (child);
+				isFolder = false;
+			} catch (Exception ex) {
+				// ignore
+			}
+
+			logger ().debug (AssetsApplicationSpec.class.getSimpleName (), "\t isFolder " + isFolder);
+
+			// if it's a folder, load pages inside
+			if (isFolder) {
+				loadPages (assetManager, child);
+				continue;
+			}
+
+			// load the page
+			try {
+				if (stream == null || !fPage.endsWith (UIApplication.PageExtension)) {
 					continue;
 				}
-				add (fPage.substring (0, fPage.indexOf (Lang.DOT)), new JsonObject (stream));
+				add (
+					child.substring (
+						child.indexOf (UIApplication.Resources.Pages + Lang.SLASH) + (UIApplication.Resources.Pages + Lang.SLASH).length (),
+						child.lastIndexOf (Lang.DOT)
+					),
+					new JsonObject (stream)
+				);
 			} finally {
 				IOUtils.closeQuietly (stream);
 			}
