@@ -162,10 +162,29 @@ public class JsonLayerSpec extends JsonEventAwareSpec implements LayerSpec {
 	public boolean isGlobal () {
 		return Json.getBoolean (spec, Spec.page.layer.Global, false);
 	}
-	
+
+	@Override
+	public boolean isCompact () {
+		if (style == null) {
+			return false;
+		}
+		String sCompact = (String)style.get (StyleSpec.Compact);
+		if (Lang.isNullOrEmpty (sCompact)) {
+			return false;
+		}
+		return Lang.TrueValues.contains (sCompact.toLowerCase ());
+	}
+
 	@Override
 	public boolean isRendered () {
-		return Json.getBoolean (spec, Spec.page.layer.Render, true);
+		if (style == null) {
+			return true;
+		}
+		String sRender = (String)style.get (StyleSpec.Render);
+		if (Lang.isNullOrEmpty (sRender)) {
+			return true;
+		}
+		return Lang.TrueValues.contains (sRender.toLowerCase ());
 	}
 
 	@Override

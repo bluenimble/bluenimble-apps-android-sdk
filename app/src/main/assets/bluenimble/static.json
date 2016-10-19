@@ -1,8 +1,13 @@
 {
-	"firstName": {
-		"en": "First Name"
-	},
-	"action": {
-		"en": "Press Me!"
-	}
+
+  "icons": {
+    "back": { "en": "\uf060" }, "next": { "en": "\uf061" }, "up": { "en": "\uf062" },
+    "down": { "en": "\uf063" }, "menu": { "en": "\uf0ca" }, "profile": { "en": "\uf142" }
+  },
+  "title": {
+    "short": { "en": "BlueNimble Apps SDK Browser" }, "long": { "en": "BlueNimble Apps SDK Browser" }
+  },
+  "images": {
+    "logo": { "en": "" }
+  }
 }

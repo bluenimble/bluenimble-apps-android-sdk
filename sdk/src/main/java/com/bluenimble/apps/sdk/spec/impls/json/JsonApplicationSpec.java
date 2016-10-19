@@ -132,6 +132,7 @@ public class JsonApplicationSpec extends AbstractApplicationSpec {
 			}
 		}
 		theme = merged;
+
 	}
 	
 

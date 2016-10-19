@@ -108,11 +108,11 @@ public class DefaultRenderer implements Renderer {
 		
 		// initial RelativeLayout
 		RelativeLayout relativeLayout = new RelativeLayout (activity);
-		RelativeLayout.LayoutParams layoutparams = new RelativeLayout.LayoutParams (
+		RelativeLayout.LayoutParams lineLayoutParams = new RelativeLayout.LayoutParams (
 			ViewGroup.LayoutParams.MATCH_PARENT,
-			ViewGroup.LayoutParams.WRAP_CONTENT
+			layer.isCompact () ? ViewGroup.LayoutParams.MATCH_PARENT : ViewGroup.LayoutParams.WRAP_CONTENT
 		);
-		relativeLayout.setLayoutParams (layoutparams);
+		relativeLayout.setLayoutParams (lineLayoutParams);
 		layout.addView (relativeLayout);
 
 		// add components
@@ -126,11 +126,15 @@ public class DefaultRenderer implements Renderer {
 
 			application.logger ().debug (DefaultRenderer.class.getSimpleName (), "Render Component " + Lang.ARRAY_OPEN + type + Lang.SLASH + spec.id () + Lang.ARRAY_CLOSE);
 
+			if (layer.isCompact () && type.equals (ComponentsRegistry.Default.Break)) {
+				continue;
+			}
+
 			// back to new line
 			if (type.equals (ComponentsRegistry.Default.Break)) {
 				application.logger ().debug (DefaultRenderer.class.getSimpleName (), "\tCreate A Break - RelativeLayout");
 				relativeLayout = new RelativeLayout (activity); 
-				relativeLayout.setLayoutParams (layoutparams);
+				relativeLayout.setLayoutParams (lineLayoutParams);
 				layout.addView (relativeLayout);
 			}
 			
@@ -167,7 +171,7 @@ public class DefaultRenderer implements Renderer {
 			if (type.equals (ComponentsRegistry.Default.Break)) {
 				Log.d (DefaultRenderer.class.getSimpleName (), "\tCreate A Break - RelativeLayout");
 				relativeLayout = new RelativeLayout (activity); 
-				relativeLayout.setLayoutParams (layoutparams);
+				relativeLayout.setLayoutParams (lineLayoutParams);
 				layout.addView (relativeLayout);
 			}
 		}

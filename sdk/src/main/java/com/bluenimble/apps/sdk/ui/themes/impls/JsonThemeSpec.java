@@ -56,5 +56,13 @@ public class JsonThemeSpec implements ThemeSpec {
 		spec = spec.merge (((JsonThemeSpec)another).spec);
 		return this;
 	}
+
+	@Override
+	public String toString () {
+		if (spec == null) {
+			return null;
+		}
+		return spec.toString (2);
+	}
 	
 }

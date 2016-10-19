@@ -16,45 +16,6 @@
 			"size": { "height": 1 }
 		},
 		
-		"text": {
-			"padding": "10 30 10 0"
-		},
-		
-		"button": {
-			"size": {
-				"height": "120"
-			},
-			"padding": "0 20 0 40",
-			"text": { 
-				"align": "center middle"
-			},
-			"border": {
-				"color": "#434343",
-				"radius": "12"
-			},
-			"background": {
-				"color": "#E1E2E3 #FFFFFF",
-				"gradient": {
-					"orientation": "bt"
-				}
-			}
-		},
-		
-		"input": {
-			"padding": "14 40 14 34",
-			"background": {
-				"color": "#FFFFFF"
-			},
-			"border": {
-				"color": "#D4D4D4",
-				"radius": "12"
-			},
-			"shadow": {
-				"color": "#EDEDED",
-				"tick": "5"
-			}
-		},
-		
 		// miscellaneous
 		"visible": { 
 			"visible": "true" 

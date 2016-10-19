@@ -529,7 +529,7 @@ public class JsonObject extends JsonAbstractEntity implements Map {
 				continue;
 			}
 
-			// if value for key found isn't of the same type as the value in
+			// if value for key found but isn't of the same type as the value in
 			// data
 			Object oldValue = get (key);
 			if (!oldValue.getClass ().equals (value.getClass ())) {

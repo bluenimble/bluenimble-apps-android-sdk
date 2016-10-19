@@ -44,7 +44,7 @@ public class RenderEffect implements Effect {
 			return;
 		}
 		
-		String [] aList = Lang.split (list, Lang.COMMA, true);
+		String [] aList = Lang.split (list, Lang.SPACE, true);
 		
 		Set<String> pageOrLayers = new HashSet<String>(Arrays.asList (aList));
 		

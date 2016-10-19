@@ -13,6 +13,7 @@ import com.bluenimble.apps.sdk.json.JsonObject;
 import com.bluenimble.apps.sdk.spec.ApplicationSpec;
 import com.bluenimble.apps.sdk.spec.LayerSpec;
 import com.bluenimble.apps.sdk.spec.PageSpec;
+import com.bluenimble.apps.sdk.ui.components.ComponentFactory;
 import com.bluenimble.apps.sdk.ui.components.impls.generic.BreakFactory;
 import com.bluenimble.apps.sdk.ui.effects.impls.BindEffect;
 import com.bluenimble.apps.sdk.ui.renderer.impls.DefaultRenderer;
@@ -85,6 +86,7 @@ public class SpecHelper {
         }
 
         if (spec.startsWith (Lang.XMARK)) {
+            Json.set (oComponent, true, new String [] { Spec.page.layer.component.Custom, ComponentFactory.Custom.Constant});
             oComponent.set (Spec.page.layer.component.binding.class.getSimpleName (), new JsonObject ().set (Spec.page.layer.component.binding.Set, spec.substring (1).trim ()));
             return oComponent;
         }
@@ -141,15 +143,22 @@ public class SpecHelper {
             return oComponent;
         }
 
+        String style = Lang.BLANK;
+
         for (int i = 2; i < tokens.length; i++) {
             String token = tokens [i].trim ();
             int indexOfEqual = token.indexOf (Lang.EQUALS);
             if (indexOfEqual <= 0) {
+                style += Lang.SPACE + token;
                 continue;
             }
             String n = token.substring (0, indexOfEqual);
             String v = token.substring (indexOfEqual + 1);
             Json.set (oComponent, Lang.replace (v, Lang.PLUS, Lang.SPACE), Spec.page.layer.component.Custom.toLowerCase (), Lang.replace (n, Lang.PLUS, Lang.SPACE));
+        }
+
+        if (!Lang.isNullOrEmpty (style)) {
+            Json.set (oComponent, Spec.page.layer.component.Style, style);
         }
 
         return oComponent;

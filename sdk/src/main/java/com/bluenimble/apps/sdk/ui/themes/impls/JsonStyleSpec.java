@@ -2,6 +2,7 @@ package com.bluenimble.apps.sdk.ui.themes.impls;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -40,93 +41,14 @@ public class JsonStyleSpec implements StyleSpec {
 	private static final long serialVersionUID = -2681053059579403387L;
 	
 	private JsonObject style;
-	
-	private static final int 		DefaultShadowTick 	= 20;
-	
-	interface Colors {
-		int Grey	= Color.parseColor ("#CACECF"); 
-		int White	= Color.parseColor ("#FFFFFF"); 
-		int Black	= Color.parseColor ("#000000"); 
-	}
-	
-	private static final String 	Zero 				= "0";
-	private static final String 	Unknown 			= "?";
 
-	private static final int 		UndefinedInteger 	= Integer.MAX_VALUE;
-	
-	private static final String 	Visible	= "visible";
-
-	interface Group {
-		String Text 		= "text";
-		String Background 	= "background";
-		String Border 		= "border";
-		String Shadow 		= "shadow";
-		
-		String Size 		= "size";
-		String Align 		= "align";
-
-		String Margin 		= "margin";
-		String Padding 		= "padding";
-	}
-	
-	private static final Set<String> Groups = new HashSet<String> ();
+	private static final Set<String> Groups = new HashSet<String>();
 	static {
-		Groups.add (Group.Text); Groups.add (Group.Background); Groups.add (Group.Size); 
+		Groups.add (Group.Text); Groups.add (Group.Background); Groups.add (Group.Size);
 		Groups.add (Group.Align); Groups.add (Group.Margin); Groups.add (Group.Padding);
 	}
-	
-	interface Align {
-		String Vertical		= "vertical";
-		String Horizontal 	= "horizontal";
-		interface Values {
-			String Center 	= "center";
-			String Middle 	= "middle";
-			
-			String Top 		= "top";
-			String Bottom 	= "bottom";
-			
-			String Left 	= "left";
-			String Right 	= "right";
-		}
-	}
-	
-	interface Background {
-		String Color 		= "color";
-		String Image 		= "image";
-		String Opacity		= "opacity";
-		String Insets		= "insets";
-		interface gradient {
-			String Orientation 	= "orientation";
-			String Radius		= "radius";
-			String Center		= "center";
-		}
-	}
 
-	interface Border {
-		String Color 		= "color";
-		String Size 		= "size";
-		String Radius		= "radius";
-	}
-	
-	interface Shadow {
-		String Color 		= "color";
-		String Tick 		= "tick";
-	}
-
-	interface Text {
-		String Font 		= "font";
-		String Size			= "size";
-		String Color 		= "color";
-		String Style 		= "style";
-		String Align		= "align";	
-	}
-
-	interface Size {
-		String Width 		= "width";
-		String Height 		= "height";
-	}
-	
-	private static Map<String, Integer> ComponentAlign = new HashMap<String, Integer> ();
+	private static Map<String, Integer> ComponentAlign = new HashMap<String, Integer>();
 	static {
 		ComponentAlign.put (Align.Values.Center, 	RelativeLayout.CENTER_HORIZONTAL);
 		ComponentAlign.put (Align.Values.Middle, 	RelativeLayout.CENTER_VERTICAL);
@@ -135,7 +57,7 @@ public class JsonStyleSpec implements StyleSpec {
 		ComponentAlign.put (Align.Values.Top, 		RelativeLayout.ALIGN_PARENT_TOP);
 		ComponentAlign.put (Align.Values.Bottom, 	RelativeLayout.ALIGN_PARENT_BOTTOM);
 	}
-	
+
 	private static Map<String, Integer> TextStyle = new HashMap<String, Integer> ();
 	static {
 		TextStyle.put ("bold", 			Typeface.BOLD);
@@ -143,7 +65,7 @@ public class JsonStyleSpec implements StyleSpec {
 		TextStyle.put ("bold_italic", 	Typeface.BOLD_ITALIC);
 		TextStyle.put ("underline", 	Paint.UNDERLINE_TEXT_FLAG);
 	}
-	
+
 	private static Map<String, Integer> TextAlign = new HashMap<String, Integer> ();
 	static {
 		TextAlign.put (Align.Values.Center, Gravity.CENTER_HORIZONTAL);
@@ -153,19 +75,19 @@ public class JsonStyleSpec implements StyleSpec {
 		TextAlign.put (Align.Values.Top, 	Gravity.TOP);
 		TextAlign.put (Align.Values.Bottom, Gravity.BOTTOM);
 	}
-	
-	private static final Map<String, Orientation> 	GradientTypes 				= new HashMap<String, Orientation> ();
+
+	private static final Map<String, GradientDrawable.Orientation> 	GradientTypes 				= new HashMap<String, GradientDrawable.Orientation> ();
 	static {
-		GradientTypes.put ("tb", Orientation.TOP_BOTTOM);
-		GradientTypes.put ("bt", Orientation.BOTTOM_TOP);
-		GradientTypes.put ("lr", Orientation.LEFT_RIGHT);
-		GradientTypes.put ("rl", Orientation.RIGHT_LEFT);
-		GradientTypes.put ("bl-tr", Orientation.BL_TR);
-		GradientTypes.put ("tl-br", Orientation.TL_BR);
-		GradientTypes.put ("bl-tl", Orientation.BR_TL);
-		GradientTypes.put ("tl-bl", Orientation.TR_BL);
+		GradientTypes.put ("tb", GradientDrawable.Orientation.TOP_BOTTOM);
+		GradientTypes.put ("bt", GradientDrawable.Orientation.BOTTOM_TOP);
+		GradientTypes.put ("lr", GradientDrawable.Orientation.LEFT_RIGHT);
+		GradientTypes.put ("rl", GradientDrawable.Orientation.RIGHT_LEFT);
+		GradientTypes.put ("bl-tr", GradientDrawable.Orientation.BL_TR);
+		GradientTypes.put ("tl-br", GradientDrawable.Orientation.TL_BR);
+		GradientTypes.put ("bl-tl", GradientDrawable.Orientation.BR_TL);
+		GradientTypes.put ("tl-bl", GradientDrawable.Orientation.TR_BL);
 	}
-	
+
 	public JsonStyleSpec (ThemeSpec appTheme, String [] aStyles) {
 		
 		if (appTheme == null) {
@@ -176,7 +98,7 @@ public class JsonStyleSpec implements StyleSpec {
 			return;
 		}
 		
-		Set<JsonObject> styles = new HashSet<JsonObject> (); 
+		Set<JsonObject> styles = new LinkedHashSet<JsonObject>();
 
 		for (String style : aStyles) {
 			if (style == null) {
@@ -188,6 +110,8 @@ public class JsonStyleSpec implements StyleSpec {
 			}
 		}
 		style = merge (styles);
+		styles.clear ();
+		Log.d ("Style", "\t" + style.toString (2));
 	}
 	
 	private static JsonObject merge (Set<JsonObject> styles) {
@@ -198,7 +122,7 @@ public class JsonStyleSpec implements StyleSpec {
 		JsonObject merged = new JsonObject ();
 		
 		for (JsonObject style : styles) {
-			merged.merge (style);
+			merged.merge (style.duplicate ());
 		}
 		
 		if (merged.isEmpty ()) {
@@ -271,16 +195,12 @@ public class JsonStyleSpec implements StyleSpec {
 			Log.d (JsonStyleSpec.class.getSimpleName (), "\t-> height " + Lang.ARRAY_OPEN + height + Lang.ARRAY_CLOSE);
 
 			if (params == null) {
-				if (isLayer) {
-					params = new LinearLayout.LayoutParams (width, height);
-				} else {
-					params = new RelativeLayout.LayoutParams (width, height);
-				}
-				if (params instanceof RelativeLayout.LayoutParams && !isBreak && parent.getChildCount () > 0) {
+				params = new RelativeLayout.LayoutParams (width, height);
+				/*if (!isLayer && !isBreak && parent.getChildCount () > 0) {
 					int sibling = parent.getChildAt (parent.getChildCount () - 1).getId ();
 					Log.d (JsonStyleSpec.class.getSimpleName (), "\t-> addRule RIGHT_OF sibling " + Lang.ARRAY_OPEN + sibling + Lang.ARRAY_CLOSE);
 					((RelativeLayout.LayoutParams)params).addRule (RelativeLayout.RIGHT_OF, sibling);
-				}
+				}*/
 				view.setLayoutParams (params);
 			} else {
 				params.width = width;
@@ -288,7 +208,7 @@ public class JsonStyleSpec implements StyleSpec {
 			}
 			
 			// apply align.vertical & align.horizontal
-			applyAlign (params);
+			applyAlign (params, parent, isLayer, isBreak);
 			
 			// apply margins
 			applyMargin (params, isLayer, maxSize);
@@ -313,9 +233,7 @@ public class JsonStyleSpec implements StyleSpec {
 		if (!(stylish instanceof ComponentSpec)) {
 			return false;
 		}
-		
 		ComponentSpec spec = (ComponentSpec)stylish;
-		
 		return BreakFactory.Id.equals (spec.type ());
 	}
 
@@ -334,64 +252,51 @@ public class JsonStyleSpec implements StyleSpec {
 		}
 		float [] bounds = bounds (margin, maxSize.getWidth (), maxSize.getHeight (), UndefinedInteger);
 
-		if (params instanceof RelativeLayout.LayoutParams) {
-			if (bounds [0] != UndefinedInteger) {
-				Log.d (JsonStyleSpec.class.getSimpleName (), "\t-> apply topMargin " + Lang.ARRAY_OPEN + bounds [0] + Lang.ARRAY_CLOSE);
-				((RelativeLayout.LayoutParams)params).topMargin 	= (int)bounds [0];
-			}
-			if (bounds [1] != UndefinedInteger) {
-				Log.d (JsonStyleSpec.class.getSimpleName (), "\t-> apply rightMargin " + Lang.ARRAY_OPEN + bounds [1] + Lang.ARRAY_CLOSE);
-				((RelativeLayout.LayoutParams)params).rightMargin 	= (int)bounds [1];
-			}
-			if (bounds [2] != UndefinedInteger) {
-				Log.d (JsonStyleSpec.class.getSimpleName (), "\t-> apply bottomMargin " + Lang.ARRAY_OPEN + bounds [2] + Lang.ARRAY_CLOSE);
-				((RelativeLayout.LayoutParams)params).bottomMargin 	= (int)bounds [2];
-				// if sat, add allign bottom
-				((RelativeLayout.LayoutParams)params).addRule (RelativeLayout.ALIGN_PARENT_BOTTOM);
-			}
-			if (bounds [3] != UndefinedInteger) {
-				Log.d (JsonStyleSpec.class.getSimpleName (), "\t-> apply leftMargin " + Lang.ARRAY_OPEN + bounds [3] + Lang.ARRAY_CLOSE);
-				((RelativeLayout.LayoutParams)params).leftMargin 	= (int)bounds [3];
-			}
-		} else if (params instanceof LinearLayout.LayoutParams) {
-			if (bounds [0] != UndefinedInteger) {
-				Log.d (JsonStyleSpec.class.getSimpleName (), "\t-> apply topMargin " + Lang.ARRAY_OPEN + bounds [0] + Lang.ARRAY_CLOSE);
-				((LinearLayout.LayoutParams)params).topMargin 		= (int)bounds [0];
-			}
-			if (bounds [1] != UndefinedInteger) {
-				Log.d (JsonStyleSpec.class.getSimpleName (), "\t-> apply rightMargin " + Lang.ARRAY_OPEN + bounds [1] + Lang.ARRAY_CLOSE);
-				((LinearLayout.LayoutParams)params).rightMargin 	= (int)bounds [1];
-			}
-			if (bounds [2] != UndefinedInteger) {
-				Log.d (JsonStyleSpec.class.getSimpleName (), "\t-> apply bottomMargin " + Lang.ARRAY_OPEN + bounds [2] + Lang.ARRAY_CLOSE);
-				((LinearLayout.LayoutParams)params).bottomMargin 	= (int)bounds [2];
-			}
-			if (bounds [3] != UndefinedInteger) {
-				Log.d (JsonStyleSpec.class.getSimpleName (), "\t-> apply leftMargin " + Lang.ARRAY_OPEN + bounds [3] + Lang.ARRAY_CLOSE);
-				((LinearLayout.LayoutParams)params).leftMargin 		= (int)bounds [3];
-			}
+		if (bounds [0] != UndefinedInteger) {
+			Log.d (JsonStyleSpec.class.getSimpleName (), "\t-> apply topMargin " + Lang.ARRAY_OPEN + bounds [0] + Lang.ARRAY_CLOSE);
+			((RelativeLayout.LayoutParams)params).topMargin 	= (int)bounds [0];
+		}
+		if (bounds [1] != UndefinedInteger) {
+			Log.d (JsonStyleSpec.class.getSimpleName (), "\t-> apply rightMargin " + Lang.ARRAY_OPEN + bounds [1] + Lang.ARRAY_CLOSE);
+			((RelativeLayout.LayoutParams)params).rightMargin 	= (int)bounds [1];
+		}
+		if (bounds [2] != UndefinedInteger) {
+			Log.d (JsonStyleSpec.class.getSimpleName (), "\t-> apply bottomMargin " + Lang.ARRAY_OPEN + bounds [2] + Lang.ARRAY_CLOSE);
+			((RelativeLayout.LayoutParams)params).bottomMargin 	= (int)bounds [2];
+		}
+		if (bounds [3] != UndefinedInteger) {
+			Log.d (JsonStyleSpec.class.getSimpleName (), "\t-> apply leftMargin " + Lang.ARRAY_OPEN + bounds [3] + Lang.ARRAY_CLOSE);
+			((RelativeLayout.LayoutParams)params).leftMargin 	= (int)bounds [3];
 		}
 	}
 
-	private void applyAlign (ViewGroup.LayoutParams params) {
-		if (!(params instanceof RelativeLayout.LayoutParams)) {
-			return;
-		}
-		
+	private void applyAlign (ViewGroup.LayoutParams params, ViewGroup parent, boolean isLayer, boolean isBreak) {
+
 		RelativeLayout.LayoutParams layoutParams = ((RelativeLayout.LayoutParams)params);
 		
 		String [] aligns = Lang.split (Json.getString (style, Group.Align), Lang.SPACE);
 		if (aligns == null) {
 			return;
 		}
+
+		boolean alignAssigned = false;
 		
 		for (String align : aligns) {
 			Integer a = ComponentAlign.get (align.trim ());
 			if (a == null) {
 				continue;
 			}
+			Log.d (JsonStyleSpec.class.getSimpleName (), "\t applyAlign " + align);
 			layoutParams.addRule (a);
+			alignAssigned = true;
 		}
+
+		if (!alignAssigned && !isLayer && !isBreak && parent.getChildCount () > 0) {
+			int sibling = parent.getChildAt (parent.getChildCount () - 1).getId ();
+			Log.d (JsonStyleSpec.class.getSimpleName (), "\t-> addRule RIGHT_OF sibling " + Lang.ARRAY_OPEN + sibling + Lang.ARRAY_CLOSE);
+			((RelativeLayout.LayoutParams)params).addRule (RelativeLayout.RIGHT_OF, sibling);
+		}
+
 	}
 	
 	private void applyFont (View component, UIApplication application) {
@@ -409,7 +314,9 @@ public class JsonStyleSpec implements StyleSpec {
 		String family = Json.getString (oFont, Text.Font);
 		Log.d (JsonStyleSpec.class.getSimpleName (), "\t-> Text.Font " + Lang.ARRAY_OPEN + family + Lang.ARRAY_CLOSE);
 		if (!Lang.isNullOrEmpty (family)) {
-			text.setTypeface (application.getSpec ().fontsRegistry ().lookup (family));
+			Typeface typeface = application.getSpec ().fontsRegistry ().lookup (family.toLowerCase ());
+			Log.d (JsonStyleSpec.class.getSimpleName (), "\t->   Instance " + typeface);
+			text.setTypeface (typeface);
 		}
 		
 		String [] fontStyles = Lang.split (Json.getString (oFont, Text.Style), Lang.SPACE);
@@ -432,7 +339,13 @@ public class JsonStyleSpec implements StyleSpec {
 		if (fontSize != 0) {
 			text.setTextSize (fontSize);
 		}
-		
+
+		String fontColor = Json.getString (oFont, Text.Color);
+		Log.d (JsonStyleSpec.class.getSimpleName (), "\t-> Text.Color " + Lang.ARRAY_OPEN + fontColor + Lang.ARRAY_CLOSE);
+		if (!Lang.isNullOrEmpty (fontColor)) {
+			text.setTextColor (Color.parseColor (fontColor));
+		}
+
 		String [] aligns = Lang.split (Json.getString (oFont, Text.Align), Lang.SPACE);
 		if (aligns == null) {
 			return;
@@ -614,7 +527,7 @@ public class JsonStyleSpec implements StyleSpec {
 			shInsets [i] = shin;
 			bgInsets [i] = bgin;
 		}
-		
+
 		layer.setLayerInset (0, shInsets [3], shInsets [0], shInsets [1], shInsets [2]);
 		layer.setLayerInset (1, bgInsets [3], bgInsets [0], bgInsets [1], bgInsets [2]);
 		

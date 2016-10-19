@@ -119,10 +119,15 @@ public class AssetsApplicationSpec extends JsonApplicationSpec {
 
 	private void loadFonts (AssetManager assetManager, String fontsPath, String [] fonts) throws Exception {
 		for (String f : fonts) {
+			logger ().debug (AssetsApplicationSpec.class.getSimpleName (), "\tLoad font " + f);
 			String id = f;
 			if (f.indexOf (Lang.DOT) > 0) {
 				id = f.substring (0, f.indexOf (Lang.DOT));
 			}
+
+			id = id.toLowerCase ();
+
+			logger ().debug (AssetsApplicationSpec.class.getSimpleName (), "\tRegister font " + id + Lang.GREATER + fontsPath + Lang.SLASH + f);
 			fontsRegistry.register (id, Typeface.createFromAsset (assetManager, fontsPath + Lang.SLASH + f));
 		}
 	}

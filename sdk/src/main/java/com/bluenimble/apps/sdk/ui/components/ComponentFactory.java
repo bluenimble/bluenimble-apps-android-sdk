@@ -13,8 +13,12 @@ import android.view.View;
 import android.view.ViewGroup;
 
 public interface ComponentFactory extends Serializable {
-	
-	String	id();
+
+	interface Custom {
+		String Constant = "constant";
+	}
+
+	String	id ();
 	
 	View 	create(UIActivity activity, ViewGroup group, LayerSpec layer, ComponentSpec component);
 	

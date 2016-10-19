@@ -1,29 +1,13 @@
 {
 	"layers": {
-		"main": {
-			"components": [
-				{
-					"binding": { "set": "firstName" }
-				}, {
-					"type": "input", "id": "fName", "break": "true",
-					"custom": { "hint": "Enter something that makes sense!" }
-				}, {
-					"type": "button", "binding": { "set": "action" },
-					"events": {
-						"press": {
-							"onStart": {
-								"render": "message"
-							}
-						}
-					}
-				}
-			]
-		},
-		"message": {
-			"render": "false",
-			"components": [{
-				"binding": { "set": "app.fName" }
-			}]
-		}
+		"header": [
+			"image static.urls.logo ? logo", "text  static.title.short ? title"
+		],
+		"main": [
+			"list static.menu ? template=menuItem"
+		],
+		"menuItem": [
+			"image record.icon ? icon", "/", "text record.title"
+		]
 	}
 }

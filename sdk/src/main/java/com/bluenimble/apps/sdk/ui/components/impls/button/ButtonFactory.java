@@ -13,8 +13,8 @@ import com.bluenimble.apps.sdk.ui.components.AbstractComponentFactory;
 import com.bluenimble.apps.sdk.ui.components.impls.listeners.EventListener;
 import com.bluenimble.apps.sdk.ui.components.impls.listeners.OnLongPressListenerImpl;
 import com.bluenimble.apps.sdk.ui.components.impls.listeners.OnPressListenerImpl;
+import com.bluenimble.apps.sdk.ui.components.impls.text.TextFactory;
 
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -24,7 +24,7 @@ public class ButtonFactory extends AbstractComponentFactory {
 	private static final long serialVersionUID = 8437367345924192857L;
 	
 	private static final String DefaultText = "Button";
-	
+
 	private static final String Id = "button";
 	
 	public ButtonFactory () {
@@ -74,8 +74,13 @@ public class ButtonFactory extends AbstractComponentFactory {
 					button.setText (null);
 					return;
 				}
-				Object value = dh.valueOf (application, bindingSpec);
-				application.logger ().debug (ButtonFactory.class.getSimpleName (), "Binding.Set " + Lang.ARRAY_OPEN + spec.id () + Lang.SPACE + view.getId () + Lang.ARRAY_CLOSE + Lang.EQUALS + value);
+				Object value = null;
+				if (spec.get (Custom.Constant) != null && (boolean)spec.get (Custom.Constant)) {
+					value = Lang.join (bindingSpec.property (), Lang.DOT);
+				} else {
+					value = dh.valueOf (application, bindingSpec);
+					application.logger ().debug (ButtonFactory.class.getSimpleName (), "Binding." + binding + Lang.ARRAY_OPEN + spec.id () + Lang.SPACE + view.getId () + Lang.ARRAY_CLOSE + Lang.EQUALS + value);
+				}
 				if (value == null) {
 					button.setText (DefaultText);
 					return;

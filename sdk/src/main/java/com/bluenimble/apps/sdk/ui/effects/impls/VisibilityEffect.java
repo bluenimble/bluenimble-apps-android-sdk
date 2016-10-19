@@ -34,7 +34,7 @@ public abstract class VisibilityEffect implements Effect {
 			return;
 		}
 		
-		String [] uis = Lang.split (list, Lang.COMMA, true);
+		String [] uis = Lang.split (list, Lang.SPACE, true);
 		
 		for (String ui : uis) {
 			String componentId = null; 

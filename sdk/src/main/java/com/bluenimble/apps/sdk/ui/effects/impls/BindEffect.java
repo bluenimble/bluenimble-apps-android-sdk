@@ -51,7 +51,7 @@ public class BindEffect implements Effect {
 			return;
 		}
 		
-		String [] uis = Lang.split (list, Lang.COMMA, true);
+		String [] uis = Lang.split (list, Lang.SPACE, true);
 		Set<String> sUis = new HashSet<String>(Arrays.asList (uis));
 		
 		if (sUis.contains (Lang.STAR)) {

@@ -1,5 +1,7 @@
 package com.bluenimble.apps.sdk.spec.impls.json;
 
+import android.util.Log;
+
 import com.bluenimble.apps.sdk.Json;
 import com.bluenimble.apps.sdk.Lang;
 import com.bluenimble.apps.sdk.Spec;
@@ -45,8 +47,8 @@ public class JsonComponentSpec extends JsonEventAwareSpec implements ComponentSp
 		bindingSet 	= binding (oBinding, Spec.page.layer.component.binding.Set);
 		bindingGet 	= binding (oBinding, Spec.page.layer.component.binding.Get);
 		
-		String [] styles = Lang.split (Json.getString (spec, Spec.page.layer.component.Style), Lang.BLANK, true);
-		
+		String [] styles = Lang.split (Json.getString (spec, Spec.page.layer.component.Style), Lang.SPACE, true);
+
 		style = new JsonStyleSpec (application.theme (), Lang.add (new String [] { Lang.STAR, type (), id () }, styles));
 
 		if (LayerFactory.Id.equals (type ())) {

@@ -89,11 +89,12 @@ public class DefaultDataHolder implements DataHolder  {
 	}
 
 	@Override
-	public Object valueOf (ApplicationSpec applicationSpec, BindingSpec bindingSpec) {
+	public Object valueOf (ApplicationSpec application, BindingSpec bindingSpec) {
 		String source 		= bindingSpec.source ();
 		String [] property 	= bindingSpec.property ();
+		application.logger ().debug (DefaultDataHolder.class.getSimpleName (), "Source=" + source + ", property=" + Lang.join (property, Lang.DOT));
 		if (source == null || Namespace.Static.equals (source)) {
-			return applicationSpec.i18nProvider ().get (property, this);
+			return application.i18nProvider ().get (property, this);
 		}
 		return get (bindingSpec.source (), property);
 	}

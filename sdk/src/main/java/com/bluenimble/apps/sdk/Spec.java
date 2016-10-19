@@ -43,9 +43,7 @@ public interface Spec {
 			String Spec 		= "spec";
 			
 			String Global		= "global";
-			String Render		= "render";
-			String Template		= "template";
-			
+
 			interface component {
 				String Id 			= "id";
 				String Type 		= "type";
