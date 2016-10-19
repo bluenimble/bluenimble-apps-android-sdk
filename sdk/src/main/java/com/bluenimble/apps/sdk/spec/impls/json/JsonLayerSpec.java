@@ -32,14 +32,14 @@ public class JsonLayerSpec extends JsonEventAwareSpec implements LayerSpec {
 	protected 	JsonObject 	spec;
 	
 	private 	StyleSpec	style;
-	
+
 	private 	Map<String, Integer> 	componentsIds 	= new HashMap<String, Integer> ();
 	
 	private 	List<ComponentSpec>		components		= null;
 	
 	public JsonLayerSpec (String id, JsonObject spec, ApplicationSpec application) {
 		super (Json.getObject (spec, Spec.Events), id);
-		
+
 		this.id 	= id;
 		this.spec 	= spec;
 		if (this.spec == null || this.spec.isEmpty ()) {
@@ -180,9 +180,12 @@ public class JsonLayerSpec extends JsonEventAwareSpec implements LayerSpec {
 		if (style == null) {
 			return true;
 		}
+
+		boolean render = Json.getBoolean (spec, Spec.page.layer.Render, true);
+
 		String sRender = (String)style.get (StyleSpec.Render);
 		if (Lang.isNullOrEmpty (sRender)) {
-			return true;
+			return render;
 		}
 		return Lang.TrueValues.contains (sRender.toLowerCase ());
 	}

@@ -64,7 +64,15 @@ public class JsonPageSpec extends JsonEventAwareSpec implements PageSpec {
 		// create SpecLayer objects
 		Iterator<String> layers = oLayers.keys ();
 		while (layers.hasNext ()) {
-			String lyrId = layers.next ();
+			String lyrId = layers.next ().trim ();
+
+			boolean addRenderFalse = false;
+
+			if (lyrId.startsWith (Lang.XMARK)) {
+				lyrId = lyrId.substring (1).trim ();
+				addRenderFalse = true;
+			}
+
 			JsonObject oLayer = null;
 			Object o = oLayers.get (lyrId);
 			if (o instanceof JsonObject) {
@@ -76,6 +84,11 @@ public class JsonPageSpec extends JsonEventAwareSpec implements PageSpec {
 			if (oLayer == null) {
 				oLayer = new JsonObject ();
 			}
+
+			if (addRenderFalse) {
+				oLayer.set (Spec.page.layer.Render, false);
+			}
+
 			addLayer (lyrId, oLayer, application);
 		}
 		

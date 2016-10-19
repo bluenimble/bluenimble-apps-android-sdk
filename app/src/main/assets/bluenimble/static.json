@@ -9,5 +9,28 @@
   },
   "images": {
     "logo": { "en": "" }
+  },
+  "pages": {
+    "layers": {
+      "title": { "en": "Layers" }
+    },
+    "forms": {
+      "title": { "en": "Forms" }
+    },
+    "tabs": {
+      "title": { "en": "Tabs" }
+    },
+    "lists": {
+      "title": { "en": "Lists" }
+    },
+    "content": {
+      "title": { "en": "Content" }
+    },
+    "charts": {
+      "title": { "en": "Charts" }
+    },
+    "maps": {
+      "title": { "en": "Maps" }
+    }
   }
 }

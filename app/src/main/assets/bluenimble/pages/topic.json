@@ -1,0 +1,10 @@
+{
+	"layers": {
+		"header": [
+			"text static.icons.back ? icon", "text app.icon ? icon", "text app.title ? title"
+		],
+		"main": [
+			"list static.menu ? template=main.menuTpl"
+		]
+	}
+}

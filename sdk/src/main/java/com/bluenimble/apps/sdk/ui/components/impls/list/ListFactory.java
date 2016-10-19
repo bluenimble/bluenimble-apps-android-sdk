@@ -13,8 +13,10 @@ import com.bluenimble.apps.sdk.ui.components.AbstractComponentFactory;
 import com.bluenimble.apps.sdk.ui.components.impls.dropdown.DefaultDropDownAdapter;
 import com.bluenimble.apps.sdk.ui.components.impls.listeners.EventListener;
 import com.bluenimble.apps.sdk.ui.components.impls.listeners.OnRadioSelectedListenerImpl;
+import com.google.android.gms.vision.text.Line;
 
 import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -33,6 +35,12 @@ public class ListFactory extends AbstractComponentFactory {
 	interface Custom {
 		String Template 	= "template";
 		String Namespace 	= "recordNs";
+		String Layout 		= "layout";
+	}
+
+	interface Layouts {
+		String Linear 		= "linear";
+		String Grid 		= "grid";
 	}
 
 	public ListFactory () {
@@ -56,8 +64,20 @@ public class ListFactory extends AbstractComponentFactory {
 		}
 
 		// set the adapter
-		// should review
-		RecyclerView.LayoutManager layoutManager = new LinearLayoutManager (activity);
+
+		String layout = (String)spec.get (Custom.Layout);
+		if (Lang.isNullOrEmpty (layout)) {
+			layout = Layouts.Linear;
+		}
+
+		RecyclerView.LayoutManager layoutManager = null;
+
+		if (layout.equals (Layouts.Linear)) {
+			layoutManager = new LinearLayoutManager (activity);
+		} else if (layout.equals (Layouts.Grid)) {
+			layoutManager = new CardLayoutManager (activity);
+		}
+
 		list.setLayoutManager (layoutManager);
 
 		// set the item animator

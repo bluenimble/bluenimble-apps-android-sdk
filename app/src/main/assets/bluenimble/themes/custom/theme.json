@@ -43,8 +43,11 @@
       "background": { "color": "#FFFFFF" }
     },
 
-    "menuItem": {
-      "render": "false"
+    "menuTpl": {
+      "size": {
+        "width": 200,
+        "height": 200
+      }
     }
 
   }
