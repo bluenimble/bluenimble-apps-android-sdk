@@ -19,6 +19,7 @@ import com.bluenimble.apps.sdk.ui.renderer.impls.DefaultRenderer.LifeCycleEvent;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.view.View;
 
 public class RenderEffect implements Effect {
 
@@ -32,7 +33,7 @@ public class RenderEffect implements Effect {
 	}
 
 	@Override
-	public void apply (UIActivity activity, ApplicationSpec application, PageSpec page, Object spec, DataHolder dh) {
+	public void apply (UIActivity activity, ApplicationSpec application, PageSpec page, Object spec, View origin, DataHolder dh) {
 		
 		if (spec == null || !(spec instanceof String)) {
 			return;

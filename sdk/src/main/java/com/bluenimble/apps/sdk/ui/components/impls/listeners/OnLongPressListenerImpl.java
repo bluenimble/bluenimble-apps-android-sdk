@@ -17,6 +17,7 @@ public class OnLongPressListenerImpl extends EventListener implements OnLongClic
 
 	@Override
 	public boolean onLongClick (View view) {
+		markAsSelected (view);
 		ActionProcessor.process (event.name (), eventSpec, (UIActivity)view.getContext (), view, null);
 		return true;
 	}

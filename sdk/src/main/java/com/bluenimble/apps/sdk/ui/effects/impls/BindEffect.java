@@ -1,5 +1,7 @@
 package com.bluenimble.apps.sdk.ui.effects.impls;
 
+import android.view.View;
+
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
@@ -35,7 +37,7 @@ public class BindEffect implements Effect {
 	}
 
 	@Override
-	public void apply (UIActivity activity, ApplicationSpec application, PageSpec page, Object spec, DataHolder dh) {
+	public void apply (UIActivity activity, ApplicationSpec application, PageSpec page, Object spec, View origin, DataHolder dh) {
 		
 		if (spec == null || !(spec instanceof String)) {
 			return;

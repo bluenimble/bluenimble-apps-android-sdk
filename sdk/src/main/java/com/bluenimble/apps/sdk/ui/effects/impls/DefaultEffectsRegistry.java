@@ -22,6 +22,9 @@ public class DefaultEffectsRegistry implements EffectsRegistry {
 		register (new RelocateEffect ());
 		register (new RenderEffect ());
 		register (new AnimateEffect ());
+		register (new SelectEffect ());
+		register (new UndoEffect ());
+		register (new DeleteEffect ());
 	}
 	
 	@Override

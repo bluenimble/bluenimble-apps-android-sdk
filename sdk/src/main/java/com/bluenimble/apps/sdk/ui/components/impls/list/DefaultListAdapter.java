@@ -5,10 +5,12 @@ import com.bluenimble.apps.sdk.Lang;
 import com.bluenimble.apps.sdk.application.UIActivity;
 import com.bluenimble.apps.sdk.controller.DataHolder;
 import com.bluenimble.apps.sdk.controller.impls.data.DefaultDataHolder;
+import com.bluenimble.apps.sdk.controller.impls.data.InternalDataHolder;
 import com.bluenimble.apps.sdk.json.JsonArray;
 import com.bluenimble.apps.sdk.json.JsonObject;
 import com.bluenimble.apps.sdk.spec.ComponentSpec;
 import com.bluenimble.apps.sdk.spec.LayerSpec;
+import com.bluenimble.apps.sdk.ui.components.impls.listeners.EventListener;
 import com.bluenimble.apps.sdk.utils.BindingHelper;
 import com.bluenimble.apps.sdk.utils.SpecHelper;
 
@@ -17,8 +19,10 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Set;
 
 /**
  Multi Template spec
@@ -60,8 +64,12 @@ public class DefaultListAdapter extends RecyclerView.Adapter<DefaultListAdapter.
 	protected Map<Integer, String>		viewTypesByIndex 	= new HashMap<Integer, String> ();
 
 	protected String []					property;
+
+	protected Set<Integer> 				selected;
+
+	protected boolean 					multiSelect;
 	
-	public DefaultListAdapter (UIActivity activity, ComponentSpec component, String recordNs) {
+	public DefaultListAdapter (UIActivity activity, ComponentSpec component, String recordNs, boolean multiSelect) {
 		this.activity 		= activity;
 		this.recordNs		= recordNs;
 		this.one 			= new DefaultDataHolder ();
@@ -110,7 +118,7 @@ public class DefaultListAdapter extends RecyclerView.Adapter<DefaultListAdapter.
 		this.records = records;
 	}
 
-	JsonArray getRecords () {
+	public JsonArray getRecords () {
 		return records;
 	}
 
@@ -145,13 +153,51 @@ public class DefaultListAdapter extends RecyclerView.Adapter<DefaultListAdapter.
 		return position;
 	}
 
+	public void select (int position) {
+		if (selected == null) {
+			selected = new HashSet<Integer>();
+		}
+		if (!multiSelect) {
+			selected.clear ();
+		}
+		selected.add (position);
+	}
+
+	public void clearSelected () {
+		if (selected == null) {
+			return;
+		}
+		selected.clear ();
+	}
+
+	public void deleteSelected () {
+		if (selected == null || selected.isEmpty ()) {
+			return;
+		}
+
+		if (records == null || records.isEmpty ()) {
+			return;
+		}
+
+		for (Integer position : selected) {
+			records.remove (position);
+		}
+
+		// change the UI
+		notifyDataSetChanged ();
+	}
+
+	public Set<Integer> selected () {
+		return selected;
+	}
+
 	@Override
 	public GenericViewHolder onCreateViewHolder (ViewGroup group, int itemViewType) {
 
 		String template = viewTypesByIndex.get (itemViewType);
 
 		return new GenericViewHolder (
-			activity.getSpec ().renderer ().render (activity.getSpec (), templates.get (template), null /* DataHolder in here */, group, activity),
+			activity.getSpec ().renderer ().render (activity.getSpec (), templates.get (template), InternalDataHolder.Instance, group, activity),
 			group,
 			template
 		);
@@ -172,9 +218,9 @@ public class DefaultListAdapter extends RecyclerView.Adapter<DefaultListAdapter.
 		ViewGroup 	group;
 		public GenericViewHolder (View view, ViewGroup group, String template) {
             super (view);
-			view.setTag (null);
 			this.group = group;
 			this.template = template;
+			view.setTag (EventListener.Selected, 	getAdapterPosition ());
         }
     }
 }

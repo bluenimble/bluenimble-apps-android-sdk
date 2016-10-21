@@ -1,9 +1,11 @@
 package com.bluenimble.apps.sdk.application;
 
+import com.bluenimble.apps.sdk.Lang;
 import com.bluenimble.apps.sdk.controller.DataHolder;
 import com.bluenimble.apps.sdk.json.JsonObject;
 import com.bluenimble.apps.sdk.spec.ApplicationSpec;
 import com.bluenimble.apps.sdk.spec.LayerSpec;
+import com.bluenimble.apps.sdk.ui.components.impls.listeners.EventListener;
 import com.bluenimble.apps.sdk.utils.SpecHelper;
 
 import android.support.v4.app.Fragment;
@@ -11,6 +13,9 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import java.util.HashSet;
+import java.util.Set;
 
 public class UILayer extends Fragment {
 		
@@ -55,7 +60,7 @@ public class UILayer extends Fragment {
 		UIActivity activity = (UIActivity)getActivity ();
 		ApplicationSpec application = ((UIApplication)activity.getApplication ()).getSpec ();
 
-		SpecHelper.fireCreateEvent (layer, activity, activity.root (), dh);
+		SpecHelper.fireCreateEvent (layer, layer.id (), activity, activity.root (), true, dh);
 
     }
 	

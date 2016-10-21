@@ -7,6 +7,7 @@ import com.bluenimble.apps.sdk.spec.ApplicationSpec;
 import com.bluenimble.apps.sdk.spec.PageSpec;
 import com.bluenimble.apps.sdk.ui.renderer.ViewResolver;
 import com.bluenimble.apps.sdk.ui.renderer.impls.DefaultRenderer.LifeCycleEvent;
+import com.bluenimble.apps.sdk.utils.SpecHelper;
 
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -16,6 +17,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewParent;
 import android.view.Window;
 import android.widget.RelativeLayout;
 
@@ -26,6 +28,7 @@ public class UIActivity extends AppCompatActivity implements ViewResolver {
 	}
 	
 	protected ViewGroup root;
+	protected boolean 	resumed;
 	
 	@Override
 	protected void onCreate (Bundle state) {
@@ -91,6 +94,18 @@ public class UIActivity extends AppCompatActivity implements ViewResolver {
 	}
 
 	@Override
+	protected void onResume () {
+		super.onResume ();
+
+		if (!resumed) {
+			PageSpec page = getSpec ().renderer ().current ();
+			SpecHelper.fireCreateEvent (page, page.id (), this, root (), false, null);
+			resumed = true;
+		}
+
+	}
+
+	@Override
 	public void onConfigurationChanged (Configuration config) {
 		super.onConfigurationChanged (config);
 		
@@ -107,9 +122,27 @@ public class UIActivity extends AppCompatActivity implements ViewResolver {
 	public View layer (String layerId) {
 		return root.findViewWithTag (layerId);
 	}
+
 	@Override
 	public View component (String layerId, String componentId) {
 		return root.findViewWithTag (layerId + Lang.DOT + componentId);
+	}
+
+	public View parent (int tagKey, View view) {
+		if (view == null) {
+			return null;
+		}
+		View current = view;
+		while (true) {
+			current = (View)current.getParent ();
+			if (root ().equals (current)) {
+				return null;
+			}
+			Object o = current.getTag (tagKey);
+			if (o != null) {
+				return current;
+			}
+		}
 	}
 
 	public ApplicationSpec getSpec () {

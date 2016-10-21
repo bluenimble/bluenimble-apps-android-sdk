@@ -8,6 +8,8 @@ import com.bluenimble.apps.sdk.spec.ApplicationSpec;
 import com.bluenimble.apps.sdk.spec.BindingSpec;
 
 public interface DataHolder extends VariableResolver, Serializable {
+
+	public static final
 	
 	String Code 			= "code";
 	String Message 			= "message";
@@ -16,10 +18,17 @@ public interface DataHolder extends VariableResolver, Serializable {
 
 	interface Namespace {
 		String Error 	= "error";
+
 		String App 		= "app";
 		String Static 	= "static";
 		String Device 	= "device";
+		String Internal = "$INTERNAL";
+
 		String Streams 	= "streams";
+	}
+
+	interface Internal {
+		String NoTag = "noTag";
 	}
 	
 	Exception 		exception 	();

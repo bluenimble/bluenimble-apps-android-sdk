@@ -1,6 +1,8 @@
 package com.bluenimble.apps.sdk.ui.renderer.impls;
 
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Set;
 
 import com.bluenimble.apps.sdk.Lang;
 import com.bluenimble.apps.sdk.application.UIActivity;
@@ -15,6 +17,9 @@ import com.bluenimble.apps.sdk.spec.LayerSpec;
 import com.bluenimble.apps.sdk.spec.PageSpec;
 import com.bluenimble.apps.sdk.ui.components.ComponentFactory;
 import com.bluenimble.apps.sdk.ui.components.ComponentsRegistry;
+import com.bluenimble.apps.sdk.ui.components.impls.listeners.EventListener;
+import com.bluenimble.apps.sdk.ui.components.impls.listeners.OnLongPressListenerImpl;
+import com.bluenimble.apps.sdk.ui.components.impls.listeners.OnPressListenerImpl;
 import com.bluenimble.apps.sdk.ui.renderer.Renderer;
 
 import android.support.v4.app.Fragment;
@@ -29,7 +34,13 @@ import android.widget.RelativeLayout;
 public class DefaultRenderer implements Renderer {
 
 	private static final long serialVersionUID = -2346102131987611711L;
-	
+
+	protected static final Set<String> LayerEvents = new HashSet<String>();
+	static {
+		LayerEvents.add (EventListener.Event.press.name ());
+		LayerEvents.add (EventListener.Event.longPress.name ());
+	}
+
 	public enum LifeCycleEvent {
 		create,
 		destroy,
@@ -55,14 +66,16 @@ public class DefaultRenderer implements Renderer {
 			// each layer is a fragment having using a linear layout
 		
 		this.page = page;
-		
+
 		Iterator<String> layers = page.layers ();
 		while (layers.hasNext ()) {
 			String lyrId = layers.next ();
 			LayerSpec layer = page.layer (lyrId);
+
 			if (!layer.isRendered ()) {
 				continue;
 			}
+
 			Fragment f = UILayer.create (page.layer (lyrId), null);
 			transaction.add (activity.root ().getId (), f, lyrId);
 		}
@@ -97,9 +110,11 @@ public class DefaultRenderer implements Renderer {
 		if (layer.style () != null) {
 			layer.style ().apply (layer, layout, container);
 		}
-		
-		layout.setTag (layer.id ());
-		
+
+		if (dh == null || dh.get (DataHolder.Internal.NoTag) == null) {
+			layout.setTag (layer.id ());
+		}
+
 		if (layer.count () == 0) {
 			return layout;
 		}
@@ -150,7 +165,11 @@ public class DefaultRenderer implements Renderer {
 			
 			// set the id of the component as the tag of the view "layerId.componentId"
 			if (view != null && spec.id () != null) {
-				view.setTag (layer.id () + Lang.DOT + spec.id ());
+				if (dh == null || dh.get (DataHolder.Internal.NoTag) == null) {
+					view.setTag (layer.id () + Lang.DOT + spec.id ());
+				} else {
+					view.setTag (spec.id ());
+				}
 			}
 			
 			// add component to the layer 
@@ -165,7 +184,7 @@ public class DefaultRenderer implements Renderer {
 			);
 
 			// attach component events
-			addEvents  (application, spec, factory, view, activity);
+			addComponentEvents  (application, spec, factory, view, activity);
 			
 			// back to new line
 			if (type.equals (ComponentsRegistry.Default.Break)) {
@@ -175,12 +194,40 @@ public class DefaultRenderer implements Renderer {
 				layout.addView (relativeLayout);
 			}
 		}
+
+		// add UI events (press, longpress)
+		addLayerEvents (layer, layout);
 		
 		return layout;
 		
 	}
-	
-	private void addEvents (ApplicationSpec application, ComponentSpec spec, ComponentFactory factory, View view, UIActivity activity) {
+
+	private void addLayerEvents (LayerSpec layer, View view) {
+		Iterator<String> events = layer.events ();
+		if (events == null) {
+			return;
+		}
+		while (events.hasNext ()) {
+			String eventName = events.next ();
+			if (!LayerEvents.contains (eventName)) {
+				continue;
+			}
+
+			EventListener.Event event = EventListener.Event.valueOf (eventName);
+			switch (event) {
+				case press:
+					view.setOnClickListener (new OnPressListenerImpl (event, layer.event (eventName)));
+					break;
+				case longPress:
+					view.setOnLongClickListener (new OnLongPressListenerImpl (event, layer.event (eventName)));
+					break;
+				default:
+					break;
+			}
+		}
+	}
+
+	private void addComponentEvents (ApplicationSpec application, ComponentSpec spec, ComponentFactory factory, View view, UIActivity activity) {
 		Iterator<String> events = spec.events ();
 		if (events == null) {
 			return;

@@ -39,12 +39,15 @@ public class BindingHelper {
         ViewResolver vr = new ViewResolver () {
             @Override
             public View layer (String id) {
-                return fLayerView.findViewWithTag (id);
+                // layers can't contain others layers
+                return null;
             }
 
             @Override
             public View component (String layerId, String componentId) {
-                return fLayerView.findViewWithTag (layerId + Lang.DOT + componentId);
+				// components added to layers serving as templates should be locked up using only their direct id
+				// supposed to use an InternalDataHolder with NoTag set
+                return fLayerView.findViewWithTag (componentId);
             }
         };
         for (int i = 0; i < layer.count (); i++) {

@@ -1,5 +1,6 @@
 package com.bluenimble.apps.sdk.ui.components.impls.list;
 
+import com.bluenimble.apps.sdk.Json;
 import com.bluenimble.apps.sdk.Lang;
 import com.bluenimble.apps.sdk.application.UIActivity;
 import com.bluenimble.apps.sdk.controller.DataHolder;
@@ -12,6 +13,11 @@ import com.bluenimble.apps.sdk.spec.LayerSpec;
 import com.bluenimble.apps.sdk.ui.components.AbstractComponentFactory;
 import com.bluenimble.apps.sdk.ui.components.impls.dropdown.DefaultDropDownAdapter;
 import com.bluenimble.apps.sdk.ui.components.impls.listeners.EventListener;
+import com.bluenimble.apps.sdk.ui.components.impls.listeners.OnMapDragListenerImpl;
+import com.bluenimble.apps.sdk.ui.components.impls.listeners.OnMapLongPressListenerImpl;
+import com.bluenimble.apps.sdk.ui.components.impls.listeners.OnMapPressListenerImpl;
+import com.bluenimble.apps.sdk.ui.components.impls.listeners.OnMarkerDragListenerImpl;
+import com.bluenimble.apps.sdk.ui.components.impls.listeners.OnMarkerPressListenerImpl;
 import com.bluenimble.apps.sdk.ui.components.impls.listeners.OnRadioSelectedListenerImpl;
 import com.google.android.gms.vision.text.Line;
 
@@ -21,8 +27,11 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.RadioGroup;
+
+import java.util.Set;
 
 public class ListFactory extends AbstractComponentFactory {
 
@@ -36,6 +45,8 @@ public class ListFactory extends AbstractComponentFactory {
 		String Template 	= "template";
 		String Namespace 	= "recordNs";
 		String Layout 		= "layout";
+		String Columns 		= "cols";
+		String MultiSelect 	= "multiSelect";
 	}
 
 	interface Layouts {
@@ -44,9 +55,8 @@ public class ListFactory extends AbstractComponentFactory {
 	}
 
 	public ListFactory () {
-		supportEvent (EventListener.Event.press);
-		supportEvent (EventListener.Event.longPress);
 		supportEvent (EventListener.Event.swipe);
+		supportEvent (EventListener.Event.scroll);
 	}
 
 	@Override
@@ -63,6 +73,9 @@ public class ListFactory extends AbstractComponentFactory {
 			recordNs = DefaultRecordNs;
 		}
 
+		String sMultiSelect = (String)spec.get (Custom.MultiSelect);
+		boolean multiSelect = !Lang.isNullOrEmpty (sMultiSelect) && Lang.TrueValues.contains (sMultiSelect.trim ());
+
 		// set the adapter
 
 		String layout = (String)spec.get (Custom.Layout);
@@ -75,7 +88,16 @@ public class ListFactory extends AbstractComponentFactory {
 		if (layout.equals (Layouts.Linear)) {
 			layoutManager = new LinearLayoutManager (activity);
 		} else if (layout.equals (Layouts.Grid)) {
-			layoutManager = new CardLayoutManager (activity);
+			int columns = 2;
+			Object oColumns = spec.get (Custom.Columns);
+			if (oColumns != null) {
+				try {
+					columns = Integer.valueOf (String.valueOf (oColumns));
+				} catch (Exception ex) {
+					// ignore default to 2 columns
+				}
+			}
+			layoutManager = new GridLayoutManager (activity, columns);
 		}
 
 		list.setLayoutManager (layoutManager);
@@ -85,7 +107,7 @@ public class ListFactory extends AbstractComponentFactory {
 		list.setItemAnimator (new DefaultItemAnimator ());
 
 		// set the adapter
-		list.setAdapter (new DefaultListAdapter (activity, spec, recordNs));
+		list.setAdapter (new DefaultListAdapter (activity, spec, recordNs, multiSelect));
 
 		return applyStyle (group, list, spec);
 	}
@@ -106,12 +128,13 @@ public class ListFactory extends AbstractComponentFactory {
 		String [] property = bindingSpec.property ();
 		
 		RecyclerView list = (RecyclerView)view;
-		
+
+		DefaultListAdapter adapter = (DefaultListAdapter)list.getAdapter ();
+
 		switch (binding) {
 			case Set:
 				// adapter shouldn't be created in here, because the bind method could be called through an event to populate data
 				// load data in Adapter
-				DefaultListAdapter adapter = (DefaultListAdapter)list.getAdapter ();
 
 				if (dh == null) {
 					adapter.load (null);
@@ -142,7 +165,16 @@ public class ListFactory extends AbstractComponentFactory {
 
 				break;
 			case Get:
-				
+				// get the selected, bind the record
+				Set<Integer> selected = adapter.selected ();
+				if (selected == null || selected.isEmpty ()) {
+					return;
+				}
+				JsonArray array = new JsonArray ();
+				for (Integer position : selected) {
+					array.add (adapter.getRecords ().get (position));
+				}
+				Json.set ((JsonObject)dh.get (bindingSpec.source ()), array, property);
 				break;
 			default:
 				break;
@@ -164,9 +196,15 @@ public class ListFactory extends AbstractComponentFactory {
 
 		RecyclerView list = (RecyclerView)view;
 
-		// register press, longpress and swipe
-
-		// list.setOnCheckedChangeListener (new OnRadioSelectedListenerImpl (EventListener.Event.select, eventSpec));
+		EventListener.Event event = EventListener.Event.valueOf (eventName);
+		switch (event) {
+			case swipe:
+				break;
+			case scroll:
+				break;
+			default:
+				break;
+		}
 
 	}
 	

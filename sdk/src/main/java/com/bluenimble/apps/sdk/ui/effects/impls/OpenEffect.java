@@ -1,5 +1,7 @@
 package com.bluenimble.apps.sdk.ui.effects.impls;
 
+import android.view.View;
+
 import com.bluenimble.apps.sdk.application.UIActivity;
 import com.bluenimble.apps.sdk.controller.DataHolder;
 import com.bluenimble.apps.sdk.spec.ApplicationSpec;
@@ -18,7 +20,7 @@ public class OpenEffect implements Effect {
 	}
 
 	@Override
-	public void apply (UIActivity activity, ApplicationSpec application, PageSpec page, Object spec, DataHolder dh) {
+	public void apply (UIActivity activity, ApplicationSpec application, PageSpec page, Object spec, View origin, DataHolder dh) {
 		
 		//Intent intent = new Intent (this, TheNewActivity.class);
 		

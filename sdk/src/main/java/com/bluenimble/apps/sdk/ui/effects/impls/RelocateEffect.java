@@ -36,7 +36,7 @@ public class RelocateEffect implements Effect {
 	 **/
 			
 	@Override
-	public void apply (UIActivity activity, ApplicationSpec application, PageSpec page, Object spec, DataHolder dh) {
+	public void apply (UIActivity activity, ApplicationSpec application, PageSpec page, Object spec, View origin, DataHolder dh) {
 		
 		if (spec == null || !(spec instanceof String)) {
 			return;
