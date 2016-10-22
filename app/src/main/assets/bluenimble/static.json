@@ -10,27 +10,24 @@
   "images": {
     "logo": { "en": "" }
   },
-  "pages": {
-    "layers": {
-      "title": { "en": "Layers" }
-    },
-    "forms": {
-      "title": { "en": "Forms" }
-    },
-    "tabs": {
-      "title": { "en": "Tabs" }
-    },
-    "lists": {
-      "title": { "en": "Lists" }
-    },
-    "content": {
-      "title": { "en": "Content" }
-    },
-    "charts": {
-      "title": { "en": "Charts" }
-    },
-    "maps": {
-      "title": { "en": "Maps" }
-    }
+  "menu": {
+    "en": [{
+      "title": "Layers", "icon": "\uf0ca",
+      "examples": [{
+        "page": "header-main"
+      }]
+    }, {
+      "title": "Forms", "icon": "\uf0ca"
+    }, {
+      "title": "Tabs", "icon": "\uf0ca"
+    }, {
+      "title": "Lists", "icon": "\uf0ca"
+    }, {
+      "title": "Content", "icon": "\uf0ca"
+    }, {
+      "title": "Charts", "icon": "\uf0ca"
+    }, {
+      "title": "Maps", "icon": "\uf0ca"
+    }]
   }
 }
