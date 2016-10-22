@@ -2,6 +2,7 @@ package com.bluenimble.apps.sdk.ui.effects.impls;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.Toast;
 
 import com.bluenimble.apps.sdk.Lang;
 import com.bluenimble.apps.sdk.application.UIActivity;
@@ -9,14 +10,13 @@ import com.bluenimble.apps.sdk.controller.DataHolder;
 import com.bluenimble.apps.sdk.spec.ApplicationSpec;
 import com.bluenimble.apps.sdk.spec.PageSpec;
 import com.bluenimble.apps.sdk.ui.components.impls.list.DefaultListAdapter;
-import com.bluenimble.apps.sdk.ui.components.impls.listeners.EventListener;
 import com.bluenimble.apps.sdk.ui.effects.Effect;
 
-public class SelectEffect implements Effect {
+public class EchoEffect implements Effect {
 
 	private static final long serialVersionUID = 3783743185246914342L;
 	
-	private static final String Id = "select";
+	private static final String Id = "echo";
 
 	@Override
 	public String id () {
@@ -26,18 +26,25 @@ public class SelectEffect implements Effect {
 	@Override
 	public void apply (UIActivity activity, ApplicationSpec application, PageSpec page, Object spec, View origin, DataHolder dh) {
 		
-		// this effect is applicable only if origin ( the event trigger ) view is part of a record of a RecyclerView
-
-		View vRecord = activity.ancestor (origin, RecyclerView.class, true);
-		if (vRecord == null) {
+		if (spec == null || !(spec instanceof String)) {
 			return;
 		}
 
-		RecyclerView list = (RecyclerView)vRecord.getParent ();
+		Object message = null;
 
-		DefaultListAdapter adapter = (DefaultListAdapter)list.getAdapter ();
+		String key = (String)spec;
 
-		adapter.select (list.getLayoutManager ().getPosition (vRecord));
+		int indexOfDot = key.indexOf (Lang.DOT);
+
+		if (indexOfDot > 0) {
+			message = dh.get (key.substring (0, indexOfDot), key.substring (indexOfDot + 1));
+		}
+
+		if (message == null) {
+			message = key;
+		}
+
+		Toast.makeText (activity, message.toString (), Toast.LENGTH_SHORT).show ();
 
 	}
 

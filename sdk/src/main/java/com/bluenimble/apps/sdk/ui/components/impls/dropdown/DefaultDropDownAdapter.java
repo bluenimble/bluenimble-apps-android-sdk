@@ -8,13 +8,15 @@ import com.bluenimble.apps.sdk.json.JsonObject;
 import com.bluenimble.apps.sdk.spec.ApplicationSpec;
 import com.bluenimble.apps.sdk.spec.ComponentSpec;
 import com.bluenimble.apps.sdk.spec.LayerSpec;
-import com.bluenimble.apps.sdk.utils.SpecHelper;
+import com.bluenimble.apps.sdk.utils.BindingHelper;
 
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 
 public class DefaultDropDownAdapter extends ArrayAdapter<DataHolder> {
+
+	private static final String LogTag = DefaultDropDownAdapter.class.getSimpleName ();
 
 	interface DefaultRecord {
 		String Id 		= "id";
@@ -90,7 +92,12 @@ public class DefaultDropDownAdapter extends ArrayAdapter<DataHolder> {
 		}
 
 		// binding data and any other additional effects
-		SpecHelper.fireCreateEvent (template, activity, parent, dh);
+		BindingHelper.bindLayer (
+				LogTag,
+				activity.getSpec (),
+				template, convertView, one.set (recordNs, (JsonObject) records.get (position)),
+				true
+		);
 
 		return convertView;
 	}

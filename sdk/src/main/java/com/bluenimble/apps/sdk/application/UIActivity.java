@@ -128,18 +128,22 @@ public class UIActivity extends AppCompatActivity implements ViewResolver {
 		return root.findViewWithTag (layerId + Lang.DOT + componentId);
 	}
 
-	public View parent (int tagKey, View view) {
+	public View ancestor (View view, Class clazz, boolean levelDown) {
 		if (view == null) {
 			return null;
 		}
+		View vLevelDown = null;
 		View current = view;
 		while (true) {
+			vLevelDown = current;
 			current = (View)current.getParent ();
 			if (root ().equals (current)) {
 				return null;
 			}
-			Object o = current.getTag (tagKey);
-			if (o != null) {
+			if (current.getClass ().equals (clazz)) {
+				if (levelDown) {
+					return vLevelDown;
+				}
 				return current;
 			}
 		}

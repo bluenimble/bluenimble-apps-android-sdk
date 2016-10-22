@@ -15,16 +15,23 @@ public class DefaultEffectsRegistry implements EffectsRegistry {
 	public DefaultEffectsRegistry () {
 		register (new BindEffect ());
 		register (new UnbindEffect ());
+
 		register (new GoToEffect ());
+		register (new OpenEffect ());
+
 		register (new HideEffect ());
 		register (new ShowEffect ());
-		register (new OpenEffect ());
+
 		register (new RelocateEffect ());
 		register (new RenderEffect ());
+
 		register (new AnimateEffect ());
+
 		register (new SelectEffect ());
 		register (new UndoEffect ());
 		register (new DeleteEffect ());
+
+		register (new EchoEffect ());
 	}
 	
 	@Override

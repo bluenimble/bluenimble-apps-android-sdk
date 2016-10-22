@@ -13,10 +13,6 @@ public class EventListener implements Serializable {
 
 	private static final long serialVersionUID = 6926039907807796916L;
 
-	public static final int Selected 	= 1000;
-	public static final int Parent 		= 2000;
-	public static final int Type 		= 3000;
-
 	public enum Event {
 		onTextChanged,
 		beforeTextChanged,
@@ -48,18 +44,15 @@ public class EventListener implements Serializable {
 	}
 
 	protected void markAsSelected (View view) {
-		// check if this is a grid record
-		Integer position = (Integer)view.getTag (EventListener.Selected);
-		if (position == null || position == RecyclerView.NO_POSITION) {
-			return;
-		}
-
 		// get the adapter and set selected
 		ViewParent parent = view.getParent ();
-		if (parent != null && parent instanceof RecyclerView) {
-			RecyclerView list = (RecyclerView)parent;
-			((DefaultListAdapter)list.getAdapter ()).select (position);
+		if (parent == null || !(parent instanceof RecyclerView)) {
+			return;
 		}
+		RecyclerView list = (RecyclerView)parent;
+		((DefaultListAdapter)list.getAdapter ()).select (
+				list.getLayoutManager ().getPosition (view)
+		);
 	}
 	
 }

@@ -180,11 +180,11 @@ public class DefaultListAdapter extends RecyclerView.Adapter<DefaultListAdapter.
 		}
 
 		for (Integer position : selected) {
+			// remove from data
 			records.remove (position);
+			// remove views
+			notifyItemRemoved (position);
 		}
-
-		// change the UI
-		notifyDataSetChanged ();
 	}
 
 	public Set<Integer> selected () {
@@ -220,7 +220,6 @@ public class DefaultListAdapter extends RecyclerView.Adapter<DefaultListAdapter.
             super (view);
 			this.group = group;
 			this.template = template;
-			view.setTag (EventListener.Selected, 	getAdapterPosition ());
         }
     }
 }
