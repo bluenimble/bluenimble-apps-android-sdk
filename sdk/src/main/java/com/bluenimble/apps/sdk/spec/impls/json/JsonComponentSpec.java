@@ -11,6 +11,7 @@ import com.bluenimble.apps.sdk.spec.ApplicationSpec;
 import com.bluenimble.apps.sdk.spec.BindingSpec;
 import com.bluenimble.apps.sdk.spec.ComponentSpec;
 import com.bluenimble.apps.sdk.spec.LayerSpec;
+import com.bluenimble.apps.sdk.spec.PageSpec;
 import com.bluenimble.apps.sdk.spec.StyleSpec;
 import com.bluenimble.apps.sdk.ui.components.ComponentsRegistry;
 import com.bluenimble.apps.sdk.ui.components.impls.generic.LayerFactory;
@@ -31,8 +32,14 @@ public class JsonComponentSpec extends JsonEventAwareSpec implements ComponentSp
 
 	protected LayerSpec 	layer;
 	
-	public JsonComponentSpec (JsonObject spec, String layerId, ApplicationSpec application) {
-		super (Json.getObject (spec, Spec.Events), layerId);
+	public JsonComponentSpec (JsonObject spec, String layerId, PageSpec page, ApplicationSpec application) {
+		super (
+			(Json.getString (spec, Spec.page.layer.component.Id) != null ?
+					layerId + Lang.DOT + Json.getString (spec, Spec.page.layer.component.Id)
+				: 	null
+			),
+			page, Json.getObject (spec, Spec.Events), layerId
+		);
 		this.spec = spec;
 		
 		id = Json.getString (spec, Spec.page.layer.component.Id);
@@ -52,7 +59,7 @@ public class JsonComponentSpec extends JsonEventAwareSpec implements ComponentSp
 		style = new JsonStyleSpec (application.theme (), Lang.add (new String [] { Lang.STAR, type (), id () }, styles));
 
 		if (LayerFactory.Id.equals (type ())) {
-			layer = new JsonLayerSpec (id, spec, application);
+			layer = new JsonLayerSpec (id, spec, page, application);
 		}
 		
 	}

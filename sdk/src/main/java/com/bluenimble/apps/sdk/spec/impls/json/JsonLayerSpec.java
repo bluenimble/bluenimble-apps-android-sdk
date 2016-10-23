@@ -37,8 +37,8 @@ public class JsonLayerSpec extends JsonEventAwareSpec implements LayerSpec {
 	
 	private 	List<ComponentSpec>		components		= null;
 	
-	public JsonLayerSpec (String id, JsonObject spec, ApplicationSpec application) {
-		super (Json.getObject (spec, Spec.Events), id);
+	public JsonLayerSpec (String id, JsonObject spec, PageSpec parentPage, ApplicationSpec application) {
+		super (id, parentPage, Json.getObject (spec, Spec.Events), id);
 
 		this.id 	= id;
 		this.spec 	= spec;
@@ -118,11 +118,11 @@ public class JsonLayerSpec extends JsonEventAwareSpec implements LayerSpec {
 				}
 			}
 
-			add (oComponent, i, application);
+			add (oComponent, i, parentPage, application);
 
 			// add break if declared at the component level
 			if (Json.getBoolean (oComponent, Spec.page.layer.component.Break, false)) {
-				add (Break, Integer.MAX_VALUE, application);
+				add (Break, Integer.MAX_VALUE, parentPage, application);
 			}
 		}
 	}
@@ -202,8 +202,8 @@ public class JsonLayerSpec extends JsonEventAwareSpec implements LayerSpec {
 		return spec;
 	}
 
-	private ComponentSpec add (JsonObject oComponent, int index, ApplicationSpec application) {
-		ComponentSpec component = new JsonComponentSpec (oComponent, id, application);
+	private ComponentSpec add (JsonObject oComponent, int index, PageSpec page, ApplicationSpec application) {
+		ComponentSpec component = new JsonComponentSpec (oComponent, id, page, application);
 		this.components.add (component);
 		if (!Lang.isNullOrEmpty (component.id ()) && index < Integer.MAX_VALUE) {
 			componentsIds.put (component.id (), index);

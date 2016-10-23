@@ -33,13 +33,13 @@ public class JsonPageSpec extends JsonEventAwareSpec implements PageSpec {
 	}
 	
 	public JsonPageSpec (String id, JsonObject spec, ApplicationSpec application) {
-		super (Json.getObject (spec, Spec.Events), Action.Scope.None);
+		super (id, null, Json.getObject (spec, Spec.Events), Action.Scope.None);
 
 		this.id = id;
 		
 		JsonObject oLayers = Json.getObject (spec, Spec.page.Layers);
 		
-		// check if it's a simplified page / no layers directly declaring its components
+		// check if it's a simplified page / no layers directly declaring components
 		JsonArray oComponents = Json.getArray (spec, Spec.page.layer.Components);
 		if (oComponents != null) {
 			if (oLayers == null) {
@@ -142,7 +142,7 @@ public class JsonPageSpec extends JsonEventAwareSpec implements PageSpec {
 		if (layers == null) {
 			layers = new HashMap<String, LayerSpec> ();
 		}
-		layers.put (id, new JsonLayerSpec (id, layer, application));
+		layers.put (id, new JsonLayerSpec (id, layer, this, application));
 	}
 
 }
