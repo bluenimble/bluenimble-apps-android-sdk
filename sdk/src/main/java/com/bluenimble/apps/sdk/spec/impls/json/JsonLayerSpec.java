@@ -16,6 +16,7 @@ import com.bluenimble.apps.sdk.spec.LayerSpec;
 import com.bluenimble.apps.sdk.spec.PageSpec;
 import com.bluenimble.apps.sdk.spec.StyleSpec;
 import com.bluenimble.apps.sdk.spec.ThemeSpec;
+import com.bluenimble.apps.sdk.ui.components.ComponentFactory;
 import com.bluenimble.apps.sdk.ui.components.ComponentsRegistry;
 import com.bluenimble.apps.sdk.ui.components.impls.generic.BreakFactory;
 import com.bluenimble.apps.sdk.ui.components.impls.generic.LayerFactory;
@@ -80,11 +81,19 @@ public class JsonLayerSpec extends JsonEventAwareSpec implements LayerSpec {
 
 			if (oComponent.containsKey (Spec.page.layer.Components)) {
 				oComponent.set 		(Spec.page.layer.component.Type, LayerFactory.Id);
-				oComponent.remove 	(Spec.page.layer.component.Ref);
 			}
 
-			String ref = Json.getString (oComponent, Spec.page.layer.component.Ref);
-			if (!Lang.isNullOrEmpty (ref)) {
+			// if ref another component
+			String type = Json.getString (oComponent, Spec.page.layer.component.Type);
+
+			String ref = null;
+
+			ComponentFactory factory = application.componentsRegistry ().lookup (type);
+			if (factory == null) {
+				ref = type;
+			}
+
+			if (ref != null) {
 				String [] tokens = Lang.split (ref, Lang.DOT, true);
 				if (tokens.length < 2) {
 					continue;
