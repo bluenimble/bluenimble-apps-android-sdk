@@ -38,14 +38,14 @@ public class ButtonFactory extends AbstractComponentFactory {
 	}
 	
 	@Override
-	public View create (UIActivity activity, ViewGroup group, LayerSpec layer, ComponentSpec spec) {
+	public View create (UIActivity activity, ViewGroup group, LayerSpec layer, ComponentSpec spec, DataHolder dh) {
 		
 		Button button = new Button (activity);
 		
 		// remove Uppercase transfo
 		button.setTransformationMethod (null);
 		
-		return applyStyle (group, button, spec);
+		return applyStyle (group, button, spec, dh);
 	}
 
 	@Override

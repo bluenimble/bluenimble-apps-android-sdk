@@ -42,7 +42,7 @@ public class DropDownFactory extends AbstractComponentFactory {
 	}
 	
 	@Override
-	public View create (UIActivity activity, ViewGroup group, LayerSpec layer, ComponentSpec spec) {
+	public View create (UIActivity activity, ViewGroup group, LayerSpec layer, ComponentSpec spec, DataHolder dh) {
 
 		Spinner dropdown = new Spinner (activity);
 
@@ -56,7 +56,7 @@ public class DropDownFactory extends AbstractComponentFactory {
 		DefaultDropDownAdapter adapter = new DefaultDropDownAdapter (activity, spec, template, recordNs);
 		dropdown.setAdapter (adapter);
 
-		return applyStyle (group, dropdown, spec);
+		return applyStyle (group, dropdown, spec, dh);
 	}
 
 	@Override

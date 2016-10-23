@@ -30,8 +30,9 @@ public class ActionProcessor implements Serializable {
 		if (action == null) {
 			action = Action.Default;
 		}
-		
-		action.execute (eventSpec, view, activity, dh);
+
+		// resolve all params in the event spec and call the action
+		action.execute ((JsonObject)Json.resolve (eventSpec.duplicate (), dh), view, activity, dh);
 	}
 	
 }

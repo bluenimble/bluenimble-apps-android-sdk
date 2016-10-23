@@ -34,7 +34,7 @@ public class GoToEffect implements Effect {
 			return;
 		}
 		
-		application.renderer ().render (nextPage, activity);
+		application.renderer ().render (nextPage, activity, dh);
 		
 	}
 

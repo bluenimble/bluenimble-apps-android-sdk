@@ -53,7 +53,7 @@ public class DefaultRenderer implements Renderer {
 	private PageSpec page;
 
 	@Override
-	public void render (PageSpec page, UIActivity activity) {
+	public void render (PageSpec page, UIActivity activity, DataHolder dh) {
 
 		// fragment manager transaction need to clear current layers and new news
 		FragmentManager manager = activity.getSupportFragmentManager ();
@@ -76,20 +76,14 @@ public class DefaultRenderer implements Renderer {
 				continue;
 			}
 
-			Fragment f = UILayer.create (page.layer (lyrId), null);
+			Fragment f = UILayer.create (page.layer (lyrId), dh);
 			transaction.add (activity.root ().getId (), f, lyrId);
 		}
 		
 		transaction.commit ();
 
-		// run page create event if any
-		JsonObject eventSpec = activity.getSpec ().renderer ().current ().event (LifeCycleEvent.create.name ());
-		if (eventSpec != null) {
-			ActionProcessor.process (LifeCycleEvent.create.name (), eventSpec, activity, activity.root (), null);
-		}
-
 		if (page.style () != null) {
-			page.style ().apply (page, activity.root (), null);
+			page.style ().apply (page, activity.root (), null, dh);
 		}
 		
 	}
@@ -108,7 +102,7 @@ public class DefaultRenderer implements Renderer {
 		}
 		
 		if (layer.style () != null) {
-			layer.style ().apply (layer, layout, container);
+			layer.style ().apply (layer, layout, container, dh);
 		}
 
 		if (dh == null || dh.get (DataHolder.Internal.NoTag) == null) {
@@ -161,7 +155,7 @@ public class DefaultRenderer implements Renderer {
 			}
 			
 			// create the component view
-			View view = factory.create (activity, relativeLayout, layer, spec);
+			View view = factory.create (activity, relativeLayout, layer, spec, dh);
 			
 			// set the id of the component as the tag of the view "layerId.componentId"
 			if (view != null && spec.id () != null) {

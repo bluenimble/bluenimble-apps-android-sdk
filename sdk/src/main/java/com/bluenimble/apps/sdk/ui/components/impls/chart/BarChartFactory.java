@@ -38,7 +38,7 @@ public class BarChartFactory extends ChartFactory {
 	}
 	
 	@Override
-	public View create (UIActivity activity, ViewGroup group, LayerSpec layer, ComponentSpec spec) {
+	public View create (UIActivity activity, ViewGroup group, LayerSpec layer, ComponentSpec spec, DataHolder dh) {
 		
 		style = (JsonObject)spec.style ().get (Style.bar.class.getSimpleName ());
 
@@ -61,7 +61,7 @@ public class BarChartFactory extends ChartFactory {
 		chart.setFitBars (Json.getBoolean (style, Style.bar.Fit, true));
 		
 		// apply global style
-		return applyStyle (group, chart, spec);
+		return applyStyle (group, chart, spec, dh);
 	}
 
 	/**

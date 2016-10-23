@@ -10,6 +10,7 @@ import com.bluenimble.apps.sdk.Json;
 import com.bluenimble.apps.sdk.Lang;
 import com.bluenimble.apps.sdk.application.UIActivity;
 import com.bluenimble.apps.sdk.application.UIApplication;
+import com.bluenimble.apps.sdk.controller.DataHolder;
 import com.bluenimble.apps.sdk.json.JsonObject;
 import com.bluenimble.apps.sdk.spec.ComponentSpec;
 import com.bluenimble.apps.sdk.spec.LayerSpec;
@@ -40,8 +41,6 @@ public class JsonStyleSpec implements StyleSpec {
 
 	private static final long serialVersionUID = -2681053059579403387L;
 	
-	private JsonObject style;
-
 	private static final Set<String> Groups = new HashSet<String>();
 	static {
 		Groups.add (Group.Text); Groups.add (Group.Background); Groups.add (Group.Size);
@@ -87,6 +86,8 @@ public class JsonStyleSpec implements StyleSpec {
 		GradientTypes.put ("bl-tl", GradientDrawable.Orientation.BR_TL);
 		GradientTypes.put ("tl-bl", GradientDrawable.Orientation.TR_BL);
 	}
+
+	private JsonObject style;
 
 	public JsonStyleSpec (ThemeSpec appTheme, String [] aStyles) {
 		
@@ -141,7 +142,7 @@ public class JsonStyleSpec implements StyleSpec {
 	}
 
 	@Override
-	public void apply (StylishSpec stylish, final View view, final ViewGroup parent) {
+	public void apply (StylishSpec stylish, final View view, final ViewGroup parent, DataHolder dh) {
 		
 		Log.d (JsonStyleSpec.class.getSimpleName (), "Style of > " + view.getClass ().getSimpleName () + Lang.SLASH + stylish.id () + Lang.ENDLN + String.valueOf (style));
 		
@@ -150,6 +151,8 @@ public class JsonStyleSpec implements StyleSpec {
 		}
 
 		UIApplication application = (UIApplication)((UIActivity)view.getContext ()).getApplication ();
+
+		JsonObject rStyle = (JsonObject)Json.resolve (style, dh);
 
 		ViewSize maxSize = application.getScreenSize ();
 
@@ -164,7 +167,7 @@ public class JsonStyleSpec implements StyleSpec {
 		// set width & height / default to width->match , height (layout->wrap, all->match)
 		if (!isPage) {
 			ViewGroup.LayoutParams params = view.getLayoutParams ();
-			JsonObject oSize = Json.getObject (style, Group.Size);
+			JsonObject oSize = Json.getObject (rStyle, Group.Size);
 
 			int width = (int)parseFloat (oSize, Size.Width, (int)maxSize.getWidth (), UndefinedInteger);
 			if (width < 0) {
@@ -208,24 +211,24 @@ public class JsonStyleSpec implements StyleSpec {
 			}
 			
 			// apply align.vertical & align.horizontal
-			applyAlign (params, parent, isLayer, isBreak);
+			applyAlign (rStyle, params, parent, isLayer, isBreak);
 			
 			// apply margins
-			applyMargin (params, isLayer, maxSize);
+			applyMargin (rStyle, params, isLayer, maxSize);
 
 		}
 
 		// apply font
-		applyFont (view, application);
+		applyFont (rStyle, view, application);
 		
 		// apply visible
-		applyVisible (view);
+		applyVisible (rStyle, view);
 		
 		// apply padding
-		applyPadding (view);
+		applyPadding (rStyle, view);
 		
 		// apply background (gradient, border, shadow, insets)
-		applyBackground (view, application);
+		applyBackground (rStyle, view, application);
 
 	}
 
@@ -245,7 +248,7 @@ public class JsonStyleSpec implements StyleSpec {
 		return stylish instanceof PageSpec;
 	}
 	
-	private void applyMargin (ViewGroup.LayoutParams params, boolean isLayout, ViewSize maxSize) {
+	private void applyMargin (JsonObject style, ViewGroup.LayoutParams params, boolean isLayout, ViewSize maxSize) {
 		String margin = Json.getString (style, Group.Margin);
 		if (Lang.isNullOrEmpty (margin)) {
 			return;
@@ -270,7 +273,7 @@ public class JsonStyleSpec implements StyleSpec {
 		}
 	}
 
-	private void applyAlign (ViewGroup.LayoutParams params, ViewGroup parent, boolean isLayer, boolean isBreak) {
+	private void applyAlign (JsonObject style, ViewGroup.LayoutParams params, ViewGroup parent, boolean isLayer, boolean isBreak) {
 
 		RelativeLayout.LayoutParams layoutParams = ((RelativeLayout.LayoutParams)params);
 		
@@ -299,7 +302,7 @@ public class JsonStyleSpec implements StyleSpec {
 
 	}
 	
-	private void applyFont (View component, UIApplication application) {
+	private void applyFont (JsonObject style, View component, UIApplication application) {
 		if (!TextView.class.isAssignableFrom (component.getClass ())) {
 			Log.d (JsonStyleSpec.class.getSimpleName (), "!!! Font Unsupported for " + component.getClass ().getSimpleName ());
 			return;
@@ -361,7 +364,7 @@ public class JsonStyleSpec implements StyleSpec {
 		
 	}
 	
-	private void applyBackground (View view, UIApplication application) {
+	private void applyBackground (JsonObject style, View view, UIApplication application) {
 		JsonObject oBackground 	= Json.getObject (style, Group.Background);
 		JsonObject oShadow 		= Json.getObject (style, Group.Shadow);
 		JsonObject oBorder 		= Json.getObject (style, Group.Border);
@@ -534,7 +537,7 @@ public class JsonStyleSpec implements StyleSpec {
 		return layer;
 	}
 
-	private void applyPadding (View view) {
+	private void applyPadding (JsonObject style, View view) {
 		String padding = Json.getString (style, Group.Padding);
 		if (Lang.isNullOrEmpty (padding)) {
 			return;
@@ -549,7 +552,7 @@ public class JsonStyleSpec implements StyleSpec {
 		view.setPadding ((int)bounds [3], (int)bounds [0], (int)bounds [1], (int)bounds [2]);
 	}
 	
-	private void applyVisible (View component) {
+	private void applyVisible (JsonObject style, View component) {
 		component.setVisibility (Json.getBoolean (style, Visible, true) ?  View.VISIBLE : View.GONE);
 	}
 

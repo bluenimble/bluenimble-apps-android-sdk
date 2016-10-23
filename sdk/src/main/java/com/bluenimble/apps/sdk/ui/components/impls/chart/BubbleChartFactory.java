@@ -37,7 +37,7 @@ public class BubbleChartFactory extends ChartFactory {
 	}
 	
 	@Override
-	public View create (UIActivity activity, ViewGroup group, LayerSpec layer, ComponentSpec spec) {
+	public View create (UIActivity activity, ViewGroup group, LayerSpec layer, ComponentSpec spec, DataHolder dh) {
 		
 		style = (JsonObject)spec.style ().get (Style.bubble.class.getSimpleName ());
 
@@ -49,7 +49,7 @@ public class BubbleChartFactory extends ChartFactory {
 			chart.animateY (animate);
 		}
 		
-		return applyStyle (group, chart, spec);
+		return applyStyle (group, chart, spec, dh);
 	}
 
 	/**

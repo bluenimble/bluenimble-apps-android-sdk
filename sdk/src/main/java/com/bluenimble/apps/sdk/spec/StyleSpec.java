@@ -15,6 +15,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
+import com.bluenimble.apps.sdk.controller.DataHolder;
+
 public interface StyleSpec extends Serializable {
 
 	interface Colors {
@@ -99,6 +101,6 @@ public interface StyleSpec extends Serializable {
 
 	Object 	get		(String name);
 	
-	void 	apply 	(StylishSpec stylish, View view, ViewGroup parent);
+	void 	apply 	(StylishSpec stylish, View view, ViewGroup parent, DataHolder dh);
 	
 }

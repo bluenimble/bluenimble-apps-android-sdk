@@ -13,11 +13,11 @@ import android.view.ViewGroup;
 
 public interface Renderer extends Serializable {
 
-	void 		render (PageSpec page, UIActivity activity);
-	View		render (ApplicationSpec application, LayerSpec layer, DataHolder dh, ViewGroup container, UIActivity activity);
+	void 		render 	(PageSpec page, UIActivity activity, DataHolder dh);
+	View		render 	(ApplicationSpec application, LayerSpec layer, DataHolder dh, ViewGroup container, UIActivity activity);
 	
-	void 		clear(ApplicationSpec application, UIActivity activity);
+	void 		clear	(ApplicationSpec application, UIActivity activity);
 	
-	PageSpec 	current();
+	PageSpec 	current	();
 
 }

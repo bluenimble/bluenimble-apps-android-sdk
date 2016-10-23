@@ -39,10 +39,10 @@ public class InputTextFactory extends AbstractComponentFactory {
 	}
 	
 	@Override
-	public View create (UIActivity activity, ViewGroup group, LayerSpec layer, ComponentSpec spec) {
+	public View create (UIActivity activity, ViewGroup group, LayerSpec layer, ComponentSpec spec, DataHolder dh) {
 		EditText input = new EditText (activity);
 		
-		return applyStyle (group, input, spec);
+		return applyStyle (group, input, spec, dh);
 	}
 
 	@Override

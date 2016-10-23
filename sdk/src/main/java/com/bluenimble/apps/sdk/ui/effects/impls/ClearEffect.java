@@ -11,11 +11,11 @@ import com.bluenimble.apps.sdk.spec.PageSpec;
 import com.bluenimble.apps.sdk.ui.components.impls.list.DefaultListAdapter;
 import com.bluenimble.apps.sdk.ui.effects.Effect;
 
-public class UndoEffect implements Effect {
+public class ClearEffect implements Effect {
 
 	private static final long serialVersionUID = 3783743185246914342L;
 	
-	private static final String Id = "undo";
+	private static final String Id = "clear";
 
 	@Override
 	public String id () {

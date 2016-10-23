@@ -19,6 +19,7 @@ import com.bluenimble.apps.sdk.ui.components.impls.listeners.OnMapPressListenerI
 import com.bluenimble.apps.sdk.ui.components.impls.listeners.OnMarkerDragListenerImpl;
 import com.bluenimble.apps.sdk.ui.components.impls.listeners.OnMarkerPressListenerImpl;
 import com.bluenimble.apps.sdk.ui.components.impls.listeners.OnRadioSelectedListenerImpl;
+import com.bluenimble.apps.sdk.utils.SpecHelper;
 import com.google.android.gms.vision.text.Line;
 
 import android.support.v7.widget.DefaultItemAnimator;
@@ -65,16 +66,13 @@ public class ListFactory extends AbstractComponentFactory {
 	}
 	
 	@Override
-	public View create (UIActivity activity, ViewGroup group, LayerSpec layer, ComponentSpec spec) {
+	public View create (UIActivity activity, ViewGroup group, LayerSpec layer, ComponentSpec spec, DataHolder dh) {
 		RecyclerView list = new RecyclerView (activity);
 
 		String recordNs = (String)spec.get (Custom.Namespace);
 		if (Lang.isNullOrEmpty (recordNs)) {
 			recordNs = DefaultRecordNs;
 		}
-
-		String sMultiSelect = (String)spec.get (Custom.MultiSelect);
-		boolean multiSelect = !Lang.isNullOrEmpty (sMultiSelect) && Lang.TrueValues.contains (sMultiSelect.trim ());
 
 		// set the adapter
 
@@ -107,9 +105,9 @@ public class ListFactory extends AbstractComponentFactory {
 		list.setItemAnimator (new DefaultItemAnimator ());
 
 		// set the adapter
-		list.setAdapter (new DefaultListAdapter (activity, spec, recordNs, multiSelect));
+		list.setAdapter (new DefaultListAdapter (activity, spec, recordNs, SpecHelper.getBoolean (spec, Custom.MultiSelect, false)));
 
-		return applyStyle (group, list, spec);
+		return applyStyle (group, list, spec, dh);
 	}
 
 	@Override
@@ -169,6 +167,12 @@ public class ListFactory extends AbstractComponentFactory {
 				Set<Integer> selected = adapter.selected ();
 				if (selected == null || selected.isEmpty ()) {
 					return;
+				}
+				if (SpecHelper.getBoolean (spec, Custom.MultiSelect, false)) {
+					for (Integer position : selected) {
+						Json.set ((JsonObject)dh.get (bindingSpec.source ()), adapter.getRecords ().get (position), property);
+						return;
+					}
 				}
 				JsonArray array = new JsonArray ();
 				for (Integer position : selected) {

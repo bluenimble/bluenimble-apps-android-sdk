@@ -18,12 +18,12 @@ public interface ComponentFactory extends Serializable {
 		String Constant = "constant";
 	}
 
-	String	id ();
+	String	id 			();
 	
-	View 	create(UIActivity activity, ViewGroup group, LayerSpec layer, ComponentSpec component);
+	View 	create		(UIActivity activity, ViewGroup group, LayerSpec layer, ComponentSpec component, DataHolder dh);
 	
-	void 	bind(ComponentSpec.Binding binding, View view, ApplicationSpec applicationSpec, ComponentSpec spec, DataHolder dh);
+	void 	bind		(ComponentSpec.Binding binding, View view, ApplicationSpec applicationSpec, ComponentSpec spec, DataHolder dh);
 	
-	void	addEvent(UIActivity activity, View view, ApplicationSpec applicationSpec, ComponentSpec component, String eventName, JsonObject eventSpec);
+	void	addEvent	(UIActivity activity, View view, ApplicationSpec applicationSpec, ComponentSpec component, String eventName, JsonObject eventSpec);
 
 }

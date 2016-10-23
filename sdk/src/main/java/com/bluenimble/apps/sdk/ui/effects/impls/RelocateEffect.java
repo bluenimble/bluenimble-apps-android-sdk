@@ -12,9 +12,9 @@ import com.bluenimble.apps.sdk.spec.LayerSpec;
 import com.bluenimble.apps.sdk.spec.PageSpec;
 import com.bluenimble.apps.sdk.ui.effects.Effect;
 
-import android.app.Fragment;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 
 public class RelocateEffect implements Effect {
@@ -30,11 +30,10 @@ public class RelocateEffect implements Effect {
 
 	/**
 	 * 
-	 * "relocate": "a, b, c > x" (bring in front of layer x) or "relocate": "a, b, c < x" (send back under layer x)
+	 * "relocate": "a, b, c > x" (bring a, b and c layers "in front of" layer x) or "relocate": "a, b, c < x" (send back under layer x)
 	 * if (x == *) all layers should go under/infront the other remaining layers
 	 * 
 	 **/
-			
 	@Override
 	public void apply (UIActivity activity, ApplicationSpec application, PageSpec page, Object spec, View origin, DataHolder dh) {
 		
@@ -97,26 +96,26 @@ public class RelocateEffect implements Effect {
 			pivotLayer = page.layer (pivot);
 		}
 		
-		Set<Fragment> 	toMove 		= new HashSet<Fragment> ();
-		FragmentManager fragmentManager = activity.getFragmentManager ();
+		Set<Fragment> 	toMove 	= new HashSet<Fragment> ();
+		FragmentManager manager = activity.getSupportFragmentManager ();
 		
 		// start transaction
-		FragmentTransaction transaction = fragmentManager.beginTransaction ();
+		FragmentTransaction transaction = manager.beginTransaction ();
 
 		if (pivotLayer != null) {
 
-			Fragment pivotFragment 	= fragmentManager.findFragmentByTag (pivotLayer.id ());
+			Fragment pivotFragment 	= manager.findFragmentByTag (pivotLayer.id ());
 			if (pivotFragment == null) {
 				return;
 			}
 			
 			Set<Fragment> 	upper 		= new HashSet<Fragment> ();
 			Set<Fragment> 	lower 		= new HashSet<Fragment> ();
-			int 			pivotIndex	= fragmentManager.getBackStackEntryCount () + 1;
+			int 			pivotIndex	= manager.getBackStackEntryCount () + 1;
 
-			for (int i = 0; i < fragmentManager.getBackStackEntryCount (); i++) {
+			for (int i = 0; i < manager.getBackStackEntryCount (); i++) {
 				
-				String lyrId = fragmentManager.getBackStackEntryAt (i).getName ();
+				String lyrId = manager.getBackStackEntryAt (i).getName ();
 				if (lyrId == null) {
 					continue;
 				}
@@ -126,7 +125,7 @@ public class RelocateEffect implements Effect {
 					continue;
 				}
 
-				Fragment f = fragmentManager.findFragmentByTag (lyrId);
+				Fragment f = manager.findFragmentByTag (lyrId);
 				if (f == null) {
 					continue;
 				}
@@ -170,13 +169,13 @@ public class RelocateEffect implements Effect {
 		} else {
 			Set<Fragment> 	toRetain 	= new HashSet<Fragment> ();
 			
-			for (int i = 0; i < fragmentManager.getBackStackEntryCount (); i++) {
-				String lyrId = fragmentManager.getBackStackEntryAt (i).getName ();
+			for (int i = 0; i < manager.getBackStackEntryCount (); i++) {
+				String lyrId = manager.getBackStackEntryAt (i).getName ();
 				if (lyrId == null) {
 					continue;
 				}
 				
-				Fragment f = fragmentManager.findFragmentByTag (lyrId);
+				Fragment f = manager.findFragmentByTag (lyrId);
 				
 				if (layers.contains (lyrId)) {
 					toMove.add (f);
@@ -200,16 +199,16 @@ public class RelocateEffect implements Effect {
 		
 	}
 	
-	private void attach (FragmentTransaction fragmentTransaction, Set<Fragment> fragments) {
-		attach (fragmentTransaction, fragments, false);
+	private void attach (FragmentTransaction transaction, Set<Fragment> fragments) {
+		attach (transaction, fragments, false);
 	}
 	
-	private void attach (FragmentTransaction fragmentTransaction, Set<Fragment> fragments, boolean makeVisible) {
+	private void attach (FragmentTransaction transaction, Set<Fragment> fragments, boolean makeVisible) {
 		if (fragments.isEmpty ()) {
 			return;
 		}
 		for (Fragment f : fragments) {
-			fragmentTransaction.attach (f);
+			transaction.attach (f);
 			if (!makeVisible) {
 				continue;
 			}

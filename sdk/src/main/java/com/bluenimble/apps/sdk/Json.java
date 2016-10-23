@@ -350,7 +350,7 @@ public class Json {
 			}
 			return array;
 		} else {
-			return Lang.resolve (String.valueOf (obj), Lang.ARRAY_OPEN, Lang.ARRAY_OPEN, vr);
+			return Lang.resolve (String.valueOf (obj), Lang.ARRAY_OPEN, Lang.ARRAY_CLOSE, vr);
 		}
 	}
 	

@@ -60,7 +60,7 @@ public class MapFactory extends AbstractComponentFactory {
 	}
 	
 	@Override
-	public View create (final UIActivity activity, ViewGroup group, LayerSpec layer, final ComponentSpec spec) {
+	public View create (final UIActivity activity, ViewGroup group, LayerSpec layer, final ComponentSpec spec, DataHolder dh) {
 		
 		final MapFragment fragment = MapFragment.create (spec);
 		

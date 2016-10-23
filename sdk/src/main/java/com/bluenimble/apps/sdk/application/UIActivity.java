@@ -89,7 +89,7 @@ public class UIActivity extends AppCompatActivity implements ViewResolver {
 			actionBar.hide ();
 		}
 
-		spec.renderer ().render (page, this);
+		spec.renderer ().render (page, this, null);
 
 	}
 

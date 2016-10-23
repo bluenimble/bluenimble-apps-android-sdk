@@ -1,6 +1,7 @@
 package com.bluenimble.apps.sdk.ui.components.impls.generic;
 
 import com.bluenimble.apps.sdk.application.UIActivity;
+import com.bluenimble.apps.sdk.controller.DataHolder;
 import com.bluenimble.apps.sdk.spec.ComponentSpec;
 import com.bluenimble.apps.sdk.spec.LayerSpec;
 import com.bluenimble.apps.sdk.ui.components.AbstractComponentFactory;
@@ -23,8 +24,8 @@ public class BreakFactory extends AbstractComponentFactory {
 	}
 	
 	@Override
-	public View create (UIActivity activity, ViewGroup group, LayerSpec layer, ComponentSpec spec) {
-		return applyStyle (group, new View (activity), spec);
+	public View create (UIActivity activity, ViewGroup group, LayerSpec layer, ComponentSpec spec, DataHolder dh) {
+		return applyStyle (group, new View (activity), spec, dh);
 	}
 
 }

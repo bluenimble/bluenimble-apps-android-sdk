@@ -33,8 +33,8 @@ public class CheckboxFactory extends AbstractComponentFactory {
 	}
 	
 	@Override
-	public View create (UIActivity activity, ViewGroup group, LayerSpec layer, ComponentSpec spec) {
-		return applyStyle (group, new CheckBox (activity), spec);
+	public View create (UIActivity activity, ViewGroup group, LayerSpec layer, ComponentSpec spec, DataHolder dh) {
+		return applyStyle (group, new CheckBox (activity), spec, dh);
 	}
 
 	@Override

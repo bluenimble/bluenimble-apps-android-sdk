@@ -55,8 +55,8 @@ public class ImageFactory extends AbstractComponentFactory {
 	}
 	
 	@Override
-	public View create (UIActivity activity, ViewGroup group, LayerSpec layer, ComponentSpec spec) {
-		return applyStyle (group, new ImageView (activity), spec);
+	public View create (UIActivity activity, ViewGroup group, LayerSpec layer, ComponentSpec spec, DataHolder dh) {
+		return applyStyle (group, new ImageView (activity), spec, dh);
 	}
 
 	@Override

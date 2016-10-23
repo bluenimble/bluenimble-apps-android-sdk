@@ -32,14 +32,14 @@ public abstract class AbstractComponentFactory implements ComponentFactory {
 	public void addEvent (UIActivity activity, View view, ApplicationSpec applicationSpec, ComponentSpec component, String eventName, JsonObject eventSpec) {
 	}
 	
-	protected View applyStyle (ViewGroup group, View component, ComponentSpec spec) {
+	protected View applyStyle (ViewGroup group, View component, ComponentSpec spec, DataHolder dh) {
 		if (spec.style () == null) {
 			return component;
 		}
 		
 		component.setId (UIApplication.newId ());
 		
-		spec.style ().apply (spec, component, group);
+		spec.style ().apply (spec, component, group, dh);
 		
 		return component;
 	}

@@ -11,11 +11,14 @@ import com.bluenimble.apps.sdk.controller.ActionProcessor;
 import com.bluenimble.apps.sdk.controller.DataHolder;
 import com.bluenimble.apps.sdk.json.JsonObject;
 import com.bluenimble.apps.sdk.spec.ApplicationSpec;
+import com.bluenimble.apps.sdk.spec.ComponentSpec;
 import com.bluenimble.apps.sdk.spec.EventAwareSpec;
 import com.bluenimble.apps.sdk.spec.LayerSpec;
 import com.bluenimble.apps.sdk.spec.PageSpec;
+import com.bluenimble.apps.sdk.spec.StylishSpec;
 import com.bluenimble.apps.sdk.ui.components.ComponentFactory;
 import com.bluenimble.apps.sdk.ui.components.impls.generic.BreakFactory;
+import com.bluenimble.apps.sdk.ui.components.impls.list.ListFactory;
 import com.bluenimble.apps.sdk.ui.effects.impls.BindEffect;
 import com.bluenimble.apps.sdk.ui.renderer.impls.DefaultRenderer;
 
@@ -32,7 +35,6 @@ public class SpecHelper {
         if (fireDefault) {
             ActionProcessor.process (DefaultRenderer.LifeCycleEvent.create.name (), SpecHelper.newCreateEvent (bind), activity, parent, dh);
         }
-
     }
 
     public static JsonObject newCreateEvent (String bind) {
@@ -64,6 +66,146 @@ public class SpecHelper {
         template = page.layer (layerId);
 
         return template;
+    }
+
+    public static StylishSpec stylish (ApplicationSpec application, String spec) {
+        if (Lang.isNullOrEmpty (spec)) {
+            return null;
+        }
+
+        PageSpec page = application.renderer ().current ();
+
+        String layerId = spec;
+
+        int indexOfDot = spec.indexOf (Lang.DOT);
+        if (indexOfDot <= 0) {
+            return page.layer (layerId);
+        }
+
+        layerId         = spec.substring (0, indexOfDot);
+        String cmpId    = spec.substring (indexOfDot + 1);
+
+        LayerSpec layer = page.layer (layerId);
+        if (layer == null) {
+            return null;
+        }
+
+        return layer.component (cmpId);
+    }
+
+    public static boolean getBoolean (ComponentSpec spec, String name, boolean defaultValue) {
+        Object value = spec.get (name);
+        if (value == null) {
+            return defaultValue;
+        }
+        if (value instanceof Boolean || value.getClass ().equals (Boolean.TYPE)) {
+            return (Boolean)value;
+        }
+        if (!(value instanceof String)) {
+            return defaultValue;
+        }
+        String sValue = (String)value;
+        return !Lang.isNullOrEmpty (sValue) && Lang.TrueValues.contains (sValue.trim ());
+    }
+
+    public static int getInteger (ComponentSpec spec, String name, int defaultValue) {
+        Object value = spec.get (name);
+        if (value == null) {
+            return defaultValue;
+        }
+        if (value instanceof Integer || value.getClass ().equals (Integer.TYPE)) {
+            return (Integer)value;
+        }
+        if (!(value instanceof String)) {
+            return defaultValue;
+        }
+        String sValue = (String)value;
+        if (Lang.isNullOrEmpty (sValue)) {
+            return defaultValue;
+        }
+        try {
+            return Integer.valueOf (sValue.trim ());
+        } catch (NumberFormatException ex) {
+            return defaultValue;
+        }
+    }
+
+    public static double getDouble (ComponentSpec spec, String name, double defaultValue) {
+        Object value = spec.get (name);
+        if (value == null) {
+            return defaultValue;
+        }
+        if (value instanceof Double || value.getClass ().equals (Double.TYPE)) {
+            return (Integer)value;
+        }
+        if (!(value instanceof String)) {
+            return defaultValue;
+        }
+        String sValue = (String)value;
+        if (Lang.isNullOrEmpty (sValue)) {
+            return defaultValue;
+        }
+        try {
+            return Double.valueOf (sValue.trim ());
+        } catch (NumberFormatException ex) {
+            return defaultValue;
+        }
+    }
+
+    public static float getFloat (ComponentSpec spec, String name, float defaultValue) {
+        Object value = spec.get (name);
+        if (value == null) {
+            return defaultValue;
+        }
+        if (value instanceof Float || value.getClass ().equals (Float.TYPE)) {
+            return (Float)value;
+        }
+        if (!(value instanceof String)) {
+            return defaultValue;
+        }
+        String sValue = (String)value;
+        if (Lang.isNullOrEmpty (sValue)) {
+            return defaultValue;
+        }
+        try {
+            return Float.valueOf (sValue.trim ());
+        } catch (NumberFormatException ex) {
+            return defaultValue;
+        }
+    }
+
+    public static long getLong (ComponentSpec spec, String name, long defaultValue) {
+        Object value = spec.get (name);
+        if (value == null) {
+            return defaultValue;
+        }
+        if (value instanceof Integer || value.getClass ().equals (Integer.TYPE) ||
+            value instanceof Long || value.getClass ().equals (Long.TYPE)) {
+            return (Long)value;
+        }
+        if (!(value instanceof String)) {
+            return defaultValue;
+        }
+        String sValue = (String)value;
+        if (Lang.isNullOrEmpty (sValue)) {
+            return defaultValue;
+        }
+        try {
+            return Long.valueOf (sValue.trim ());
+        } catch (NumberFormatException ex) {
+            return defaultValue;
+        }
+    }
+
+    public static JsonObject getObject (ComponentSpec spec, String name) {
+        Object value = spec.get (name);
+        if (value == null) {
+            return null;
+        }
+        if (!(value instanceof JsonObject)) {
+            return null;
+        }
+        return (JsonObject)value;
     }
 
     public static JsonObject toComponentSpec (String spec) {

@@ -13,24 +13,34 @@ public class DefaultEffectsRegistry implements EffectsRegistry {
 	protected Map<String, Effect> effects = new HashMap<String, Effect> ();
 	
 	public DefaultEffectsRegistry () {
-		register (new BindEffect ());
-		register (new UnbindEffect ());
-
-		register (new GoToEffect ());
-		register (new OpenEffect ());
-
+		// rendering effects
 		register (new HideEffect ());
 		register (new ShowEffect ());
 
-		register (new RelocateEffect ());
 		register (new RenderEffect ());
+		register (new RelocateEffect ());
 
+		register (new StyleEffect ());
+
+		register (new DestroyEffect ());
+
+		// data effects
+		register (new BindEffect ());
+		register (new UnbindEffect ());
+
+		// flow effects
+		register (new GoToEffect ());
+		register (new OpenEffect ());
+
+		// animation effects
 		register (new AnimateEffect ());
 
+		// mostly grid related effects
 		register (new SelectEffect ());
-		register (new UndoEffect ());
+		register (new ClearEffect ());
 		register (new DeleteEffect ());
 
+		// debugging effects
 		register (new EchoEffect ());
 	}
 	

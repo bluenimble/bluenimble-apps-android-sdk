@@ -46,7 +46,7 @@ public class TabsFactory extends AbstractComponentFactory {
 	}
 	
 	@Override
-	public View create (UIActivity activity, ViewGroup group, LayerSpec layer, ComponentSpec spec) {
+	public View create (UIActivity activity, ViewGroup group, LayerSpec layer, ComponentSpec spec, DataHolder dh) {
 
 		JsonArray templates = (JsonArray)spec.get (Custom.Template);
 
@@ -94,7 +94,7 @@ public class TabsFactory extends AbstractComponentFactory {
 		// add pager to layout
 		layout.addView (pager, pagerParams);
 
-		return applyStyle (group, layout, spec);
+		return applyStyle (group, layout, spec, dh);
 	}
 
 	@Override

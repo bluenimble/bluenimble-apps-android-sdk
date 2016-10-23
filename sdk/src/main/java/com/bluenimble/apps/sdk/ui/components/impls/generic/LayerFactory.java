@@ -29,7 +29,7 @@ public class LayerFactory extends AbstractComponentFactory {
 	}
 	
 	@Override
-	public View create (UIActivity activity, ViewGroup group, LayerSpec layer, ComponentSpec spec) {
+	public View create (UIActivity activity, ViewGroup group, LayerSpec layer, ComponentSpec spec, DataHolder dh) {
 
 		LayerSpec layerToRender = spec.layer ();
 		if (layerToRender == null) {
@@ -38,7 +38,7 @@ public class LayerFactory extends AbstractComponentFactory {
 
 		ApplicationSpec application = ((UIApplication)activity.getApplication ()).getSpec ();
 
-		return applyStyle (group, application.renderer ().render (application, layerToRender, null, group, activity), spec);
+		return applyStyle (group, application.renderer ().render (application, layerToRender, null, group, activity), spec, dh);
 	}
 
 	@Override
