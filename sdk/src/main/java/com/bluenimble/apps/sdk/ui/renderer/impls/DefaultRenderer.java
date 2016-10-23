@@ -30,6 +30,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 
 public class DefaultRenderer implements Renderer {
 
@@ -101,18 +102,28 @@ public class DefaultRenderer implements Renderer {
 			return layout;
 		}
 		
-		if (layer.style () != null) {
-			layer.style ().apply (layer, layout, container, dh);
-		}
-
-		if (dh == null || dh.get (DataHolder.Internal.NoTag) == null) {
+		if (dh == null || dh.get (DataHolder.Internal.NoTag) != null) {
 			layout.setTag (layer.id ());
 		}
 
 		if (layer.count () == 0) {
 			return layout;
 		}
-		
+
+		ViewGroup layerView = layout;
+
+		ScrollView scrollable = null;
+
+		if (layer.isCompact () && layer.isScrollable ()) {
+			scrollable = new ScrollView (activity);
+			scrollable.addView (layerView);
+			layerView = scrollable;
+		}
+
+		if (layer.style () != null) {
+			layer.style ().apply (layer, layerView, container, dh);
+		}
+
 		ComponentsRegistry registry = application.componentsRegistry ();
 		
 		// initial RelativeLayout

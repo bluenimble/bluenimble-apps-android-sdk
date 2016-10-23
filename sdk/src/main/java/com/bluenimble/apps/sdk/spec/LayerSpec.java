@@ -12,6 +12,7 @@ public interface LayerSpec extends EventAwareSpec, StylishSpec {
 
 	boolean 		isGlobal	();
 	boolean 		isCompact	();
+	boolean 		isScrollable();
 
 	boolean			isRendered	();
 	

@@ -32,6 +32,8 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.RadioGroup;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 
 public class ListFactory extends AbstractComponentFactory {
@@ -48,11 +50,19 @@ public class ListFactory extends AbstractComponentFactory {
 		String Layout 		= "layout";
 		String Columns 		= "cols";
 		String MultiSelect 	= "multiSelect";
+		String Direction	= "dir";
 	}
 
 	interface Layouts {
 		String Linear 		= "linear";
 		String Grid 		= "grid";
+	}
+
+	private static final String 				DefaultDirection 	= "v";
+	private static final Map<String, Integer> 	Direction 			= new HashMap<String, Integer>();
+	static {
+		Direction.put ("h", LinearLayoutManager.HORIZONTAL);
+		Direction.put ("v", LinearLayoutManager.HORIZONTAL);;
 	}
 
 	public ListFactory () {
@@ -75,16 +85,17 @@ public class ListFactory extends AbstractComponentFactory {
 		}
 
 		// set the adapter
-
-		String layout = (String)spec.get (Custom.Layout);
-		if (Lang.isNullOrEmpty (layout)) {
-			layout = Layouts.Linear;
-		}
+		String layout = SpecHelper.getString (spec, Custom.Layout, Layouts.Linear);
 
 		RecyclerView.LayoutManager layoutManager = null;
 
 		if (layout.equals (Layouts.Linear)) {
-			layoutManager = new LinearLayoutManager (activity);
+			String direction = SpecHelper.getString (spec, Custom.Direction, DefaultDirection);
+			Integer dir = Direction.get (direction);
+			if (dir == null) {
+				dir = LinearLayoutManager.VERTICAL;
+			}
+			layoutManager = new LinearLayoutManager (activity, dir, false);
 		} else if (layout.equals (Layouts.Grid)) {
 			int columns = 2;
 			Object oColumns = spec.get (Custom.Columns);

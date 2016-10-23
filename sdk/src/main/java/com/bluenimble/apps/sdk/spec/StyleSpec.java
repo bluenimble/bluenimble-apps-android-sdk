@@ -32,7 +32,9 @@ public interface StyleSpec extends Serializable {
 	int 	UndefinedInteger 	= Integer.MAX_VALUE;
 
 	String 	Visible				= "visible";
+	String 	Disable				= "disable";
 	String 	Compact				= "compact";
+	String 	Scrollable			= "compact";
 	String 	Render				= "render";
 
 	interface Group {

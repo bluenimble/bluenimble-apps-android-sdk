@@ -143,7 +143,7 @@ public class JsonStyleSpec implements StyleSpec {
 
 	@Override
 	public void apply (StylishSpec stylish, final View view, final ViewGroup parent, DataHolder dh) {
-		
+
 		Log.d (JsonStyleSpec.class.getSimpleName (), "Style of > " + view.getClass ().getSimpleName () + Lang.SLASH + stylish.id () + Lang.ENDLN + String.valueOf (style));
 		
 		if (Json.isNullOrEmpty (style) || stylish == null || view == null) {
@@ -223,7 +223,10 @@ public class JsonStyleSpec implements StyleSpec {
 		
 		// apply visible
 		applyVisible (rStyle, view);
-		
+
+		// apply visible
+		applyDisabled (rStyle, view);
+
 		// apply padding
 		applyPadding (rStyle, view);
 		
@@ -554,6 +557,13 @@ public class JsonStyleSpec implements StyleSpec {
 	
 	private void applyVisible (JsonObject style, View component) {
 		component.setVisibility (Json.getBoolean (style, Visible, true) ?  View.VISIBLE : View.GONE);
+	}
+
+	private void applyDisabled (JsonObject style, View view) {
+		if (!TextView.class.isAssignableFrom (view.getClass ())) {
+			return;
+		}
+		((TextView)view).setEnabled ( ! Json.getBoolean (style, Disable, false));
 	}
 
 	private void applyRadius (View view, GradientDrawable gradient, String radius) {

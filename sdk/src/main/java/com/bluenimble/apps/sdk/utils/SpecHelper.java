@@ -93,6 +93,22 @@ public class SpecHelper {
         return layer.component (cmpId);
     }
 
+    public static String getString (ComponentSpec spec, String name) {
+        return getString (spec, name, null);
+    }
+
+    public static String getString (ComponentSpec spec, String name, String defaultValue) {
+        Object value = spec.get (name);
+        if (value == null) {
+            return defaultValue;
+        }
+        String sValue = String.valueOf (value);
+        if (Lang.isNullOrEmpty (sValue)) {
+            return defaultValue;
+        }
+        return sValue;
+    }
+
     public static boolean getBoolean (ComponentSpec spec, String name, boolean defaultValue) {
         Object value = spec.get (name);
         if (value == null) {
