@@ -192,7 +192,7 @@ public class JsonLayerSpec extends JsonEventAwareSpec implements LayerSpec {
 		if (style == null) {
 			return false;
 		}
-		String sScrollable = (String)style.get (StyleSpec.Scrollable);
+		String sScrollable = (String)style.get (StyleSpec.Scroll);
 		if (Lang.isNullOrEmpty (sScrollable)) {
 			return false;
 		}

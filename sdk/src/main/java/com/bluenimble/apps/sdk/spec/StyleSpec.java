@@ -34,7 +34,7 @@ public interface StyleSpec extends Serializable {
 	String 	Visible				= "visible";
 	String 	Disable				= "disable";
 	String 	Compact				= "compact";
-	String 	Scrollable			= "compact";
+	String 	Scroll				= "scroll";
 	String 	Render				= "render";
 
 	interface Group {
