@@ -11,16 +11,8 @@ import com.bluenimble.apps.sdk.spec.BindingSpec;
 import com.bluenimble.apps.sdk.spec.ComponentSpec;
 import com.bluenimble.apps.sdk.spec.LayerSpec;
 import com.bluenimble.apps.sdk.ui.components.AbstractComponentFactory;
-import com.bluenimble.apps.sdk.ui.components.impls.dropdown.DefaultDropDownAdapter;
 import com.bluenimble.apps.sdk.ui.components.impls.listeners.EventListener;
-import com.bluenimble.apps.sdk.ui.components.impls.listeners.OnMapDragListenerImpl;
-import com.bluenimble.apps.sdk.ui.components.impls.listeners.OnMapLongPressListenerImpl;
-import com.bluenimble.apps.sdk.ui.components.impls.listeners.OnMapPressListenerImpl;
-import com.bluenimble.apps.sdk.ui.components.impls.listeners.OnMarkerDragListenerImpl;
-import com.bluenimble.apps.sdk.ui.components.impls.listeners.OnMarkerPressListenerImpl;
-import com.bluenimble.apps.sdk.ui.components.impls.listeners.OnRadioSelectedListenerImpl;
 import com.bluenimble.apps.sdk.utils.SpecHelper;
-import com.google.android.gms.vision.text.Line;
 
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
@@ -28,9 +20,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
-import android.widget.ListView;
-import android.widget.RadioGroup;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -124,7 +113,7 @@ public class ListFactory extends AbstractComponentFactory {
 	@Override
 	public void bind (ComponentSpec.Binding binding, View view, ApplicationSpec applicationSpec, ComponentSpec spec, DataHolder dh) {
 		
-		if (view == null || !(view instanceof ListView)) {
+		if (view == null || !(view instanceof RecyclerView)) {
 			// TODO: log
 			return;
 		}
