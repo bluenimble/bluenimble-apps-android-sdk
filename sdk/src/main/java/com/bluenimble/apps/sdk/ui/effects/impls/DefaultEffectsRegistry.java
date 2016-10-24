@@ -40,6 +40,12 @@ public class DefaultEffectsRegistry implements EffectsRegistry {
 		register (new ClearEffect ());
 		register (new DeleteEffect ());
 
+		// video effects
+		register (new PlayEffect ());
+		register (new ResumeEffect ());
+		register (new PauseEffect ());
+		register (new SeekEffect ());
+
 		// debugging effects
 		register (new EchoEffect ());
 	}

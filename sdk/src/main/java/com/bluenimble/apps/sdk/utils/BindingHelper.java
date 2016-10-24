@@ -4,6 +4,7 @@ import android.util.Log;
 import android.view.View;
 
 import com.bluenimble.apps.sdk.Lang;
+import com.bluenimble.apps.sdk.application.ux.LayerLayout;
 import com.bluenimble.apps.sdk.controller.DataHolder;
 import com.bluenimble.apps.sdk.controller.impls.data.AgnosticDataHolder;
 import com.bluenimble.apps.sdk.spec.ApplicationSpec;
@@ -19,7 +20,7 @@ public class BindingHelper {
 
     public static void bindComponent (String tag, ViewResolver resolver, ApplicationSpec application, LayerSpec layer, ComponentSpec component, DataHolder dh, boolean useDh) {
         Log.d (tag, "\t\t    -> Bind Component [" + component.type () + "/" + component.id () + "]");
-        View view = resolver.component (layer.id (), component.id ());
+        View view = resolver.findView (component.id ());
         if (view == null) {
             application.logger ().debug (BindEffect.class.getSimpleName (), "\t\t    -> ERR: View Not found [" + layer.id () + Lang.DOT + component.id () + "]");
             return;
@@ -27,7 +28,7 @@ public class BindingHelper {
         application.componentsRegistry ().lookup (component.type ()).bind (ComponentSpec.Binding.Set, view, application, component, useDh ? dh : AgnosticDataHolder.Instance);
     }
 
-    public static void bindLayer (String tag, ApplicationSpec application, LayerSpec layer, View layerView, DataHolder dh, boolean useDh) {
+    public static void bindLayer (String tag, ApplicationSpec application, LayerSpec layer, LayerLayout layerView, DataHolder dh, boolean useDh) {
 
         if (layerView == null || layer.count () == 0) {
             return;
@@ -35,23 +36,8 @@ public class BindingHelper {
 
         application.logger ().debug (tag, "\t\t  -> Bind Layer [" + layer.id () + "]");
 
-        final View fLayerView = layerView;
-        ViewResolver vr = new ViewResolver () {
-            @Override
-            public View layer (String id) {
-                // layers can't contain others layers
-                return null;
-            }
-
-            @Override
-            public View component (String layerId, String componentId) {
-				// components added to layers serving as templates should be locked up using only their direct id
-				// supposed to use an InternalDataHolder with NoTag set
-                return fLayerView.findViewWithTag (componentId);
-            }
-        };
         for (int i = 0; i < layer.count (); i++) {
-            bindComponent (tag, vr, application, layer, layer.component (i), dh, useDh);
+            bindComponent (tag, layerView, application, layer, layer.component (i), dh, useDh);
         }
     }
 
@@ -65,7 +51,11 @@ public class BindingHelper {
         Iterator<String> layers = page.layers ();
         while (layers.hasNext ()) {
             String layerId = layers.next ();
-            bindLayer (tag, application, page.layer (layerId), resolver.layer (layerId), dh, useDh);
+			View layerView = resolver.findView (layerId);
+			if (layerView == null || !(layerView instanceof LayerLayout)) {
+				continue;
+			}
+            bindLayer (tag, application, page.layer (layerId), (LayerLayout)layerView, dh, useDh);
         }
     }
 

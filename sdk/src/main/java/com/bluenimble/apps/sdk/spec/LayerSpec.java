@@ -11,9 +11,10 @@ public interface LayerSpec extends EventAwareSpec, StylishSpec {
 	ComponentSpec	component	(String id);
 
 	boolean 		isGlobal	();
-	boolean 		isCompact	();
 	boolean 		isScrollable();
 
 	boolean			isRendered	();
-	
+
+	int 			lines		();
+
 }

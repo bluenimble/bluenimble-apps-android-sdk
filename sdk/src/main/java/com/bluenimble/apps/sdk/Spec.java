@@ -7,7 +7,7 @@ public interface Spec {
 	String DefaultLanguage 	= "defaultLanguage";
 	String Theme 			= "theme";
 	
-	String Main 			= "main";
+	String Index 			= "index";
 	
 	String LogLevel 		= "logLevel";
 	

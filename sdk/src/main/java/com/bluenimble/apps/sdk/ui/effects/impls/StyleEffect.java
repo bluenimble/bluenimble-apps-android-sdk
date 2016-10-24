@@ -6,6 +6,7 @@ import android.widget.Toast;
 
 import com.bluenimble.apps.sdk.Lang;
 import com.bluenimble.apps.sdk.application.UIActivity;
+import com.bluenimble.apps.sdk.application.ux.LayerLayout;
 import com.bluenimble.apps.sdk.controller.DataHolder;
 import com.bluenimble.apps.sdk.spec.ApplicationSpec;
 import com.bluenimble.apps.sdk.spec.ComponentSpec;
@@ -60,11 +61,15 @@ public class StyleEffect implements Effect {
 			if (stylish == null) {
 				continue;
 			}
+			View layerView = activity.findView (stylish.id ());
+			if (layerView == null || !(layerView instanceof LayerLayout)) {
+				continue;
+			}
 			View view = null;
 			if (stylish instanceof LayerSpec) {
-				view = activity.layer (stylish.id ());
+				view = layerView;
 			} else if (stylish instanceof ComponentSpec) {
-				view = activity.layer (stylish.id ());
+				view = ((LayerLayout)layerView).findView (stylish.id ());
 			}
 			if (view == null) {
 				continue;

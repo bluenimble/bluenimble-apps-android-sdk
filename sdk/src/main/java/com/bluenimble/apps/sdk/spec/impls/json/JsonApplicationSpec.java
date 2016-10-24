@@ -79,9 +79,9 @@ public class JsonApplicationSpec extends AbstractApplicationSpec {
 	}
 
 	@Override
-	public PageSpec main () {
-		logger ().debug (JsonApplicationSpec.class.getSimpleName (), "Get Main Page " + Lang.ARRAY_OPEN + Json.getString (spec, Spec.Main) + Lang.ARRAY_CLOSE);
-		PageSpec main = page (Json.getString (spec, Spec.Main));
+	public PageSpec index () {
+		logger ().debug (JsonApplicationSpec.class.getSimpleName (), "Get Index Page " + Lang.ARRAY_OPEN + Json.getString (spec, Spec.Index) + Lang.ARRAY_CLOSE);
+		PageSpec main = page (Json.getString (spec, Spec.Index));
 		if (main != null) {
 			logger ().debug (JsonApplicationSpec.class.getSimpleName (), "... Main Page Found ");
 			return main;

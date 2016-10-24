@@ -10,6 +10,7 @@ import android.view.ViewParent;
 
 import com.bluenimble.apps.sdk.Lang;
 import com.bluenimble.apps.sdk.application.UIActivity;
+import com.bluenimble.apps.sdk.application.ux.LayerLayout;
 import com.bluenimble.apps.sdk.controller.DataHolder;
 import com.bluenimble.apps.sdk.spec.ApplicationSpec;
 import com.bluenimble.apps.sdk.spec.ComponentSpec;
@@ -76,7 +77,12 @@ public class DestroyEffect implements Effect {
 	}
 
 	private void destroyComponent (UIActivity activity, ApplicationSpec application, LayerSpec layer, ComponentSpec component, DataHolder dh) {
-		View view = activity.component (layer.id (), component.id ());
+		View layerView = activity.findView (layer.id ());
+		if (layerView == null || !(layerView instanceof LayerLayout)) {
+			return;
+		}
+
+		View view = ((LayerLayout)layerView).findView (component.id ());
 		if (view == null) {
 			return;
 		}

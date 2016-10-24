@@ -5,6 +5,7 @@ import android.view.View;
 
 import com.bluenimble.apps.sdk.Lang;
 import com.bluenimble.apps.sdk.application.UIActivity;
+import com.bluenimble.apps.sdk.application.ux.LayerLayout;
 import com.bluenimble.apps.sdk.controller.DataHolder;
 import com.bluenimble.apps.sdk.json.JsonArray;
 import com.bluenimble.apps.sdk.spec.ApplicationSpec;
@@ -38,7 +39,15 @@ public class DeleteEffect implements Effect {
 			return;
 		}
 
-		View list = activity.component (gridId.substring (0, indexOfDot), gridId.substring (indexOfDot + 1));
+		View vLayerView = activity.findView (gridId.substring (0, indexOfDot));
+		if (vLayerView == null) {
+			return;
+		}
+		if (!(vLayerView instanceof LayerLayout)) {
+			return;
+		}
+
+		View list = ((LayerLayout)vLayerView).findView (gridId.substring (indexOfDot + 1));
 		if (list == null || !(list instanceof RecyclerView)) {
 			return;
 		}

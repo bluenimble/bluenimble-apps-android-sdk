@@ -1,4 +1,4 @@
-package com.bluenimble.apps.sdk.utils;
+package com.bluenimble.apps.sdk.ui.components.impls.media;
 
 import android.net.Uri;
 
@@ -7,11 +7,12 @@ import com.bluenimble.apps.sdk.controller.DataHolder;
 import com.bluenimble.apps.sdk.controller.StreamSource;
 import com.bluenimble.apps.sdk.controller.impls.data.DefaultDataHolder;
 import com.bluenimble.apps.sdk.spec.ApplicationSpec;
+import com.bluenimble.apps.sdk.utils.BackendHelper;
 import com.squareup.picasso.Downloader;
 
 import java.io.IOException;
 
-public class ImageDownloader implements Downloader {
+public class MediaDownloader implements Downloader {
 
 	public static Downloader Instance = null;
 
@@ -19,12 +20,15 @@ public class ImageDownloader implements Downloader {
 
 	private ApplicationSpec application;
 
-	public ImageDownloader (ApplicationSpec application) {
+	public MediaDownloader (ApplicationSpec application) {
 		this.application = application;
 	}
 
 	public static void create (ApplicationSpec application) {
-		Instance = new ImageDownloader (application);
+		if (Instance != null) {
+			return;
+		}
+		Instance = new MediaDownloader (application);
 	}
 
 	@Override

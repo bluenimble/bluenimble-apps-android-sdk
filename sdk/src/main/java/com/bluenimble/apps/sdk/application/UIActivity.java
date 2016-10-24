@@ -59,7 +59,7 @@ public class UIActivity extends AppCompatActivity implements ViewResolver {
 		
 		// get the main page spec
 		if (page == null) {
-			page = spec.main ();
+			page = spec.index ();
 		}
 
 		if (page == null) {
@@ -119,13 +119,8 @@ public class UIActivity extends AppCompatActivity implements ViewResolver {
 	}
 
 	@Override
-	public View layer (String layerId) {
-		return root.findViewWithTag (layerId);
-	}
-
-	@Override
-	public View component (String layerId, String componentId) {
-		return root.findViewWithTag (layerId + Lang.DOT + componentId);
+	public View findView (String id) {
+		return root.findViewWithTag (id);
 	}
 
 	public View ancestor (View view, Class clazz, boolean levelDown) {

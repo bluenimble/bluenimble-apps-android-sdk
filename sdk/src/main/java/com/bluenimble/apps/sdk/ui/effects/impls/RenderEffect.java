@@ -50,7 +50,7 @@ public class RenderEffect implements Effect {
 		Set<String> pageOrLayers = new HashSet<String>(Arrays.asList (aList));
 		
 		if (pageOrLayers.contains (Lang.STAR)) {
-			application.renderer ().render (page, activity);
+			application.renderer ().render (page, activity, dh);
 			return;
 		}
 		

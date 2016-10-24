@@ -1,7 +1,7 @@
 {
   "defaultLanguage": "en",
 
-  "main": "main",
+  "index": "index",
   "theme": "custom"
 
 }

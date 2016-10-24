@@ -21,7 +21,7 @@ public interface ApplicationSpec extends EventAwareSpec {
 
 	ThemeSpec 			theme();
 
-	PageSpec 			main();
+	PageSpec 			index();
 	PageSpec 			first();
 	PageSpec 			page(String id);
 	void				remove(String id);

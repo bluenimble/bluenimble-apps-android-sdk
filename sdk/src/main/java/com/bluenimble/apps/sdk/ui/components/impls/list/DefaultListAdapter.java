@@ -3,6 +3,7 @@ package com.bluenimble.apps.sdk.ui.components.impls.list;
 import com.bluenimble.apps.sdk.Json;
 import com.bluenimble.apps.sdk.Lang;
 import com.bluenimble.apps.sdk.application.UIActivity;
+import com.bluenimble.apps.sdk.application.ux.LayerLayout;
 import com.bluenimble.apps.sdk.controller.DataHolder;
 import com.bluenimble.apps.sdk.controller.impls.data.DefaultDataHolder;
 import com.bluenimble.apps.sdk.controller.impls.data.InternalDataHolder;
@@ -208,7 +209,7 @@ public class DefaultListAdapter extends RecyclerView.Adapter<DefaultListAdapter.
 		BindingHelper.bindLayer (
 			LogTag,
 			activity.getSpec (),
-			templates.get (viewHolder.template), viewHolder.itemView, one.set (recordNs, (JsonObject) records.get (position)),
+			templates.get (viewHolder.template), (LayerLayout) viewHolder.itemView, one.set (recordNs, (JsonObject) records.get (position)),
 			true
 		);
 	}

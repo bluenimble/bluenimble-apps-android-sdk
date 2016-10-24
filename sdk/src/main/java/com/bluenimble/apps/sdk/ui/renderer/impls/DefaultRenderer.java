@@ -4,10 +4,12 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
+import com.bluenimble.apps.sdk.Json;
 import com.bluenimble.apps.sdk.Lang;
 import com.bluenimble.apps.sdk.application.UIActivity;
 import com.bluenimble.apps.sdk.application.UIApplication;
 import com.bluenimble.apps.sdk.application.UILayer;
+import com.bluenimble.apps.sdk.application.ux.LayerLayout;
 import com.bluenimble.apps.sdk.controller.ActionProcessor;
 import com.bluenimble.apps.sdk.controller.DataHolder;
 import com.bluenimble.apps.sdk.json.JsonObject;
@@ -15,6 +17,7 @@ import com.bluenimble.apps.sdk.spec.ApplicationSpec;
 import com.bluenimble.apps.sdk.spec.ComponentSpec;
 import com.bluenimble.apps.sdk.spec.LayerSpec;
 import com.bluenimble.apps.sdk.spec.PageSpec;
+import com.bluenimble.apps.sdk.spec.StyleSpec;
 import com.bluenimble.apps.sdk.ui.components.ComponentFactory;
 import com.bluenimble.apps.sdk.ui.components.ComponentsRegistry;
 import com.bluenimble.apps.sdk.ui.components.impls.listeners.EventListener;
@@ -22,6 +25,7 @@ import com.bluenimble.apps.sdk.ui.components.impls.listeners.OnLongPressListener
 import com.bluenimble.apps.sdk.ui.components.impls.listeners.OnPressListenerImpl;
 import com.bluenimble.apps.sdk.ui.renderer.Renderer;
 
+import android.support.annotation.IntegerRes;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -71,6 +75,7 @@ public class DefaultRenderer implements Renderer {
 		Iterator<String> layers = page.layers ();
 		while (layers.hasNext ()) {
 			String lyrId = layers.next ();
+			Log.d ("Trash", "Render Layer: " + lyrId);
 			LayerSpec layer = page.layer (lyrId);
 
 			if (!layer.isRendered ()) {
@@ -91,8 +96,8 @@ public class DefaultRenderer implements Renderer {
 
 	@Override
 	public View render (ApplicationSpec application, LayerSpec layer, DataHolder dh, ViewGroup container, UIActivity activity) {
-		
-		LinearLayout layout = new LinearLayout (activity);
+
+		LayerLayout layout = new LayerLayout (activity);
 		layout.setId (UIApplication.newId ());
 		
 		// Layer layout should be vertical
@@ -110,28 +115,36 @@ public class DefaultRenderer implements Renderer {
 			return layout;
 		}
 
+		boolean scrollable = layer.isScrollable ();
+
 		ViewGroup layerView = layout;
 
-		ScrollView scrollable = null;
+		ScrollView scroll = null;
 
-		if (layer.isCompact () && layer.isScrollable ()) {
-			scrollable = new ScrollView (activity);
-			scrollable.addView (layerView);
-			layerView = scrollable;
+		if (scrollable) {
+			scroll = new ScrollView (activity);
+			LinearLayout.LayoutParams layerLayoutParams = new LinearLayout.LayoutParams (
+					ViewGroup.LayoutParams.MATCH_PARENT,
+					ViewGroup.LayoutParams.WRAP_CONTENT
+			);
+			scroll.addView (layerView, layerLayoutParams);
+			layerView = scroll;
 		}
 
-		if (layer.style () != null) {
-			layer.style ().apply (layer, layerView, container, dh);
+		StyleSpec layerStyle = layer.style ();
+
+		if (layerStyle != null) {
+			layerStyle.apply (layer, layerView, container, dh);
 		}
 
 		ComponentsRegistry registry = application.componentsRegistry ();
 		
-		// initial RelativeLayout
+		// line RelativeLayout
 		RelativeLayout relativeLayout = new RelativeLayout (activity);
-		RelativeLayout.LayoutParams lineLayoutParams = new RelativeLayout.LayoutParams (
-			ViewGroup.LayoutParams.MATCH_PARENT,
-			layer.isCompact () ? ViewGroup.LayoutParams.MATCH_PARENT : ViewGroup.LayoutParams.WRAP_CONTENT
-		);
+
+		// line Layoiut Params
+		RelativeLayout.LayoutParams lineLayoutParams = layerLineLayout (layer, layerStyle, layerView.getLayoutParams ().height, dh);
+
 		relativeLayout.setLayoutParams (lineLayoutParams);
 		layout.addView (relativeLayout);
 
@@ -146,13 +159,10 @@ public class DefaultRenderer implements Renderer {
 
 			application.logger ().debug (DefaultRenderer.class.getSimpleName (), "Render Component " + Lang.ARRAY_OPEN + type + Lang.SLASH + spec.id () + Lang.ARRAY_CLOSE);
 
-			if (layer.isCompact () && type.equals (ComponentsRegistry.Default.Break)) {
-				continue;
-			}
-
 			// back to new line
 			if (type.equals (ComponentsRegistry.Default.Break)) {
 				application.logger ().debug (DefaultRenderer.class.getSimpleName (), "\tCreate A Break - RelativeLayout");
+				lineLayoutParams.height = ViewGroup.LayoutParams.WRAP_CONTENT;
 				relativeLayout = new RelativeLayout (activity); 
 				relativeLayout.setLayoutParams (lineLayoutParams);
 				layout.addView (relativeLayout);
@@ -170,11 +180,7 @@ public class DefaultRenderer implements Renderer {
 			
 			// set the id of the component as the tag of the view "layerId.componentId"
 			if (view != null && spec.id () != null) {
-				if (dh == null || dh.get (DataHolder.Internal.NoTag) == null) {
-					view.setTag (layer.id () + Lang.DOT + spec.id ());
-				} else {
-					view.setTag (spec.id ());
-				}
+				view.setTag (spec.id ());
 			}
 			
 			// add component to the layer 
@@ -194,16 +200,17 @@ public class DefaultRenderer implements Renderer {
 			// back to new line
 			if (type.equals (ComponentsRegistry.Default.Break)) {
 				Log.d (DefaultRenderer.class.getSimpleName (), "\tCreate A Break - RelativeLayout");
-				relativeLayout = new RelativeLayout (activity); 
+				lineLayoutParams.height = ViewGroup.LayoutParams.WRAP_CONTENT;
+				relativeLayout = new RelativeLayout (activity);
 				relativeLayout.setLayoutParams (lineLayoutParams);
 				layout.addView (relativeLayout);
 			}
 		}
 
-		// add UI events (press, longpress)
+		// add Layer UI events
 		addLayerEvents (layer, layout);
 		
-		return layout;
+		return layerView;
 		
 	}
 
@@ -251,15 +258,6 @@ public class DefaultRenderer implements Renderer {
 		if (eventSpec != null) {
 			ActionProcessor.process (LifeCycleEvent.destroy.name (), eventSpec, activity, activity.root (), null);
 		}
-		
-		//TODO below, was causing crash
-		// remove all content from the activity main layout
-		/*FragmentManager fragmentManager = activity.getFragmentManager ();
-		FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction ();
-		
-		clear (fragmentManager, fragmentTransaction);
-		
-		fragmentTransaction.commit ();*/
 
 	}
 
@@ -295,6 +293,63 @@ public class DefaultRenderer implements Renderer {
 		// reset the page
 		page = null;
 		
+	}
+
+	private RelativeLayout.LayoutParams layerLineLayout (LayerSpec layer, StyleSpec layerStyle, int layerHieght, DataHolder dh) {
+		// Line Layout Params
+		// depending on lineHeight style property
+		// if all: means this layer will have only 1 line
+		// if xPx: means that the height of each line will be xPx
+		// if fit: this only applies if a layer has a fixed height,
+			// if 2 breaks are declared in this layer and the height of this layer is 300,
+			// then the line height in PX will be 100
+
+		String sLineHeight = null;
+		if (layerStyle != null) {
+			sLineHeight = (String) Json.resolve (layerStyle.get (StyleSpec.LineHeight), dh);
+		}
+
+		int lineHeight = ViewGroup.LayoutParams.WRAP_CONTENT;
+		if (!Lang.isNullOrEmpty (sLineHeight)) {
+			sLineHeight = sLineHeight.trim ();
+
+			StyleSpec.LineHeightValue lhv = null;
+
+			try {
+				lhv = StyleSpec.LineHeightValue.valueOf (sLineHeight);
+			} catch (Exception ex) {
+				// Ignore
+			}
+			if (lhv != null) {
+				switch (lhv) {
+					case all:
+						lineHeight = ViewGroup.LayoutParams.MATCH_PARENT;
+						break;
+					case fit:
+						// TODO: # of breaks in this layer....
+						int lines = layer.lines ();
+						if (layerHieght > 0 && lines > 0) {
+							lineHeight = (int)(layerHieght / lines);
+						}
+						break;
+				}
+			} else {
+				int iLineHeight = -1;
+				try {
+					iLineHeight = Integer.valueOf (sLineHeight);
+				} catch (Exception ex) {
+					// Ignore
+				}
+				if (iLineHeight > 0) {
+					lineHeight = iLineHeight;
+				}
+			}
+		}
+
+		return new RelativeLayout.LayoutParams (
+				ViewGroup.LayoutParams.MATCH_PARENT,
+				lineHeight
+		);
 	}
 
 }

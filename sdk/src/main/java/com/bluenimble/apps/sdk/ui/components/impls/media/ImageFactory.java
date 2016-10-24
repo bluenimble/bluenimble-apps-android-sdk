@@ -1,4 +1,4 @@
-package com.bluenimble.apps.sdk.ui.components.impls.image;
+package com.bluenimble.apps.sdk.ui.components.impls.media;
 
 import com.bluenimble.apps.sdk.Lang;
 import com.bluenimble.apps.sdk.application.UIActivity;
@@ -9,13 +9,10 @@ import com.bluenimble.apps.sdk.spec.ApplicationSpec;
 import com.bluenimble.apps.sdk.spec.BindingSpec;
 import com.bluenimble.apps.sdk.spec.ComponentSpec;
 import com.bluenimble.apps.sdk.spec.LayerSpec;
-import com.bluenimble.apps.sdk.ui.components.AbstractComponentFactory;
 import com.bluenimble.apps.sdk.ui.components.impls.listeners.EventListener;
 import com.bluenimble.apps.sdk.ui.components.impls.listeners.OnLongPressListenerImpl;
 import com.bluenimble.apps.sdk.ui.components.impls.listeners.OnPressListenerImpl;
 import com.bluenimble.apps.sdk.utils.AppResources;
-import com.bluenimble.apps.sdk.utils.BackendHelper;
-import com.bluenimble.apps.sdk.utils.ImageDownloader;
 import com.squareup.picasso.Picasso;
 
 import android.view.View;
@@ -24,25 +21,16 @@ import android.widget.ImageView;
 
 import java.io.File;
 
-public class ImageFactory extends AbstractComponentFactory {
+public class ImageFactory extends AbstractMediaFactory {
 
 	private static final long serialVersionUID = 8437367345924192857L;
 	
 	private static final String Id = "image";
 
-	private static final String Assets = "file:///android_asset/";
-	
-	interface Protocol {
-		String Service 	= "service://";
-		String File 	= "file://";
-		String Http 	= "http://";
-		String Https 	= "https://";
-	}
-
 	public ImageFactory (ApplicationSpec application) {
 
 		// create the downloader
-		ImageDownloader.create (application);
+		super (application);
 
 		// register supported events
 		supportEvent (EventListener.Event.press);
@@ -87,8 +75,7 @@ public class ImageFactory extends AbstractComponentFactory {
 				String url = value.toString ().trim ();
 
 				if (url.startsWith (Protocol.Service)) {
-					// TODO with custom ImageDownloader
-					Picasso.with (view.getContext ()).load (url).into (image);
+					new Picasso.Builder (view.getContext ()).downloader (MediaDownloader.Instance).build ().load (url).into (image);
 				} else if (url.startsWith (Protocol.File) || url.startsWith (Protocol.Http) || url.startsWith (Protocol.Https)) {
 					Picasso.with (view.getContext ()).load (url).into (image);
 				} else {

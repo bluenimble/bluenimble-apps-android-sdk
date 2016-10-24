@@ -10,6 +10,7 @@ import java.util.Set;
 import com.bluenimble.apps.sdk.Json;
 import com.bluenimble.apps.sdk.Lang;
 import com.bluenimble.apps.sdk.application.UIActivity;
+import com.bluenimble.apps.sdk.application.ux.LayerLayout;
 import com.bluenimble.apps.sdk.controller.DataHolder;
 import com.bluenimble.apps.sdk.json.JsonObject;
 import com.bluenimble.apps.sdk.spec.ApplicationSpec;
@@ -93,12 +94,17 @@ public class AnimateEffect implements Effect {
 				}
 			}
 
+			View layerView = activity.findView (layerId);
+			if (layerView == null || !(layerView instanceof LayerLayout)) {
+				continue;
+			}
+
 			View view = null;
 
 			if (component != null) {
-				view = activity.component (layer.id (), component.id ());
+				view = ((LayerLayout)layerView).findView (component.id ());
 			} else {
-				view = activity.layer (layerId);
+				view = layerView;
 			}
 			if (view == null) {
 				Log.d (AnimateEffect.class.getSimpleName (), "\t\t    -> ERR: View Not found [" + layer.id () + Lang.DOT + componentId + "]");
@@ -107,7 +113,6 @@ public class AnimateEffect implements Effect {
 
 			String 	vEffect 	= Techniques.Flash.name ();
 			long 	time 		= 500;
-
 
 			Object o = list.get (ui);
 			if (o instanceof String) {

@@ -1,5 +1,7 @@
 package com.bluenimble.apps.sdk.spec.impls.json;
 
+import android.util.Log;
+
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -64,12 +66,13 @@ public class JsonPageSpec extends JsonEventAwareSpec implements PageSpec {
 		// create SpecLayer objects
 		Iterator<String> layers = oLayers.keys ();
 		while (layers.hasNext ()) {
-			String lyrId = layers.next ().trim ();
+			String lyrId 			= layers.next ();
+			String resolvedLyrId 	= lyrId.trim ();
 
 			boolean addRenderFalse = false;
 
 			if (lyrId.startsWith (Lang.XMARK)) {
-				lyrId = lyrId.substring (1).trim ();
+				resolvedLyrId 	= resolvedLyrId.substring (1).trim ();
 				addRenderFalse = true;
 			}
 
@@ -89,7 +92,7 @@ public class JsonPageSpec extends JsonEventAwareSpec implements PageSpec {
 				oLayer.set (Spec.page.layer.Render, false);
 			}
 
-			addLayer (lyrId, oLayer, application);
+			addLayer (resolvedLyrId, oLayer, application);
 		}
 		
 	}
@@ -120,11 +123,10 @@ public class JsonPageSpec extends JsonEventAwareSpec implements PageSpec {
 
 	@Override
 	public Iterator<String> layers () {
-		JsonObject layers = Json.getObject (spec, Spec.page.Layers);
 		if (layers == null || layers.isEmpty ()) {
 			return null;
 		}
-		return layers.keys ();
+		return layers.keySet ().iterator ();
 	}
 
 	@Override
@@ -142,6 +144,7 @@ public class JsonPageSpec extends JsonEventAwareSpec implements PageSpec {
 		if (layers == null) {
 			layers = new HashMap<String, LayerSpec> ();
 		}
+		Log.d ("Trash", "Add Layer " + id);
 		layers.put (id, new JsonLayerSpec (id, layer, this, application));
 	}
 

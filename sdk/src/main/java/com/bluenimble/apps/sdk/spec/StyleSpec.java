@@ -19,6 +19,11 @@ import com.bluenimble.apps.sdk.controller.DataHolder;
 
 public interface StyleSpec extends Serializable {
 
+	enum LineHeightValue {
+		all,
+		fit
+	}
+
 	interface Colors {
 		int Grey	= Color.parseColor ("#CACECF");
 		int White	= Color.parseColor ("#FFFFFF");
@@ -33,7 +38,7 @@ public interface StyleSpec extends Serializable {
 
 	String 	Visible				= "visible";
 	String 	Disable				= "disable";
-	String 	Compact				= "compact";
+	String 	LineHeight			= "lineHeight";
 	String 	Scroll				= "scroll";
 	String 	Render				= "render";
 

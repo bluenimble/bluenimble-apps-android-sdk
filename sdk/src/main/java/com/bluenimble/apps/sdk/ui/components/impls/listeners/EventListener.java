@@ -32,7 +32,8 @@ public class EventListener implements Serializable {
 		markerStartDrag,
 		markerDrag,
 		markerEndDrag,
-		markerPress
+		markerPress,
+
 	}
 	
 	protected Event 		event;

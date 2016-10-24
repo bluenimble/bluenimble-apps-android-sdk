@@ -6,6 +6,7 @@ import com.bluenimble.apps.sdk.Json;
 import com.bluenimble.apps.sdk.Lang;
 import com.bluenimble.apps.sdk.Spec;
 import com.bluenimble.apps.sdk.application.UIActivity;
+import com.bluenimble.apps.sdk.application.ux.LayerLayout;
 import com.bluenimble.apps.sdk.controller.Action;
 import com.bluenimble.apps.sdk.controller.DataHolder;
 import com.bluenimble.apps.sdk.controller.impls.data.DefaultDataHolder;
@@ -174,12 +175,18 @@ public class DefaultAction implements Action {
 			}
 
 			application.logger ().debug (DefaultAction.class.getSimpleName (), "\tFactory [" + factory.id () + "]");
-			
-			View cView = activity.component (layer.id (), c.id ());
+
+			View layerView = activity.findView (layer.id ());
+			if (layerView == null || !(layerView instanceof LayerLayout)) {
+				continue;
+			}
+
+			View cView = ((LayerLayout)layerView).findView (c.id ());
 			application.logger ().debug (DefaultAction.class.getSimpleName (), "\tView [" + cView + "]");
 			if (cView == null) {
 				continue;
 			}
+
 			factory.bind (Binding.Get, cView, application, c, dh);
 		}
 	}

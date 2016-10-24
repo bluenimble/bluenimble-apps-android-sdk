@@ -37,6 +37,8 @@ public class JsonLayerSpec extends JsonEventAwareSpec implements LayerSpec {
 	private 	Map<String, Integer> 	componentsIds 	= new HashMap<String, Integer> ();
 	
 	private 	List<ComponentSpec>		components		= null;
+
+	private 	int						lines = 1;
 	
 	public JsonLayerSpec (String id, JsonObject spec, PageSpec parentPage, ApplicationSpec application) {
 		super (id, parentPage, Json.getObject (spec, Spec.Events), id);
@@ -127,11 +129,11 @@ public class JsonLayerSpec extends JsonEventAwareSpec implements LayerSpec {
 				}
 			}
 
-			add (oComponent, i, parentPage, application);
+			add (oComponent, i, parentPage, application, i == (oComponents.count () - 1));
 
 			// add break if declared at the component level
 			if (Json.getBoolean (oComponent, Spec.page.layer.component.Break, false)) {
-				add (Break, Integer.MAX_VALUE, parentPage, application);
+				add (Break, Integer.MAX_VALUE, parentPage, application, i == (oComponents.count () - 1));
 			}
 		}
 	}
@@ -173,21 +175,6 @@ public class JsonLayerSpec extends JsonEventAwareSpec implements LayerSpec {
 	}
 
 	@Override
-	public boolean isCompact () {
-		if (style == null) {
-			return false;
-		}
-		if (isScrollable ()) {
-			return true;
-		}
-		String sCompact = (String)style.get (StyleSpec.Compact);
-		if (Lang.isNullOrEmpty (sCompact)) {
-			return false;
-		}
-		return Lang.TrueValues.contains (sCompact.toLowerCase ());
-	}
-
-	@Override
 	public boolean isScrollable () {
 		if (style == null) {
 			return false;
@@ -222,16 +209,27 @@ public class JsonLayerSpec extends JsonEventAwareSpec implements LayerSpec {
 		return component (componentsIds.get (id));
 	}
 
+	@Override
+	public int lines () {
+		return lines;
+	}
+
 	public JsonObject spec () {
 		return spec;
 	}
 
-	private ComponentSpec add (JsonObject oComponent, int index, PageSpec page, ApplicationSpec application) {
+	private ComponentSpec add (JsonObject oComponent, int index, PageSpec page, ApplicationSpec application, boolean isLast) {
 		ComponentSpec component = new JsonComponentSpec (oComponent, id, page, application);
 		this.components.add (component);
 		if (!Lang.isNullOrEmpty (component.id ()) && index < Integer.MAX_VALUE) {
 			componentsIds.put (component.id (), index);
 		}
+
+		// increment lines
+		if (BreakFactory.Id.equals (component.type ()) && index > 0 && !isLast) {
+			lines++;
+		}
+
 		return component;
 	}
 

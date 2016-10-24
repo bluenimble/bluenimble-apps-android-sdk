@@ -1,6 +1,7 @@
 package com.bluenimble.apps.sdk.ui.components.impls.dropdown;
 
 import com.bluenimble.apps.sdk.application.UIActivity;
+import com.bluenimble.apps.sdk.application.ux.LayerLayout;
 import com.bluenimble.apps.sdk.controller.DataHolder;
 import com.bluenimble.apps.sdk.controller.impls.data.DefaultDataHolder;
 import com.bluenimble.apps.sdk.json.JsonArray;
@@ -95,7 +96,7 @@ public class DefaultDropDownAdapter extends ArrayAdapter<DataHolder> {
 		BindingHelper.bindLayer (
 				LogTag,
 				activity.getSpec (),
-				template, convertView, one.set (recordNs, (JsonObject) records.get (position)),
+				template, (LayerLayout)convertView, one.set (recordNs, (JsonObject) records.get (position)),
 				true
 		);
 

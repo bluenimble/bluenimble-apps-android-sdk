@@ -7,12 +7,14 @@ import android.view.ViewGroup;
 import com.bluenimble.apps.sdk.Lang;
 import com.bluenimble.apps.sdk.application.UIActivity;
 import com.bluenimble.apps.sdk.application.UIApplication;
+import com.bluenimble.apps.sdk.application.ux.LayerLayout;
 import com.bluenimble.apps.sdk.controller.DataHolder;
 import com.bluenimble.apps.sdk.spec.ApplicationSpec;
 import com.bluenimble.apps.sdk.spec.ComponentSpec;
 import com.bluenimble.apps.sdk.spec.LayerSpec;
 import com.bluenimble.apps.sdk.ui.components.AbstractComponentFactory;
 import com.bluenimble.apps.sdk.ui.effects.impls.BindEffect;
+import com.bluenimble.apps.sdk.utils.BindingHelper;
 
 public class LayerFactory extends AbstractComponentFactory {
 
@@ -48,11 +50,13 @@ public class LayerFactory extends AbstractComponentFactory {
 			return;
 		}
 
-		UIActivity activity = (UIActivity)view.getContext ();
+		if (view != null && (view instanceof LayerLayout)) {
+			return;
+		}
 
 		for (int i = 0; i < layer.count (); i++) {
 			ComponentSpec subComponent = layer.component (i);
-			View subView = activity.component (layer.id (), subComponent.id ());
+			View subView = ((LayerLayout)view).findView (subComponent.id ());
 			if (subView == null) {
 				Log.d (BindEffect.class.getSimpleName (), "\t\t    -> ERR: View Not found [" + layer.id () + Lang.DOT + subComponent.id () + "]");
 				return;

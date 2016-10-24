@@ -2,6 +2,7 @@ package com.bluenimble.apps.sdk.ui.effects.impls;
 
 import com.bluenimble.apps.sdk.Lang;
 import com.bluenimble.apps.sdk.application.UIActivity;
+import com.bluenimble.apps.sdk.application.ux.LayerLayout;
 import com.bluenimble.apps.sdk.controller.DataHolder;
 import com.bluenimble.apps.sdk.spec.ApplicationSpec;
 import com.bluenimble.apps.sdk.spec.ComponentSpec;
@@ -9,6 +10,7 @@ import com.bluenimble.apps.sdk.spec.LayerSpec;
 import com.bluenimble.apps.sdk.spec.PageSpec;
 import com.bluenimble.apps.sdk.ui.effects.Effect;
 
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 public abstract class VisibilityEffect implements Effect {
@@ -69,7 +71,12 @@ public abstract class VisibilityEffect implements Effect {
 	}
 	
 	private void showComponent (UIActivity activity, ApplicationSpec application, LayerSpec layer, ComponentSpec component, DataHolder dh) {
-		View view = activity.component (layer.id (), component.id ());
+		View layerView = activity.findView (layer.id ());
+		if (layerView == null || !(layerView instanceof LayerLayout)) {
+			return;
+		}
+
+		View view = ((LayerLayout)layerView).findView (component.id ());
 		if (view == null) {
 			return;
 		}
@@ -77,11 +84,11 @@ public abstract class VisibilityEffect implements Effect {
 	}
 
 	private void showLayer (UIActivity activity, ApplicationSpec application, LayerSpec layer, DataHolder dh) {
-		View view = activity.layer (layer.id ());
-		if (view == null) {
+		View layerView = activity.findView (layer.id ());
+		if (layerView == null || !(layerView instanceof LayerLayout)) {
 			return;
 		}
-		view.setVisibility (visibility);
+		layerView.setVisibility (visibility);
 	}
 
 }

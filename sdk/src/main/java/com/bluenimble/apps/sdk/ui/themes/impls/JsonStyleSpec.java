@@ -199,11 +199,6 @@ public class JsonStyleSpec implements StyleSpec {
 
 			if (params == null) {
 				params = new RelativeLayout.LayoutParams (width, height);
-				/*if (!isLayer && !isBreak && parent.getChildCount () > 0) {
-					int sibling = parent.getChildAt (parent.getChildCount () - 1).getId ();
-					Log.d (JsonStyleSpec.class.getSimpleName (), "\t-> addRule RIGHT_OF sibling " + Lang.ARRAY_OPEN + sibling + Lang.ARRAY_CLOSE);
-					((RelativeLayout.LayoutParams)params).addRule (RelativeLayout.RIGHT_OF, sibling);
-				}*/
 				view.setLayoutParams (params);
 			} else {
 				params.width = width;
@@ -279,22 +274,20 @@ public class JsonStyleSpec implements StyleSpec {
 	private void applyAlign (JsonObject style, ViewGroup.LayoutParams params, ViewGroup parent, boolean isLayer, boolean isBreak) {
 
 		RelativeLayout.LayoutParams layoutParams = ((RelativeLayout.LayoutParams)params);
-		
-		String [] aligns = Lang.split (Json.getString (style, Group.Align), Lang.SPACE);
-		if (aligns == null) {
-			return;
-		}
 
 		boolean alignAssigned = false;
-		
-		for (String align : aligns) {
-			Integer a = ComponentAlign.get (align.trim ());
-			if (a == null) {
-				continue;
+
+		String [] aligns = Lang.split (Json.getString (style, Group.Align), Lang.SPACE);
+		if (aligns != null) {
+			for (String align : aligns) {
+				Integer a = ComponentAlign.get (align.trim ());
+				if (a == null) {
+					continue;
+				}
+				Log.d (JsonStyleSpec.class.getSimpleName (), "\t applyAlign " + align);
+				layoutParams.addRule (a);
+				alignAssigned = true;
 			}
-			Log.d (JsonStyleSpec.class.getSimpleName (), "\t applyAlign " + align);
-			layoutParams.addRule (a);
-			alignAssigned = true;
 		}
 
 		if (!alignAssigned && !isLayer && !isBreak && parent.getChildCount () > 0) {
@@ -610,6 +603,7 @@ public class JsonStyleSpec implements StyleSpec {
 		}
 		
 		boolean isPercent = sValue.endsWith (Lang.PERCENT);
+
 		if (isPercent && max > 0) {
 			Log.d (JsonStyleSpec.class.getSimpleName (), "\tGet % value > max:" + max);
 			try {

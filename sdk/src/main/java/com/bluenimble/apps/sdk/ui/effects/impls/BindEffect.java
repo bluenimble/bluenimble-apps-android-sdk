@@ -8,6 +8,7 @@ import java.util.Set;
 
 import com.bluenimble.apps.sdk.Lang;
 import com.bluenimble.apps.sdk.application.UIActivity;
+import com.bluenimble.apps.sdk.application.ux.LayerLayout;
 import com.bluenimble.apps.sdk.controller.DataHolder;
 import com.bluenimble.apps.sdk.spec.ApplicationSpec;
 import com.bluenimble.apps.sdk.spec.ComponentSpec;
@@ -94,7 +95,10 @@ public class BindEffect implements Effect {
 			if (component != null) {
 				BindingHelper.bindComponent (tag, activity, application, layer, component, dh, useDh);
 			} else {
-				BindingHelper.bindLayer (tag, application, layer, activity.layer (layer.id ()), dh, useDh);
+				View layerView = activity.findView (layer.id ());
+				if (layerView != null && (layerView instanceof LayerLayout)) {
+					BindingHelper.bindLayer (tag, application, layer, (LayerLayout)layerView, dh, useDh);
+				}
 			}
 			
 		}
