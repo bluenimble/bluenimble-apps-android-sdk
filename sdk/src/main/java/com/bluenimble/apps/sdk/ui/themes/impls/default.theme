@@ -1,13 +1,7 @@
 {
 	"*": {
 	
-		"*": {
-			"text": {
-				"size": "14"
-			}
-		},
-	
-		// components		
+		// components
 		"page": {
 			
 		},
@@ -23,11 +17,11 @@
 		"invisible": { 
 			"visible": "false" 
 		},
-		"centered": {
+		"center": {
 			"align": "center"
 		},
-				
-		// miscellaneous
+
+        // miscellaneous
 		"rounded": {
 			"border": {
 				"radius": "12"

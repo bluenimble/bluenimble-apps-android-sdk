@@ -5,29 +5,31 @@
     "down": { "en": "\uf063" }, "menu": { "en": "\uf0ca" }, "profile": { "en": "\uf142" }
   },
   "title": {
-    "short": { "en": "BlueNimble Apps SDK Browser" }, "long": { "en": "BlueNimble Apps SDK Browser" }
+    "short": { "en": "Apps SDK Browser" }, "long": { "en": "BlueNimble Apps SDK Browser" }
   },
   "images": {
-    "logo": { "en": "" }
+    "logo": { "en": "https://www.bluenimble.com/images/BlueNimble15.png" }
   },
   "menu": {
     "en": [{
-      "title": "Layers", "icon": "\uf0ca",
+      "title": "Layers", "icon": "\uf2a1",
       "examples": [{
         "page": "header-main"
       }]
     }, {
-      "title": "Forms", "icon": "\uf0ca"
+      "title": "Forms", "icon": "\uf044"
     }, {
-      "title": "Tabs", "icon": "\uf0ca"
+      "title": "Tabs", "icon": "\uf24d"
     }, {
-      "title": "Lists", "icon": "\uf0ca"
+      "title": "Lists", "icon": "\uf0f7"
     }, {
-      "title": "Content", "icon": "\uf0ca"
+      "title": "Content", "icon": "\uf20d"
     }, {
-      "title": "Charts", "icon": "\uf0ca"
+      "title": "Charts", "icon": "\uf080"
     }, {
-      "title": "Maps", "icon": "\uf0ca"
+      "title": "Maps", "icon": "\uf041"
+    }, {
+      "title": "Media", "icon": "\uf03e"
     }]
   }
 }

@@ -2,25 +2,63 @@
 
   "*": {
 
+    "primary": {
+      "padding": "20 20 20 20",
+      "text": {
+        "align": "center middle",
+        "color": "#FFFFFF",
+        "shadow": "#7F000000 1 1 2"
+      },
+      "background": {
+        "color": "#09afdf"
+      }
+    },
+
+    "secondary": {
+      "padding": "20 20 20 20",
+      "text": {
+        "align": "center middle",
+        "color": "#FFFFFF",
+        "shadow": "#7F000000 1 1 2"
+      },
+      "background": {
+        "color": "#8bc43f"
+      }
+    },
+
     "logo": {
       "align": "middle",
-      "margin": "? 40 ? 40"
+      "margin": "? ? ? 20",
+      "size": { "width": "500" }
     },
 
     "title": {
-      "align": "middle",
+      "align": "right middle",
+      "margin": "? 10 ? 10",
       "text": {
-        "size": "16",
-        "color": "#FFFFFF"
+        "size": "14"
       }
     },
 
     "icon": {
-      "padding": "6 6 6 6",
+      "size": { "width": "200", "height": "200" },
       "text": {
         "font": "fontawesome",
-        "size": "20",
-        "color": "#FFFFFF"
+        "color": "#FFFFFF",
+        "size": "24",
+        "shadow": "#7F000000 1 1 2",
+        "align": "center middle"
+      },
+      "background": { "color": "#FFFFFF", "opacity": ".2" },
+      "align": "center"
+    },
+
+    "icon-title": {
+      "padding": "10 ? ? ?",
+      "text": {
+        "color": "#FFFFFF",
+        "shadow": "#7F000000 1 1 2",
+        "size": "16"
       }
     },
 
@@ -28,26 +66,24 @@
       "lineHeight": "all",
       "size": { "height": "200" },
       "background": {
-        "color": "#00aff0 #00cdf0",
-        "gradient": {
-          "orientation": "bt"
-        }
+        "color": "#FFFFFF"
       },
       "shadow": {
-        "color": "#00acf0",
-        "tick": "5 0 0 0"
+        "color": "#00aff0",
+        "tick": "0 0 5 0"
       }
     },
     "main": {
       "margin": "200 0 0 0",
-      "background": { "color": "#FFFFFF" }
+      "background": { "image": "background.jpg" }
     },
 
     "menuTpl": {
       "size": {
-        "width": 200,
-        "height": 200
-      }
+        "width": 340,
+        "height": 340
+      },
+      "margin": "60 60 60 60"
     }
 
   }

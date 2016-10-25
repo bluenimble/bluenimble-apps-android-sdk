@@ -1,13 +1,13 @@
 {
 	"layers": {
 		"header": [
-			"image static.urls.logo ? logo", "text static.title.short ? title"
+			"image static.images.logo ? logo", "text static.title.short ? title primary rounded"
 		],
 		"main": [
-			"list static.menu ? template=menuTpl layout=grid"
+			"list static.menu ? template=menuTpl layout=grid cols=3"
 		],
 		"! menuTpl": [
-			"text record.icon ? icon", "/", "text record.title"
+			"text record.icon ? rounded icon", "/", "text record.title ? center icon-title"
 		]
 	}
 }

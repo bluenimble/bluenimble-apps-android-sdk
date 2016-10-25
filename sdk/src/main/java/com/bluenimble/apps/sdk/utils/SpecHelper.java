@@ -236,7 +236,7 @@ public class SpecHelper {
 
         // type:id   	set   		get   	[proper cmp spec]
 
-        // components: txt, btn, inp, chk, rdg, list, ddn, map, chart, tabs
+        // components: text, button, input, check, rdg, list, ddn, map, chart, tabs
 
         JsonObject oComponent = new JsonObject ();
 
@@ -320,7 +320,7 @@ public class SpecHelper {
         }
 
         if (!Lang.isNullOrEmpty (style)) {
-            Json.set (oComponent, Spec.page.layer.component.Style, style);
+            Json.set (oComponent, style.trim (), Spec.page.layer.component.Style);
         }
 
         return oComponent;

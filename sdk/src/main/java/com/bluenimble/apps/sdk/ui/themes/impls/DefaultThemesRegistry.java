@@ -136,8 +136,15 @@ public class DefaultThemesRegistry implements ThemesRegistry {
 			JsonObject style = Json.getObject (theme, styleId);
 			// change background image path
 			String image = (String)Json.find (style, JsonStyleSpec.Group.Background, JsonStyleSpec.Background.Image);
+			if (Lang.isNullOrEmpty (image)) {
+				continue;
+			}
 			if (!AppResources.exists (image)) {
-				Json.set (style, id + Lang.SLASH + UIApplication.Resources.Images + Lang.SLASH + resolution + Lang.SLASH + image);
+				Json.set (
+					style,
+					id + Lang.SLASH + UIApplication.Resources.Images + Lang.SLASH + resolution + Lang.SLASH + image,
+					JsonStyleSpec.Group.Background, JsonStyleSpec.Background.Image
+				);
 			}
 		}
 

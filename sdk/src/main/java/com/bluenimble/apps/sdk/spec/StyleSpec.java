@@ -99,6 +99,7 @@ public interface StyleSpec extends Serializable {
 		String Color 		= "color";
 		String Style 		= "style";
 		String Align		= "align";
+		String Shadow		= "shadow";
 	}
 
 	interface Size {

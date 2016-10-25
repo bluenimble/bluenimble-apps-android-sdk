@@ -112,7 +112,7 @@ public class JsonStyleSpec implements StyleSpec {
 		}
 		style = merge (styles);
 		styles.clear ();
-		Log.d ("Style", "\t" + style.toString (2));
+		Log.d ("Style", "\t" + style);
 	}
 	
 	private static JsonObject merge (Set<JsonObject> styles) {
@@ -345,19 +345,59 @@ public class JsonStyleSpec implements StyleSpec {
 			text.setTextColor (Color.parseColor (fontColor));
 		}
 
-		String [] aligns = Lang.split (Json.getString (oFont, Text.Align), Lang.SPACE);
-		if (aligns == null) {
+		String [] aligns = Lang.split (Json.getString (oFont, Text.Align), Lang.SPACE, true);
+		if (aligns != null) {
+			int gravity = Gravity.NO_GRAVITY;
+			for (String align : aligns) {
+				Integer g = TextAlign.get (align);
+				if (g == null) {
+					continue;
+				}
+				gravity = gravity | g;
+			}
+			text.setGravity (gravity);
+		}
+
+		// apply text shadow
+		String [] fontShadow = Lang.split (Json.getString (oFont, Text.Shadow), Lang.SPACE);
+		if (fontShadow == null || fontShadow.length == 0) {
 			return;
 		}
-		
-		for (String align : aligns) {
-			Integer g = TextAlign.get (align.trim ());
-			if (g == null) {
-				continue;
+
+		Log.d (JsonStyleSpec.class.getSimpleName (), "\t-> Text.Shadow " + Lang.ARRAY_OPEN + Lang.join (fontShadow) + Lang.ARRAY_CLOSE);
+
+		int textShadowColor 	= Colors.Grey;
+		float textShadowX 		= 1;
+		float textShadowY 		= 1;
+		float textShadowRadius 	= 2;
+
+		// shadow color
+		textShadowColor = Color.parseColor (fontShadow [0]);
+
+		// shadow X, Y
+		if (fontShadow.length > 1) {
+			try {
+				textShadowX = textShadowY = Float.valueOf (fontShadow [1]);
+			} catch (NumberFormatException nfex) {
 			}
-			text.setGravity (g);
 		}
-		
+		// shadow Y
+		if (fontShadow.length > 2) {
+			try {
+				textShadowY = Float.valueOf (fontShadow [2]);
+			} catch (NumberFormatException nfex) {
+			}
+		}
+		// shadow radius
+		if (fontShadow.length > 3) {
+			try {
+				textShadowRadius = Float.valueOf (fontShadow [3]);
+			} catch (NumberFormatException nfex) {
+			}
+		}
+		// set shadow
+		text.setShadowLayer (textShadowRadius, textShadowX, textShadowY, textShadowColor);
+
 	}
 	
 	private void applyBackground (JsonObject style, View view, UIApplication application) {
@@ -467,7 +507,7 @@ public class JsonStyleSpec implements StyleSpec {
 				String [] xy = Lang.split (sCenter, Lang.SPACE);
 				if (xy.length == 2) {
 					try {
-						gradient.setGradientCenter (Float.parseFloat (xy [0]), Float.parseFloat (xy [1]));
+						gradient.setGradientCenter (Float.valueOf (xy [0]), Float.valueOf (xy [1]));
 					} catch (Exception ex) {
 						// TODO log
 					}
@@ -639,7 +679,7 @@ public class JsonStyleSpec implements StyleSpec {
 			aBounds = Lang.add (aBounds, new String [] { Unknown, Unknown});
 		}
 		
-		for (int i = 0; i < aBounds.length; i++) {
+		for (int i = 0; i < 4; i++) {
 			bounds [i] = parseFloat (aBounds [i], i % 2 == 0 ? hmax : wmax, defaultValue);
 		}
 		
