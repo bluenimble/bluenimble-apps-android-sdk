@@ -49,7 +49,17 @@
         "shadow": "#7F000000 1 1 2",
         "align": "center middle"
       },
-      "background": { "color": "#FFFFFF", "opacity": ".2" },
+      "background": {
+        "color": "#FFFFFF #09afdf",
+        "gradient": {
+          "radius": "300"
+        },
+        "opacity": ".4"
+      },
+      "shadow": {
+        "color": "#0293BD",
+        "tick": "3"
+      },
       "align": "center"
     },
 

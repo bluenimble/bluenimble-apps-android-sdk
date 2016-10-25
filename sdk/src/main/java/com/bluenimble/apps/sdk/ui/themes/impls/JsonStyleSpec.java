@@ -436,9 +436,6 @@ public class JsonStyleSpec implements StyleSpec {
 			}
 		}
 		
-		// set opacity
-		gradient.setAlpha ((int) (Json.getFloat (oBackground, Background.Opacity, 1) * 255));
-
 		// set border and radius
 		if (!Json.isNullOrEmpty (oBorder)) {
 	 		int iBorderColor = Colors.Grey;
@@ -456,7 +453,7 @@ public class JsonStyleSpec implements StyleSpec {
 		
 		// set gradient orientation and type
 		applyGradient (gradient, oBackground, false);
-		
+
 		// set gradient insets
 		float [] insets = null;
 		String sInsets = Json.getString (oBackground, Background.Insets);
@@ -466,10 +463,13 @@ public class JsonStyleSpec implements StyleSpec {
 
 		// shadow
 		Drawable background = applyShadow (view, gradient, oShadow, oBorder, insets);
-		
+
+		// set opacity
+		background.setAlpha ((int) (Json.getFloat (oBackground, Background.Opacity, 1) * 255));
+
 		// set background
 		view.setBackground (background);
-		
+
 	}
 	
 	private void applyGradient (GradientDrawable gradient, JsonObject oBackground, boolean addDefault) {

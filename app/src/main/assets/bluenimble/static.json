@@ -12,7 +12,7 @@
   },
   "menu": {
     "en": [{
-      "title": "Layers", "icon": "\uf2a1",
+      "title": "Layers", "icon": "\uf0e8",
       "examples": [{
         "page": "header-main"
       }]
