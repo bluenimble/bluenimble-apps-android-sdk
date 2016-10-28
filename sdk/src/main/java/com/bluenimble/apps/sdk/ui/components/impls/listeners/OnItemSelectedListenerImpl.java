@@ -1,8 +1,9 @@
 package com.bluenimble.apps.sdk.ui.components.impls.listeners;
 
 import com.bluenimble.apps.sdk.application.UIActivity;
-import com.bluenimble.apps.sdk.controller.ActionProcessor;
+import com.bluenimble.apps.sdk.controller.impls.actions.DefaultActionInstance;
 import com.bluenimble.apps.sdk.json.JsonObject;
+import com.bluenimble.apps.sdk.utils.SpecHelper;
 
 import android.view.View;
 import android.widget.AdapterView;
@@ -19,7 +20,13 @@ public class OnItemSelectedListenerImpl extends EventListener implements OnItemS
 
 	@Override
 	public void onItemSelected (AdapterView<?> parent, View group, int position, long arg3) {
-		ActionProcessor.process (event.name (), eventSpec, (UIActivity)group.getContext (), group, null);
+		SpecHelper.application (group)
+			.controller ()
+				.process (
+					DefaultActionInstance.create (event.name (), eventSpec, null, group),
+					(UIActivity)group.getContext (),
+					true
+				);
 	}
 
 	@Override

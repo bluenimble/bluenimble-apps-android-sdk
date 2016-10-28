@@ -17,12 +17,14 @@ public interface DataHolder extends VariableResolver, Serializable {
 	String DefaultStreamId 	= "stream";
 
 	interface Namespace {
+		String Internal = "$INTERNAL";
+
 		String Error 	= "error";
 
-		String App 		= "app";
 		String Static 	= "static";
 		String Device 	= "device";
-		String Internal = "$INTERNAL";
+		String View 	= "view";
+		String Event 	= "event";
 
 		String Streams 	= "streams";
 	}
@@ -42,6 +44,7 @@ public interface DataHolder extends VariableResolver, Serializable {
 
 	Object			valueOf 	(ApplicationSpec applicationSpec, BindingSpec bindingSpec);
 
-	void 			close		();
-	
+	void 			destroy		();
+	DataHolder		clone		();
+
 }

@@ -16,6 +16,7 @@ import com.bluenimble.apps.sdk.spec.ApplicationSpec;
 import com.bluenimble.apps.sdk.spec.ComponentSpec;
 import com.bluenimble.apps.sdk.spec.LayerSpec;
 import com.bluenimble.apps.sdk.spec.PageSpec;
+import com.bluenimble.apps.sdk.ui.components.ComponentFactory;
 import com.bluenimble.apps.sdk.ui.effects.Effect;
 
 public class DestroyEffect implements Effect {
@@ -77,26 +78,20 @@ public class DestroyEffect implements Effect {
 	}
 
 	private void destroyComponent (UIActivity activity, ApplicationSpec application, LayerSpec layer, ComponentSpec component, DataHolder dh) {
+
+		ComponentFactory componentFactory = application.componentsRegistry ().lookup (component.id ());
+		if (componentFactory == null) {
+			return;
+		}
+
+		View view = null;
+
 		View layerView = activity.findView (layer.id ());
-		if (layerView == null || !(layerView instanceof LayerLayout)) {
-			return;
+		if (layerView != null && (layerView instanceof LayerLayout)) {
+			view = ((LayerLayout)layerView).findView (component.id ());
 		}
 
-		View view = ((LayerLayout)layerView).findView (component.id ());
-		if (view == null) {
-			return;
-		}
-
-		ViewParent parent = view.getParent ();
-		if (parent == null) {
-			return;
-		}
-
-		if (!ViewGroup.class.isAssignableFrom (parent.getClass ())) {
-			return;
-		}
-
-		((ViewGroup)parent).removeView (view);
+		componentFactory.destroy (activity, view, application, component);
 	}
 
 	private void destroyLayer (UIActivity activity, ApplicationSpec application, LayerSpec layer, DataHolder dh) {

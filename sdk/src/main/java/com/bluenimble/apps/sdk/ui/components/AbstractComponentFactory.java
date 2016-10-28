@@ -14,6 +14,7 @@ import com.bluenimble.apps.sdk.ui.components.impls.listeners.EventListener;
 
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewParent;
 
 public abstract class AbstractComponentFactory implements ComponentFactory {
 
@@ -31,7 +32,29 @@ public abstract class AbstractComponentFactory implements ComponentFactory {
 	@Override
 	public void addEvent (UIActivity activity, View view, ApplicationSpec applicationSpec, ComponentSpec component, String eventName, JsonObject eventSpec) {
 	}
-	
+
+	@Override
+	public boolean isAutoBind () {
+		return true;
+	}
+
+	@Override
+	public void destroy (UIActivity activity, View view, ApplicationSpec applicationSpec, ComponentSpec component) {
+		if (view == null) {
+			return;
+		}
+		ViewParent parent = view.getParent ();
+		if (parent == null) {
+			return;
+		}
+
+		if (!ViewGroup.class.isAssignableFrom (parent.getClass ())) {
+			return;
+		}
+
+		((ViewGroup)parent).removeView (view);
+	}
+
 	protected View applyStyle (ViewGroup group, View component, ComponentSpec spec, DataHolder dh) {
 		if (spec.style () == null) {
 			return component;

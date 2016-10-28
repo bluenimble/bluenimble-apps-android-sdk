@@ -29,6 +29,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewParent;
 
 import java.util.Iterator;
 
@@ -225,4 +226,23 @@ public class MapFactory extends AbstractComponentFactory {
 				break;
 		}
 	}
+	@Override
+	public void destroy (UIActivity activity, View view, ApplicationSpec applicationSpec, ComponentSpec component) {
+		FragmentManager manager = ((UIActivity)view.getContext ()).getSupportFragmentManager ();
+
+		MapFragment mapFragment = (MapFragment)manager.findFragmentByTag (component.id ());
+		if (mapFragment == null) {
+			return;
+		}
+
+		FragmentTransaction transaction = manager.beginTransaction ();
+
+		// remove fragment
+		transaction.remove (mapFragment);
+
+		// commit
+		transaction.commit ();
+
+	}
+
 }

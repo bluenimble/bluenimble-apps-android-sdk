@@ -6,17 +6,19 @@ public interface Spec {
 	String Description 		= "description";
 	String DefaultLanguage 	= "defaultLanguage";
 	String Theme 			= "theme";
-	
+
+	interface security {
+		String AccessDeniedPage = "accessDeniedPage";
+	}
+
 	String Index 			= "index";
-	
+
 	String LogLevel 		= "logLevel";
 	
 	interface sdkVersion {
-	
 		String Major = "major";
 		String Minor = "minor";
 		String Patch = "patch";
-	
 	}
 	
 	String Pages		= "pages";
@@ -30,9 +32,10 @@ public interface Spec {
 		String Layers 	= "layers";
 
 		interface event {
-			String Scope 	= "scope";
-			String Action 	= "action";
-			String Data 	= "data";
+			String Scope 		= "scope";
+			String Action 		= "action";
+			String Data 		= "data";
+			String Permissions 	= "permissions";
 		}
 
 		interface layer {
@@ -64,9 +67,10 @@ public interface Spec {
 	}
 	
 	interface Action {
-		String Scope	= "scope";
-		String OnStart 	= "onStart";
-		String OnEnd 	= "onEnd";
+		String Scope			= "scope";
+		String OnStart 			= "onStart";
+		String OnAccessDenied 	= "onAccessDenied";
+		String OnEnd 			= "onEnd";
 		interface call {
 			String Services 	= "services";
 			String OnSuccess 	= "onSuccess";

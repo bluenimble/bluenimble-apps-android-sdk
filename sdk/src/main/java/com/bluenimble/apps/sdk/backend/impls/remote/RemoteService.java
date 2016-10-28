@@ -126,10 +126,10 @@ public class RemoteService implements Service {
 
 		String accept = Json.getString (headers, HttpHeaders.ACCEPT);
 
-		// resolve and add data - if no data section defined at the service level, it should be default to the App ns
+		// resolve and add data - if no data section defined at the service level, it should be default to the View ns
 		JsonObject rdata = Json.getObject (spec, Spec.Data);
 		if (Json.isNullOrEmpty (rdata)) {
-			spec.set (Spec.Data, dh.get (DataHolder.Namespace.App));
+			spec.set (Spec.Data, dh.get (DataHolder.Namespace.View));
 		} else {
 			Json.resolve (rdata, dh);
 		}

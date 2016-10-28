@@ -33,9 +33,13 @@ public class SelectEffect implements Effect {
 			return;
 		}
 
+		application.logger ().debug (SelectEffect.class.getSimpleName (), "Record found: " + vRecord);
+
 		RecyclerView list = (RecyclerView)vRecord.getParent ();
 
 		DefaultListAdapter adapter = (DefaultListAdapter)list.getAdapter ();
+
+		application.logger ().debug (SelectEffect.class.getSimpleName (), "\tPosition: " + list.getLayoutManager ().getPosition (vRecord));
 
 		adapter.select (list.getLayoutManager ().getPosition (vRecord));
 

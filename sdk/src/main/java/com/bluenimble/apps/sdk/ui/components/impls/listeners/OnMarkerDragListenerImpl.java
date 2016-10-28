@@ -1,11 +1,12 @@
 package com.bluenimble.apps.sdk.ui.components.impls.listeners;
 
 import com.bluenimble.apps.sdk.application.UIActivity;
-import com.bluenimble.apps.sdk.controller.ActionProcessor;
+import com.bluenimble.apps.sdk.controller.impls.actions.DefaultActionInstance;
 import com.bluenimble.apps.sdk.json.JsonArray;
 import com.bluenimble.apps.sdk.json.JsonObject;
 import com.bluenimble.apps.sdk.ui.components.impls.map.MapFactory;
 import com.bluenimble.apps.sdk.ui.components.impls.map.MapFragment;
+import com.bluenimble.apps.sdk.utils.SpecHelper;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.Marker;
 
@@ -27,8 +28,7 @@ public class OnMarkerDragListenerImpl extends EventListener implements GoogleMap
 		if (!Event.markerStartDrag.equals (event)) {
 			return;
 		}
-		mapFragment.setState (getState (marker));
-		ActionProcessor.process (event.name (), eventSpec, (UIActivity)mapFragment.getActivity (), mapFragment.getView (), null);
+		onMarkerEvent (marker);
 	}
 
 	@Override
@@ -36,8 +36,7 @@ public class OnMarkerDragListenerImpl extends EventListener implements GoogleMap
 		if (!Event.markerDrag.equals (event)) {
 			return;
 		}
-		mapFragment.setState (getState (marker));
-		ActionProcessor.process (event.name (), eventSpec, (UIActivity)mapFragment.getActivity (), mapFragment.getView (), null);
+		onMarkerEvent (marker);
 	}
 
 	@Override
@@ -45,8 +44,17 @@ public class OnMarkerDragListenerImpl extends EventListener implements GoogleMap
 		if (!Event.markerEndDrag.equals (event)) {
 			return;
 		}
-		mapFragment.setState (getState (marker));
-		ActionProcessor.process (event.name (), eventSpec, (UIActivity)mapFragment.getActivity (), mapFragment.getView (), null);
+		onMarkerEvent (marker);
+	}
+
+	private void onMarkerEvent (Marker marker) {
+		SpecHelper.application (mapFragment.getView ())
+			.controller ()
+				.process (
+					DefaultActionInstance.create (event.name (), eventSpec, null, mapFragment.getView ()),
+					(UIActivity)mapFragment.getActivity (),
+					true
+				);
 	}
 
 	private JsonObject getState (Marker marker) {

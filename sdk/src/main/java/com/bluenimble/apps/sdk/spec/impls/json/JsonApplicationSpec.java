@@ -9,6 +9,7 @@ import com.bluenimble.apps.sdk.Lang;
 import com.bluenimble.apps.sdk.Spec;
 import com.bluenimble.apps.sdk.json.JsonObject;
 import com.bluenimble.apps.sdk.spec.PageSpec;
+import com.bluenimble.apps.sdk.spec.SecuritySpec;
 import com.bluenimble.apps.sdk.spec.ThemeSpec;
 import com.bluenimble.apps.sdk.spec.impls.AbstractApplicationSpec;
 import com.bluenimble.apps.sdk.ui.renderer.impls.DefaultRenderer;
@@ -56,6 +57,27 @@ public class JsonApplicationSpec extends AbstractApplicationSpec {
 			String pageId = ids.next ();
 			add	(pageId, Json.getObject (pages, pageId)); 
 		}
+
+		// set security
+		final JsonObject oSecurity = Json.getObject (spec, Spec.security.class.getSimpleName ());
+		if (oSecurity != null) {
+			security = new SecuritySpec () {
+				@Override
+				public PageSpec accessDenied () {
+					String adp = Json.getString (oSecurity, Spec.security.AccessDeniedPage);
+					if (Lang.isNullOrEmpty (adp)) {
+						return null;
+					}
+					return page (adp);
+				}
+
+				@Override
+				public void get (String... property) {
+					Json.find (oSecurity, property);
+				}
+			};
+		}
+
 	}
 	
 	@Override

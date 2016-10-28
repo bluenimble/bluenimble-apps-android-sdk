@@ -26,4 +26,8 @@ public interface ComponentFactory extends Serializable {
 	
 	void	addEvent	(UIActivity activity, View view, ApplicationSpec applicationSpec, ComponentSpec component, String eventName, JsonObject eventSpec);
 
+	boolean	isAutoBind	();
+
+	void	destroy		(UIActivity activity, View view, ApplicationSpec applicationSpec, ComponentSpec component);
+
 }

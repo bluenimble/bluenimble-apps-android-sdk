@@ -13,6 +13,15 @@ import android.view.ViewGroup;
 
 public interface Renderer extends Serializable {
 
+	enum LifeCycleEvent {
+		create,
+		destroy,
+		rotate,
+		crash,
+		warn,
+		error
+	}
+
 	void 		render 	(PageSpec page, UIActivity activity, DataHolder dh);
 	View		render 	(ApplicationSpec application, LayerSpec layer, DataHolder dh, ViewGroup container, UIActivity activity);
 	

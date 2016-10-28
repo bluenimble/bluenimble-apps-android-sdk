@@ -59,7 +59,7 @@ public class MediaDownloader implements Downloader {
 					pv = p.substring (indexOfEq + 1);
 				}
 				if (Lang.isNullOrEmpty (pv)) {
-					dh.set (DataHolder.Namespace.App, pv, Lang.split (pn, Lang.DOT, true));
+					dh.set (DataHolder.Namespace.View, pv, Lang.split (pn, Lang.DOT, true));
 				}
 			}
 		}

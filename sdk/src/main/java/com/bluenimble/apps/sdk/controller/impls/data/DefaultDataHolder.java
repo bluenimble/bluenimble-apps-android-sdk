@@ -2,17 +2,14 @@ package com.bluenimble.apps.sdk.controller.impls.data;
 
 import com.bluenimble.apps.sdk.Json;
 import com.bluenimble.apps.sdk.Lang;
+import com.bluenimble.apps.sdk.application.UIActivity;
 import com.bluenimble.apps.sdk.controller.DataHolder;
 import com.bluenimble.apps.sdk.controller.StreamSource;
 import com.bluenimble.apps.sdk.json.JsonObject;
 import com.bluenimble.apps.sdk.spec.ApplicationSpec;
 import com.bluenimble.apps.sdk.spec.BindingSpec;
 
-import android.util.Log;
-
-import java.io.InputStream;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
 public class DefaultDataHolder implements DataHolder  {
@@ -23,6 +20,10 @@ public class DefaultDataHolder implements DataHolder  {
 	private JsonObject 	data;
 
 	private Map<String, StreamSource> streams;
+
+	public DefaultDataHolder () {
+		set (DataHolder.Namespace.View, new JsonObject ());
+	}
 	
 	@Override
 	public Exception exception () {
@@ -73,7 +74,7 @@ public class DefaultDataHolder implements DataHolder  {
 	@Override
 	public String resolve (String ns, String name) {
 		if (Lang.isNullOrEmpty (ns)) {
-			ns = Namespace.App;
+			ns = Namespace.View;
 		}
 		
 		JsonObject section = Json.getObject (data, ns);
@@ -121,7 +122,7 @@ public class DefaultDataHolder implements DataHolder  {
 	}
 
 	@Override
-	public void close () {
+	public void destroy () {
 		if (data == null && streams == null) {
 			return;
 		}
@@ -141,6 +142,15 @@ public class DefaultDataHolder implements DataHolder  {
 			streams.clear ();
 			streams = null;
 		}
+	}
+
+	@Override
+	public DataHolder clone () {
+		DefaultDataHolder dh = new DefaultDataHolder ();
+		dh.data = data == null ? null : data.duplicate ();
+		dh.streams = streams;
+		dh.exception = exception;
+		return dh;
 	}
 
 }

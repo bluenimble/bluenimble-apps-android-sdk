@@ -39,7 +39,7 @@ public class UILayer extends Fragment {
 		fragment.setRetainInstance (true);
 
 		fragment.layer 	= layer;
-		fragment.dh 	= dh;
+		fragment.dh 	= dh; // dh == null ? null : dh.clone ();
 
 		return fragment;
 
@@ -47,21 +47,15 @@ public class UILayer extends Fragment {
 	
 	@Override
     public View onCreateView (LayoutInflater inflater, ViewGroup container, Bundle state) {
-		UIActivity activity = (UIActivity)getActivity ();
-		
+		UIActivity 		activity 	= (UIActivity)getActivity ();
 		ApplicationSpec application = ((UIApplication)activity.getApplication ()).getSpec ();
-		
 		return application.renderer ().render (application, layer, dh, container, activity);
     }
 	
 	@Override
     public void onViewCreated (View container, Bundle state) {
-		
 		UIActivity activity = (UIActivity)getActivity ();
-		ApplicationSpec application = ((UIApplication)activity.getApplication ()).getSpec ();
-
-		SpecHelper.fireCreateEvent (layer, layer.id (), activity, activity.root (), true, dh);
-
+		SpecHelper.fireCreateEvent (layer, layer.id (), (UIActivity)getActivity (), activity.root (), true, dh);
     }
 	
 }

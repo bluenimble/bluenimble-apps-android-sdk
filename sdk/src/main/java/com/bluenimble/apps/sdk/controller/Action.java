@@ -25,7 +25,7 @@ public interface Action extends Serializable {
 
 	Action Default = new DefaultAction ();
 	
-	String	id();
-	void 	execute(JsonObject spec, View view, UIActivity activity, DataHolder dh);
+	String	id		();
+	void 	execute (ActionInstance actionInstance, UIActivity activity);
 	
 }

@@ -1,5 +1,7 @@
 package com.bluenimble.apps.sdk.spec.impls.json;
 
+import android.util.Log;
+
 import java.util.Iterator;
 
 import com.bluenimble.apps.sdk.Json;
@@ -29,6 +31,8 @@ public class JsonEventAwareSpec implements EventAwareSpec {
 		}
 
 		// add events declared at the page level
+		Log.d (JsonEventAwareSpec.class.getSimpleName (), "Event Aware : " + id);
+
 		Iterator<String> itEvents = page.events ();
 		if (itEvents == null) {
 			return;
@@ -42,10 +46,14 @@ public class JsonEventAwareSpec implements EventAwareSpec {
 			if (sEvent.indexOf (Lang.DOT) > 0) {
 				continue;
 			}
-			if (events.containsKey (sEvent)) {
+			if (this.events != null && this.events.containsKey (sEvent)) {
 				continue;
 			}
-			events.set (sEvent, page.event (event));
+			if (this.events == null) {
+				this.events = new JsonObject ();
+			}
+			Log.d (JsonEventAwareSpec.class.getSimpleName (), "Add Event : " + sEvent);
+			this.events.set (sEvent, page.event (event));
 		}
 	}
 

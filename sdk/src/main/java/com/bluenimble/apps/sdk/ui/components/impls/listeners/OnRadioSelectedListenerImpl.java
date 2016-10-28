@@ -1,8 +1,9 @@
 package com.bluenimble.apps.sdk.ui.components.impls.listeners;
 
 import com.bluenimble.apps.sdk.application.UIActivity;
-import com.bluenimble.apps.sdk.controller.ActionProcessor;
+import com.bluenimble.apps.sdk.controller.impls.actions.DefaultActionInstance;
 import com.bluenimble.apps.sdk.json.JsonObject;
+import com.bluenimble.apps.sdk.utils.SpecHelper;
 
 import android.widget.RadioGroup;
 import android.widget.RadioGroup.OnCheckedChangeListener;
@@ -17,7 +18,13 @@ public class OnRadioSelectedListenerImpl extends EventListener implements OnChec
 
 	@Override
 	public void onCheckedChanged (RadioGroup group, int btnId) {
-		ActionProcessor.process (event.name (), eventSpec, (UIActivity)group.getContext (), group, null);
+		SpecHelper.application (group)
+			.controller ()
+				.process (
+					DefaultActionInstance.create (event.name (), eventSpec, null, group),
+					(UIActivity)group.getContext (),
+					true
+				);
 	}
 	
 }

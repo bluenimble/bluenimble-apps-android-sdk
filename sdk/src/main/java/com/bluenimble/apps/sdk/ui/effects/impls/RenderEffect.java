@@ -7,14 +7,14 @@ import java.util.Set;
 import com.bluenimble.apps.sdk.Lang;
 import com.bluenimble.apps.sdk.application.UIActivity;
 import com.bluenimble.apps.sdk.application.UILayer;
-import com.bluenimble.apps.sdk.controller.ActionProcessor;
 import com.bluenimble.apps.sdk.controller.DataHolder;
+import com.bluenimble.apps.sdk.controller.impls.actions.DefaultActionInstance;
 import com.bluenimble.apps.sdk.json.JsonObject;
 import com.bluenimble.apps.sdk.spec.ApplicationSpec;
 import com.bluenimble.apps.sdk.spec.LayerSpec;
 import com.bluenimble.apps.sdk.spec.PageSpec;
 import com.bluenimble.apps.sdk.ui.effects.Effect;
-import com.bluenimble.apps.sdk.ui.renderer.impls.DefaultRenderer.LifeCycleEvent;
+import com.bluenimble.apps.sdk.ui.renderer.Renderer.LifeCycleEvent;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -67,7 +67,9 @@ public class RenderEffect implements Effect {
 			if (f != null) {
 				JsonObject eventSpec = layer.event (LifeCycleEvent.destroy.name ());
 				if (eventSpec != null) {
-					ActionProcessor.process (LifeCycleEvent.destroy.name (), eventSpec, (UIActivity)f.getView ().getContext (), f.getView (), dh);
+					application.controller ().process (
+						DefaultActionInstance.create (LifeCycleEvent.destroy.name (), eventSpec, dh, f.getView ()), activity, true
+					);
 				}
 
 				transaction.remove (f);

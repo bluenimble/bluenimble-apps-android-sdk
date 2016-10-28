@@ -50,7 +50,12 @@ public class AgnosticDataHolder implements DataHolder  {
 	}
 
 	@Override
-	public void close() {
+	public DataHolder clone () {
+		return this;
+	}
+
+	@Override
+	public void destroy () {
 	}
 
 }

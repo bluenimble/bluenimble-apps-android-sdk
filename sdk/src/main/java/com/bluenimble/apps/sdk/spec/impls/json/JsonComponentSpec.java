@@ -1,7 +1,5 @@
 package com.bluenimble.apps.sdk.spec.impls.json;
 
-import android.util.Log;
-
 import com.bluenimble.apps.sdk.Json;
 import com.bluenimble.apps.sdk.Lang;
 import com.bluenimble.apps.sdk.Spec;
@@ -106,7 +104,7 @@ public class JsonComponentSpec extends JsonEventAwareSpec implements ComponentSp
 		return spec;
 	}
 	
-	// if no binding set/get found, a default one is created with the component id 
+	// if no binding set/get found, default get binding to the component id
 	private BindingSpec binding (JsonObject oBinding, String key) {
 		
 		JsonObject oBindingByKey = null;
@@ -130,11 +128,18 @@ public class JsonComponentSpec extends JsonEventAwareSpec implements ComponentSp
 			if (Lang.isNullOrEmpty (id ())) {
 				return null;
 			}
-			oBindingByKey = (JsonObject)new JsonObject ().set (Spec.page.layer.component.binding.Source, DataHolder.Namespace.App).set (Spec.page.layer.component.binding.Property, id ());
+			oBindingByKey = (JsonObject)new JsonObject ().set (Spec.page.layer.component.binding.Property, id ());
 		}
+
 		if (oBindingByKey == null) {
 			return null;
 		}
+
+		if (Spec.page.layer.component.binding.Get.equals (key) &&
+				!oBindingByKey.containsKey (Spec.page.layer.component.binding.Source)) {
+			oBindingByKey.set (Spec.page.layer.component.binding.Source, DataHolder.Namespace.View);
+		}
+
 		return new JsonBindingSpec (oBindingByKey);
 	}
 	

@@ -12,36 +12,38 @@ import com.bluenimble.apps.sdk.ui.themes.ThemesRegistry;
 
 public interface ApplicationSpec extends EventAwareSpec {
 
-	String 				id ();
-	String 				name ();
-	String 				description();
-	SdkVersion 			version();
-	String 				defaultLanguage();
-	String 				logLevel();
+	String 				id 					();
+	String 				name 				();
+	String 				description			();
+	SdkVersion 			version				();
+	String 				defaultLanguage		();
+	String 				logLevel			();
 
-	ThemeSpec 			theme();
+	ThemeSpec 			theme				();
 
-	PageSpec 			index();
-	PageSpec 			first();
-	PageSpec 			page(String id);
-	void				remove(String id);
+	PageSpec 			index				();
+	PageSpec 			first				();
+	PageSpec 			page				(String id);
+	void				remove				(String id);
 
-	ThemesRegistry 		themesRegistry ();
-	FontsRegistry 		fontsRegistry ();
+	ThemesRegistry 		themesRegistry 		();
+	FontsRegistry 		fontsRegistry 		();
 
-	I18nProvider 		i18nProvider();
+	I18nProvider 		i18nProvider		();
 	
-	ComponentsRegistry 	componentsRegistry();
+	ComponentsRegistry 	componentsRegistry	();
 
-	EffectsRegistry 	effectsRegistry();
+	EffectsRegistry 	effectsRegistry		();
 
-	Controller 			controller();
+	Controller 			controller			();
 
-	Backend 			backend();
+	Backend 			backend				();
 
-	Renderer 			renderer();
+	Renderer 			renderer			();
 
-	Logger 				logger();
-	boolean				isDiskBased ();
+	SecuritySpec		security			();
+
+	Logger 				logger				();
+	boolean				isDiskBased 		();
 
 }

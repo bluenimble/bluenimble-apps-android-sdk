@@ -111,7 +111,12 @@ public class ListFactory extends AbstractComponentFactory {
 	}
 
 	@Override
-	public void bind (ComponentSpec.Binding binding, View view, ApplicationSpec applicationSpec, ComponentSpec spec, DataHolder dh) {
+	public boolean isAutoBind () {
+		return false;
+	}
+
+	@Override
+	public void bind (ComponentSpec.Binding binding, View view, ApplicationSpec application, ComponentSpec spec, DataHolder dh) {
 		
 		if (view == null || !(view instanceof RecyclerView)) {
 			// TODO: log
@@ -140,7 +145,8 @@ public class ListFactory extends AbstractComponentFactory {
 					return;
 				}
 
-				Object value = dh.valueOf (applicationSpec, bindingSpec);
+				Object value = dh.valueOf (application, bindingSpec);
+				application.logger ().debug (ListFactory.class.getSimpleName (), "Binding." + binding + Lang.ARRAY_OPEN + spec.id () + Lang.SPACE + view.getId () + Lang.ARRAY_CLOSE + Lang.EQUALS + value);
 				if (value == null) {
 					return;
 				}
@@ -165,18 +171,25 @@ public class ListFactory extends AbstractComponentFactory {
 			case Get:
 				// get the selected, bind the record
 				Set<Integer> selected = adapter.selected ();
+				application.logger ().debug (ListFactory.class.getSimpleName (), "Selected Set " + selected);
 				if (selected == null || selected.isEmpty ()) {
 					return;
 				}
-				if (SpecHelper.getBoolean (spec, Custom.MultiSelect, false)) {
+				application.logger ().debug (ListFactory.class.getSimpleName (), "\tSize " + selected.size ());
+				application.logger ().debug (ListFactory.class.getSimpleName (), "There are selected items in list " + spec.id ());
+				if (!SpecHelper.getBoolean (spec, Custom.MultiSelect, false)) {
 					for (Integer position : selected) {
-						Json.set ((JsonObject)dh.get (bindingSpec.source ()), adapter.getRecords ().get (position), property);
+						Json.set (
+							(JsonObject)dh.get (bindingSpec.source ()),
+							((JsonObject)adapter.getRecords ().get (position)).duplicate (),
+							property
+						);
 						return;
 					}
 				}
 				JsonArray array = new JsonArray ();
 				for (Integer position : selected) {
-					array.add (adapter.getRecords ().get (position));
+					array.add (((JsonObject)adapter.getRecords ().get (position)).duplicate ());
 				}
 				Json.set ((JsonObject)dh.get (bindingSpec.source ()), array, property);
 				break;

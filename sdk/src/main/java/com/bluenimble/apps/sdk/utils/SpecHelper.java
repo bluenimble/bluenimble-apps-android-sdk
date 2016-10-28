@@ -7,8 +7,9 @@ import com.bluenimble.apps.sdk.Lang;
 import com.bluenimble.apps.sdk.Spec;
 import com.bluenimble.apps.sdk.application.UIActivity;
 import com.bluenimble.apps.sdk.controller.Action;
-import com.bluenimble.apps.sdk.controller.ActionProcessor;
+import com.bluenimble.apps.sdk.controller.Controller;
 import com.bluenimble.apps.sdk.controller.DataHolder;
+import com.bluenimble.apps.sdk.controller.impls.actions.DefaultActionInstance;
 import com.bluenimble.apps.sdk.json.JsonObject;
 import com.bluenimble.apps.sdk.spec.ApplicationSpec;
 import com.bluenimble.apps.sdk.spec.ComponentSpec;
@@ -18,7 +19,6 @@ import com.bluenimble.apps.sdk.spec.PageSpec;
 import com.bluenimble.apps.sdk.spec.StylishSpec;
 import com.bluenimble.apps.sdk.ui.components.ComponentFactory;
 import com.bluenimble.apps.sdk.ui.components.impls.generic.BreakFactory;
-import com.bluenimble.apps.sdk.ui.components.impls.list.ListFactory;
 import com.bluenimble.apps.sdk.ui.effects.impls.BindEffect;
 import com.bluenimble.apps.sdk.ui.renderer.impls.DefaultRenderer;
 
@@ -26,14 +26,24 @@ public class SpecHelper {
 
     public static void fireCreateEvent (EventAwareSpec eventAwareSpec, String bind, UIActivity activity, View parent, boolean fireDefault, DataHolder dh) {
         // run page create event if any
-        JsonObject eventSpec = eventAwareSpec.event (DefaultRenderer.LifeCycleEvent.create.name ());
+		Controller controller = activity.getSpec ().controller ();
+
+		JsonObject eventSpec = eventAwareSpec.event (DefaultRenderer.LifeCycleEvent.create.name ());
         if (eventSpec != null) {
-            ActionProcessor.process (DefaultRenderer.LifeCycleEvent.create.name (), eventSpec, activity, parent, dh);
+			controller.process (
+				DefaultActionInstance.create (DefaultRenderer.LifeCycleEvent.create.name (), eventSpec, dh, parent),
+				activity,
+				false
+			);
         }
 
         // run default layer create event / bind all
         if (fireDefault) {
-            ActionProcessor.process (DefaultRenderer.LifeCycleEvent.create.name (), SpecHelper.newCreateEvent (bind), activity, parent, dh);
+			controller.process (
+				DefaultActionInstance.create (DefaultRenderer.LifeCycleEvent.create.name (), SpecHelper.newCreateEvent (bind), dh, parent),
+				activity,
+				false
+			);
         }
     }
 
@@ -42,6 +52,13 @@ public class SpecHelper {
                 .set (Spec.Action.Scope, Action.Scope.None)
                 .set (Spec.Action.OnStart, new JsonObject ()
                         .set (BindEffect.Id, bind));
+    }
+
+    public static ApplicationSpec application (View view) {
+        if (view == null) {
+            return null;
+        }
+        return ((UIActivity)view.getContext ()).getSpec ();
     }
 
     public static LayerSpec template (ApplicationSpec application, String sTemplate) {
@@ -64,6 +81,8 @@ public class SpecHelper {
             page = application.renderer ().current ();
         }
         template = page.layer (layerId);
+
+		application.logger ().debug (SpecHelper.class.getSimpleName (), "Template " + sTemplate + " -> " + template);
 
         return template;
     }

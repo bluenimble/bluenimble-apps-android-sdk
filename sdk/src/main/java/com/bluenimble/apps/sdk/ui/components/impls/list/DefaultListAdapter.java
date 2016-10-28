@@ -161,6 +161,7 @@ public class DefaultListAdapter extends RecyclerView.Adapter<DefaultListAdapter.
 		if (!multiSelect) {
 			selected.clear ();
 		}
+		activity.getSpec ().logger ().debug (DefaultListAdapter.class.getSimpleName (), "\tselect position " + position);
 		selected.add (position);
 	}
 

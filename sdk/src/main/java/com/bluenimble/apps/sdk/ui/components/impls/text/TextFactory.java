@@ -9,12 +9,12 @@ import com.bluenimble.apps.sdk.spec.ApplicationSpec;
 import com.bluenimble.apps.sdk.spec.BindingSpec;
 import com.bluenimble.apps.sdk.spec.ComponentSpec;
 import com.bluenimble.apps.sdk.spec.LayerSpec;
+import com.bluenimble.apps.sdk.spec.impls.json.JsonEventAwareSpec;
 import com.bluenimble.apps.sdk.ui.components.AbstractComponentFactory;
 import com.bluenimble.apps.sdk.ui.components.impls.listeners.EventListener;
 import com.bluenimble.apps.sdk.ui.components.impls.listeners.OnLongPressListenerImpl;
 import com.bluenimble.apps.sdk.ui.components.impls.listeners.OnPressListenerImpl;
 
-import android.text.Html;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -96,12 +96,16 @@ public class TextFactory extends AbstractComponentFactory {
 			// TODO: log
 			return;
 		}
+
+		Log.d (JsonEventAwareSpec.class.getSimpleName (), "Attach Event : " + eventName);
 		
 		if (!isEventSupported (eventName)) {
 			// TODO: log
 			return;
 		}
-		
+
+		Log.d (JsonEventAwareSpec.class.getSimpleName (), "\tsetClickable");
+
 		TextView text = (TextView)view;
 		
 		if (!text.isClickable ()) {

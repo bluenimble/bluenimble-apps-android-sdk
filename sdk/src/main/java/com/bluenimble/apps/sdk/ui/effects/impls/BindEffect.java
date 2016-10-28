@@ -74,8 +74,7 @@ public class BindEffect implements Effect {
 				layerId = ui.substring (0, indexOfDot);
 				componentId = ui.substring (indexOfDot + 1);
 			}
-			application.logger ().debug (tag, "\t-> Bind [" + layerId + " . " + componentId + "] ");
-			
+
 			LayerSpec layer = page.layer (layerId);
 			if (layer == null) {
 				// TODO log
@@ -93,9 +92,12 @@ public class BindEffect implements Effect {
 			}
 			
 			if (component != null) {
+				application.logger ().debug (tag, "\t-> Bind Component [" + layerId + " . " + componentId + "] ");
 				BindingHelper.bindComponent (tag, activity, application, layer, component, dh, useDh);
 			} else {
+				application.logger ().debug (tag, "\t-> Bind Layer     [" + layerId + "] ");
 				View layerView = activity.findView (layer.id ());
+				application.logger ().debug (tag, "\t\t-> LayerView [" + layerView + "] ");
 				if (layerView != null && (layerView instanceof LayerLayout)) {
 					BindingHelper.bindLayer (tag, application, layer, (LayerLayout)layerView, dh, useDh);
 				}

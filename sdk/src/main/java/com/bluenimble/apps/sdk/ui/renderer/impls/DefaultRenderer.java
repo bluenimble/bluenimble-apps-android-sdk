@@ -10,8 +10,8 @@ import com.bluenimble.apps.sdk.application.UIActivity;
 import com.bluenimble.apps.sdk.application.UIApplication;
 import com.bluenimble.apps.sdk.application.UILayer;
 import com.bluenimble.apps.sdk.application.ux.LayerLayout;
-import com.bluenimble.apps.sdk.controller.ActionProcessor;
 import com.bluenimble.apps.sdk.controller.DataHolder;
+import com.bluenimble.apps.sdk.controller.impls.actions.DefaultActionInstance;
 import com.bluenimble.apps.sdk.json.JsonObject;
 import com.bluenimble.apps.sdk.spec.ApplicationSpec;
 import com.bluenimble.apps.sdk.spec.ComponentSpec;
@@ -24,8 +24,8 @@ import com.bluenimble.apps.sdk.ui.components.impls.listeners.EventListener;
 import com.bluenimble.apps.sdk.ui.components.impls.listeners.OnLongPressListenerImpl;
 import com.bluenimble.apps.sdk.ui.components.impls.listeners.OnPressListenerImpl;
 import com.bluenimble.apps.sdk.ui.renderer.Renderer;
+import com.bluenimble.apps.sdk.utils.SpecHelper;
 
-import android.support.annotation.IntegerRes;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -46,15 +46,6 @@ public class DefaultRenderer implements Renderer {
 		LayerEvents.add (EventListener.Event.longPress.name ());
 	}
 
-	public enum LifeCycleEvent {
-		create,
-		destroy,
-		rotate,
-		crash,
-		warn,
-		error
-	}
-	
 	private PageSpec page;
 
 	@Override
@@ -65,17 +56,16 @@ public class DefaultRenderer implements Renderer {
 		FragmentTransaction transaction = manager.beginTransaction ();
 
 		// remove all content from the activity main layout
-		clear (manager, transaction);
-		
+		clear (activity, page, manager, transaction);
+
 		// read layers, create layouts, create fragments, add to activity
-			// each layer is a fragment having using a linear layout
+			// each layer is a fragment / linear layout
 		
 		this.page = page;
 
 		Iterator<String> layers = page.layers ();
 		while (layers.hasNext ()) {
 			String lyrId = layers.next ();
-			Log.d ("Trash", "Render Layer: " + lyrId);
 			LayerSpec layer = page.layer (lyrId);
 
 			if (!layer.isRendered ()) {
@@ -107,7 +97,7 @@ public class DefaultRenderer implements Renderer {
 			return layout;
 		}
 		
-		if (dh == null || dh.get (DataHolder.Internal.NoTag) != null) {
+		if (dh == null || dh.get (DataHolder.Internal.NoTag) == null) {
 			layout.setTag (layer.id ());
 		}
 
@@ -178,7 +168,7 @@ public class DefaultRenderer implements Renderer {
 			// create the component view
 			View view = factory.create (activity, relativeLayout, layer, spec, dh);
 			
-			// set the id of the component as the tag of the view "layerId.componentId"
+			// set the id of the component as the tag of the view "componentId"
 			if (view != null && spec.id () != null) {
 				view.setTag (spec.id ());
 			}
@@ -191,7 +181,7 @@ public class DefaultRenderer implements Renderer {
 			application.logger ().debug (
 				DefaultRenderer.class.getSimpleName (),
 				"Component Added to Layout " + Lang.ARRAY_OPEN + type + Lang.SLASH + spec.id () + Lang.SPACE + (view != null ? view.getId () : "NullView") +
-				Lang.SPACE + "tag: " + layer.id () + Lang.DOT + spec.id () + Lang.ARRAY_CLOSE
+				Lang.SPACE + "tag: " + view.getTag () + Lang.ARRAY_CLOSE
 			);
 
 			// attach component events
@@ -242,10 +232,12 @@ public class DefaultRenderer implements Renderer {
 	private void addComponentEvents (ApplicationSpec application, ComponentSpec spec, ComponentFactory factory, View view, UIActivity activity) {
 		Iterator<String> events = spec.events ();
 		if (events == null) {
+			application.logger ().debug (DefaultRenderer.class.getSimpleName (), spec.id () + " Has NO Events!");
 			return;
 		}
 		while (events.hasNext ()) {
 			String eventName = events.next ();
+			application.logger ().debug (DefaultRenderer.class.getSimpleName (), "Attach " + eventName + " Event to " + spec.id ());
 			factory.addEvent (activity, view, application, spec, eventName, spec.event (eventName));
 		}
 	}
@@ -256,7 +248,11 @@ public class DefaultRenderer implements Renderer {
 		// run page start event
 		JsonObject eventSpec = page.event (LifeCycleEvent.destroy.name ());
 		if (eventSpec != null) {
-			ActionProcessor.process (LifeCycleEvent.destroy.name (), eventSpec, activity, activity.root (), null);
+			application.controller ().process (
+				DefaultActionInstance.create (DefaultRenderer.LifeCycleEvent.destroy.name (), eventSpec, null, activity.root ()),
+				activity,
+				false
+			);
 		}
 
 	}
@@ -266,30 +262,35 @@ public class DefaultRenderer implements Renderer {
 		return page;
 	}
 	
-	private void clear (FragmentManager fragmentManager, FragmentTransaction fragmentTransaction) {
+	private void clear (UIActivity activity, PageSpec page, FragmentManager manager, FragmentTransaction transaction) {
 		// remove all content from the activity main layout
-		for (int i = 0; i < fragmentManager.getBackStackEntryCount (); i++) {
-			String lyrId = fragmentManager.getBackStackEntryAt (i).getName ();
-			if (lyrId == null) {
-				continue;
-			}
-			
-			// check if this layer is persistent (will stay in the activity forever)
+		Iterator<String> layers = page.layers ();
+		while (layers.hasNext ()) {
+			String lyrId = layers.next ();
 			LayerSpec layer = page.layer (lyrId);
+
 			if (layer.isGlobal ()) {
 				continue;
 			}
 
-			Fragment f = fragmentManager.findFragmentByTag (lyrId);
-			
-			JsonObject eventSpec = layer.event (LifeCycleEvent.destroy.name ());
-			if (eventSpec != null) {
-				ActionProcessor.process (LifeCycleEvent.destroy.name (), eventSpec, (UIActivity)f.getView ().getContext (), f.getView (), null);
+			Fragment f = manager.findFragmentByTag (lyrId);
+			if (f == null) {
+				continue;
 			}
 
-			fragmentTransaction.remove (f);
+			activity.getSpec ().logger ().debug (DefaultRenderer.class.getSimpleName (), "Destroy " + layer.id ());
+
+			JsonObject eventSpec = layer.event (LifeCycleEvent.destroy.name ());
+			if (eventSpec != null) {
+				SpecHelper.application (f.getView ()).controller ().process (
+					DefaultActionInstance.create (DefaultRenderer.LifeCycleEvent.destroy.name (), eventSpec, null, f.getView ()),
+					activity,
+					false
+				);
+			}
+
+			transaction.remove (f);
 		}
-		
 		// reset the page
 		page = null;
 		

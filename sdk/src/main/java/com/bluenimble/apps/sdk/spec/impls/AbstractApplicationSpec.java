@@ -15,6 +15,7 @@ import com.bluenimble.apps.sdk.logging.impls.DefaultLogger;
 import com.bluenimble.apps.sdk.spec.ApplicationSpec;
 import com.bluenimble.apps.sdk.spec.PageSpec;
 import com.bluenimble.apps.sdk.spec.SdkVersion;
+import com.bluenimble.apps.sdk.spec.SecuritySpec;
 import com.bluenimble.apps.sdk.spec.impls.json.JsonEventAwareSpec;
 import com.bluenimble.apps.sdk.ui.components.ComponentsRegistry;
 import com.bluenimble.apps.sdk.ui.components.impls.DefaultComponentsRegistry;
@@ -47,6 +48,8 @@ public abstract class AbstractApplicationSpec extends JsonEventAwareSpec impleme
 	protected I18nProvider			i18nProvider		= new DefaultI18nProvider 		();
 	protected ThemesRegistry 		themesRegistry		= new DefaultThemesRegistry 	();
 	protected FontsRegistry 		fontsRegistry		= new DefaultFontsRegistry		();
+
+	protected SecuritySpec 			security;
 
 	protected Map<String, PageSpec> pages = new HashMap<String, PageSpec> ();
 
@@ -117,6 +120,11 @@ public abstract class AbstractApplicationSpec extends JsonEventAwareSpec impleme
 	@Override
 	public I18nProvider i18nProvider () {
 		return i18nProvider;
+	}
+
+	@Override
+	public SecuritySpec security () {
+		return security;
 	}
 
 	@Override
