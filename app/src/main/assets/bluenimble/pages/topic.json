@@ -4,7 +4,7 @@
 			"text static.icons.back ? icon", "image static.images.logo ? logo", "text view.topic.title ? title primary rounded"
 		],
 		"main": [
-			"list view.topic.examples ? template=index.menuTpl layout=grid"
+			"list:topic view.topic.examples ? template=index.menuTpl layout=grid"
 		]
 	}
 }

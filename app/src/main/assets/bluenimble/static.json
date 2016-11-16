@@ -14,11 +14,11 @@
     "en": [{
       "title": "Layers", "icon": "\uf0e8",
       "examples": [{
-        "title": "Header Main", "icon": "\uf0e8", "page": "header-main"
+        "title": "Header Main", "icon": "\uf0e8", "page": "layers/header-main"
       }, {
-        "title": "Split", "icon": "\uf0e8", "page": "header-main"
+        "title": "Split", "icon": "\uf0e8", "page": "layers/header-main"
       }, {
-        "title": "Positioning", "icon": "\uf0e8", "page": "header-main"
+        "title": "Positioning", "icon": "\uf0e8", "page": "layers/header-main"
       }]
     }, {
       "title": "Forms", "icon": "\uf044"
