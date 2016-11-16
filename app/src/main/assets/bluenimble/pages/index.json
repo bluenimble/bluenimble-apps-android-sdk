@@ -13,7 +13,7 @@
   "events": {
     "menuTpl.press": {
       "scope": "main",
-      "onStart": { "echo": "view.topic", "goto": "topic" }
+      "onStart": { "echo": "Selected: [view.topic]", "goto": "[ view.topic.page | 'topic' ]" }
     }
   }
 }

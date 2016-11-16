@@ -18,8 +18,18 @@ public class DefaultExpressionCompiler implements ExpressionCompiler {
 	protected char 		expStart 		= '[';
 	protected char 		expEnd 			= ']';
 	
-	protected Map<String, Expression> cached; 
-	
+	protected Map<String, Expression> cached;
+
+	public DefaultExpressionCompiler () {
+
+	}
+
+	public DefaultExpressionCompiler (int cacheSize, char expStart, char expEnd) {
+		this.cacheSize 	= cacheSize;
+		this.expStart 	= expStart;
+		this.expEnd		= expEnd;
+	}
+
 	@Override
 	public Expression compile (String text, String id) {
 		if (Lang.isNullOrEmpty (text)) {
@@ -39,7 +49,9 @@ public class DefaultExpressionCompiler implements ExpressionCompiler {
 			if (cached == null) {
 				cached = new ConcurrentHashMap<String, Expression> ();
 			}
-			cached.put (key, expression);
+			if (cached.size () < cacheSize) {
+				cached.put (key, expression);
+			}
 		}
 		
 		return expression;

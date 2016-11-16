@@ -181,6 +181,11 @@ public abstract class AbstractApplicationSpec extends JsonEventAwareSpec impleme
 		return this;
 	}
 
+	public AbstractApplicationSpec expressionCompiler (ExpressionCompiler expressionCompiler) {
+		this.expressionCompiler = expressionCompiler;
+		return this;
+	}
+
 	public AbstractApplicationSpec i18nProvider (I18nProvider i18nProvider) {
 		this.i18nProvider = i18nProvider;
 		return this;
