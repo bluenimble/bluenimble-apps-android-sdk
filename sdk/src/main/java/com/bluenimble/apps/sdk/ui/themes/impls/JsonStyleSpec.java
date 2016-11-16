@@ -152,7 +152,7 @@ public class JsonStyleSpec implements StyleSpec {
 
 		UIApplication application = (UIApplication)((UIActivity)view.getContext ()).getApplication ();
 
-		JsonObject rStyle = (JsonObject)Json.resolve (style, dh);
+		JsonObject rStyle = (JsonObject)Json.resolve (style, application.getSpec ().expressionCompiler (), dh);
 
 		ViewSize maxSize = application.getScreenSize ();
 

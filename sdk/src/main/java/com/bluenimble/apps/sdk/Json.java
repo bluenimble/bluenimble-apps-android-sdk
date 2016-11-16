@@ -12,7 +12,8 @@ import java.text.ParseException;
 import java.util.Date;
 import java.util.Iterator;
 
-import com.bluenimble.apps.sdk.Lang.VariableResolver;
+import com.bluenimble.apps.sdk.templating.ExpressionCompiler;
+import com.bluenimble.apps.sdk.templating.VariableResolver;
 import com.bluenimble.apps.sdk.json.JsonArray;
 import com.bluenimble.apps.sdk.json.JsonObject;
 
@@ -329,7 +330,7 @@ public class Json {
     	
     }
     
-	public static Object resolve (Object obj, VariableResolver vr) {
+	public static Object resolve (Object obj, ExpressionCompiler compiler, VariableResolver vr) {
 		if (obj == null || vr == null) {
 			return obj;
 		}
@@ -338,19 +339,19 @@ public class Json {
 			Iterator<String> keys = o.keys ();
 			while (keys.hasNext ()) {
 				String key = keys.next ();
-				o.set (key, resolve (o.get (key), vr));
+				o.set (key, resolve (o.get (key), compiler, vr));
 			}
 			return o;
 		} else if (obj instanceof JsonArray) {
 			JsonArray array = (JsonArray)obj;
 			for (int i = 0; i < array.count (); i++) {
-				Object resolved = resolve (array.get (i), vr);
+				Object resolved = resolve (array.get (i), compiler, vr);
 				array.remove (i); 
 				array.add (i, resolved); 
 			}
 			return array;
 		} else {
-			return Lang.resolve (String.valueOf (obj), Lang.ARRAY_OPEN, Lang.ARRAY_CLOSE, vr);
+			return compiler.compile (String.valueOf (obj), null).eval (vr);
 		}
 	}
 	

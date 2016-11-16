@@ -8,7 +8,8 @@ import java.util.Map;
 import com.bluenimble.apps.sdk.IOUtils;
 import com.bluenimble.apps.sdk.Json;
 import com.bluenimble.apps.sdk.Lang;
-import com.bluenimble.apps.sdk.Lang.VariableResolver;
+import com.bluenimble.apps.sdk.spec.ApplicationSpec;
+import com.bluenimble.apps.sdk.templating.VariableResolver;
 import com.bluenimble.apps.sdk.backend.Service;
 import com.bluenimble.apps.sdk.controller.DataHolder;
 import com.bluenimble.apps.sdk.controller.StreamSource;
@@ -85,7 +86,7 @@ public class RemoteService implements Service {
 	}
 
 	@Override
-	public void execute (final String id, JsonObject masterSpec, DataHolder dh) throws Exception {
+	public void execute (final String id, JsonObject masterSpec, ApplicationSpec application, DataHolder dh) throws Exception {
 		
 		if (masterSpec == null) {
 			throw new Exception ("backend service spec not found");
@@ -94,7 +95,7 @@ public class RemoteService implements Service {
 		final JsonObject spec = masterSpec.duplicate ();
 		
 		// visit url
-		resolve (spec, Spec.Url, dh);
+		resolve (spec, Spec.Url, application, dh);
 
 		// verb
 		Verb verb = null;
@@ -113,7 +114,7 @@ public class RemoteService implements Service {
 		// resole and add headers
 		JsonObject headers = Json.getObject (spec, Spec.Headers);
 		if (!Json.isNullOrEmpty (headers)) {
-			Json.resolve (headers, dh);
+			Json.resolve (headers, application.expressionCompiler (), dh);
 			Iterator<String> hnames = headers.keys ();
 			while (hnames.hasNext ()) {
 				String hn = hnames.next ();
@@ -131,7 +132,7 @@ public class RemoteService implements Service {
 		if (Json.isNullOrEmpty (rdata)) {
 			spec.set (Spec.Data, dh.get (DataHolder.Namespace.View));
 		} else {
-			Json.resolve (rdata, dh);
+			Json.resolve (rdata, application.expressionCompiler (), dh);
 		}
 
 		if (Lang.isNullOrEmpty (contentType)) {
@@ -262,8 +263,8 @@ public class RemoteService implements Service {
 		}
 	}
 	
-	private void resolve (JsonObject o, String key, VariableResolver vr) {
-		o.set (key, Lang.resolve (String.valueOf (o.get (key)), Lang.ARRAY_OPEN, Lang.ARRAY_OPEN, vr));
+	private void resolve (JsonObject o, String key, ApplicationSpec application, VariableResolver vr) {
+		o.set (key, application.expressionCompiler ().compile (String.valueOf (o.get (key)), null).eval (vr));
 	}
 	
 }

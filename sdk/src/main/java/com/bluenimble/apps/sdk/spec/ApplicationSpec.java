@@ -4,6 +4,7 @@ import com.bluenimble.apps.sdk.backend.Backend;
 import com.bluenimble.apps.sdk.controller.Controller;
 import com.bluenimble.apps.sdk.i18n.I18nProvider;
 import com.bluenimble.apps.sdk.logging.Logger;
+import com.bluenimble.apps.sdk.templating.ExpressionCompiler;
 import com.bluenimble.apps.sdk.ui.components.ComponentsRegistry;
 import com.bluenimble.apps.sdk.ui.effects.EffectsRegistry;
 import com.bluenimble.apps.sdk.ui.renderer.Renderer;
@@ -30,7 +31,9 @@ public interface ApplicationSpec extends EventAwareSpec {
 	FontsRegistry 		fontsRegistry 		();
 
 	I18nProvider 		i18nProvider		();
-	
+
+	ExpressionCompiler 	expressionCompiler	();
+
 	ComponentsRegistry 	componentsRegistry	();
 
 	EffectsRegistry 	effectsRegistry		();

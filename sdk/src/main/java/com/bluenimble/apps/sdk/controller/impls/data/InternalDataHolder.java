@@ -47,7 +47,7 @@ public class InternalDataHolder implements DataHolder  {
 	}
 
 	@Override
-	public String resolve (String ns, String name) {
+	public Object resolve (String ns, String... name) {
 		return null;
 	}
 

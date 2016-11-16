@@ -4,6 +4,7 @@ import com.bluenimble.apps.sdk.application.UIActivity;
 import com.bluenimble.apps.sdk.controller.impls.actions.DefaultActionInstance;
 import com.bluenimble.apps.sdk.json.JsonArray;
 import com.bluenimble.apps.sdk.json.JsonObject;
+import com.bluenimble.apps.sdk.spec.ApplicationSpec;
 import com.bluenimble.apps.sdk.ui.components.impls.map.MapFactory;
 import com.bluenimble.apps.sdk.ui.components.impls.map.MapFragment;
 import com.bluenimble.apps.sdk.ui.components.impls.map.MapTouchableWrapper;
@@ -32,13 +33,13 @@ public class OnMapDragListenerImpl extends EventListener implements MapTouchable
 
 			mapFragment.setState (state);
 		}
-		SpecHelper.application (mapFragment.getView ())
-			.controller ()
-				.process (
-					DefaultActionInstance.create (event.name (), eventSpec, null, mapFragment.getView ()),
-					(UIActivity)mapFragment.getActivity (),
-					true
-				);
+		ApplicationSpec application = SpecHelper.application (mapFragment.getView ());
+		application.controller ()
+			.process (
+				DefaultActionInstance.create (event.name (), eventSpec, application, null, mapFragment.getView ()),
+				(UIActivity)mapFragment.getActivity (),
+				true
+			);
 
 	}
 }

@@ -17,6 +17,8 @@ import com.bluenimble.apps.sdk.spec.PageSpec;
 import com.bluenimble.apps.sdk.spec.SdkVersion;
 import com.bluenimble.apps.sdk.spec.SecuritySpec;
 import com.bluenimble.apps.sdk.spec.impls.json.JsonEventAwareSpec;
+import com.bluenimble.apps.sdk.templating.ExpressionCompiler;
+import com.bluenimble.apps.sdk.templating.impls.DefaultExpressionCompiler;
 import com.bluenimble.apps.sdk.ui.components.ComponentsRegistry;
 import com.bluenimble.apps.sdk.ui.components.impls.DefaultComponentsRegistry;
 import com.bluenimble.apps.sdk.ui.effects.EffectsRegistry;
@@ -46,6 +48,8 @@ public abstract class AbstractApplicationSpec extends JsonEventAwareSpec impleme
 	protected Logger				logger				= new DefaultLogger 			();
 	
 	protected I18nProvider			i18nProvider		= new DefaultI18nProvider 		();
+	protected ExpressionCompiler 	expressionCompiler	= new DefaultExpressionCompiler ();
+
 	protected ThemesRegistry 		themesRegistry		= new DefaultThemesRegistry 	();
 	protected FontsRegistry 		fontsRegistry		= new DefaultFontsRegistry		();
 
@@ -120,6 +124,11 @@ public abstract class AbstractApplicationSpec extends JsonEventAwareSpec impleme
 	@Override
 	public I18nProvider i18nProvider () {
 		return i18nProvider;
+	}
+
+	@Override
+	public ExpressionCompiler expressionCompiler () {
+		return expressionCompiler;
 	}
 
 	@Override

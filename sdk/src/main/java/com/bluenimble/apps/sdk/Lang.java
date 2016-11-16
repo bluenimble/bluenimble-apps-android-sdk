@@ -27,8 +27,6 @@ public class Lang {
 	private static final String 	ExpStart				= "{";
 	private static final String 	ExpEnd					= "}";
 	
-	public static final String 		SNULL 					= "_X_";
-
 	public static final String 		BLANK 					= "";
 	public static final String 		SPACE 					= " ";
 	public static final String 		PLUS 					= "+";
@@ -532,7 +530,7 @@ public class Lang {
 				| Pattern.DOTALL);
 		return p.matcher (str).matches ();
 	}
-	
+/*
 	public interface VariableResolver {
 		String resolve(String namespace, String name);
 	}
@@ -574,7 +572,7 @@ public class Lang {
 	public static String resolve (String exp, VariableResolver resolver) {
 		return resolve (exp, ExpStart, ExpEnd, resolver);
 	}
-
+*/
 	private static String quotemeta (String s) {
 		if (s == null) {
 			throw new IllegalArgumentException("String cannot be null");

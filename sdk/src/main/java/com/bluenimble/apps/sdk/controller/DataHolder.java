@@ -3,7 +3,7 @@ package com.bluenimble.apps.sdk.controller;
 import java.io.InputStream;
 import java.io.Serializable;
 
-import com.bluenimble.apps.sdk.Lang.VariableResolver;
+import com.bluenimble.apps.sdk.templating.VariableResolver;
 import com.bluenimble.apps.sdk.spec.ApplicationSpec;
 import com.bluenimble.apps.sdk.spec.BindingSpec;
 

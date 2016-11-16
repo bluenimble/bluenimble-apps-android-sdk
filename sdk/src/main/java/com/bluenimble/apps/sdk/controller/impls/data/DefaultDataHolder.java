@@ -2,7 +2,6 @@ package com.bluenimble.apps.sdk.controller.impls.data;
 
 import com.bluenimble.apps.sdk.Json;
 import com.bluenimble.apps.sdk.Lang;
-import com.bluenimble.apps.sdk.application.UIActivity;
 import com.bluenimble.apps.sdk.controller.DataHolder;
 import com.bluenimble.apps.sdk.controller.StreamSource;
 import com.bluenimble.apps.sdk.json.JsonObject;
@@ -72,7 +71,7 @@ public class DefaultDataHolder implements DataHolder  {
 	}
 
 	@Override
-	public String resolve (String ns, String name) {
+	public Object resolve (String ns, String... name) {
 		if (Lang.isNullOrEmpty (ns)) {
 			ns = Namespace.View;
 		}
@@ -82,11 +81,11 @@ public class DefaultDataHolder implements DataHolder  {
 			return null;
 		}
 
-		Object v = section.find (name, Lang.DOT);
+		Object v = Json.find (section, name);
 		if (v == null) {
 			return null;
 		}
-		return String.valueOf (v);
+		return v;
 	}
 
 	@Override
@@ -95,7 +94,7 @@ public class DefaultDataHolder implements DataHolder  {
 		String [] property 	= bindingSpec.property ();
 		application.logger ().debug (DefaultDataHolder.class.getSimpleName (), "Source=" + source + ", property=" + Lang.join (property, Lang.DOT));
 		if (source == null || Namespace.Static.equals (source)) {
-			return application.i18nProvider ().get (property, this);
+			return application.i18nProvider ().get (property, application, this);
 		}
 		return get (bindingSpec.source (), property);
 	}

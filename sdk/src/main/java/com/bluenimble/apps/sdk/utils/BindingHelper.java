@@ -90,7 +90,7 @@ public class BindingHelper {
 		// add event declared data
 		JsonObject o = Json.getObject (spec, Spec.page.event.Data);
 		if (!Json.isNullOrEmpty (o)) {
-			dh.set (DataHolder.Namespace.Event, Json.resolve (o.duplicate (), dh));
+			dh.set (DataHolder.Namespace.Event, Json.resolve (o.duplicate (), application.expressionCompiler (), dh));
 		}
 
 		if (scope == null || scope.length == 0) {

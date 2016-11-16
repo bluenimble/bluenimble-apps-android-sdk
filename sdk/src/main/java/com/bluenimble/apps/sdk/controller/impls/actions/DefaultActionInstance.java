@@ -6,6 +6,7 @@ import com.bluenimble.apps.sdk.Json;
 import com.bluenimble.apps.sdk.controller.ActionInstance;
 import com.bluenimble.apps.sdk.controller.DataHolder;
 import com.bluenimble.apps.sdk.json.JsonObject;
+import com.bluenimble.apps.sdk.spec.ApplicationSpec;
 
 /**
  * Created by LINVI on 26/10/2016.
@@ -18,15 +19,15 @@ public class DefaultActionInstance implements ActionInstance {
 	protected View 			initiator;
 	protected DataHolder 	dataHolder;
 
-	protected DefaultActionInstance (String eventName, JsonObject eventSpec, DataHolder dataHolder, View initiator) {
+	protected DefaultActionInstance (String eventName, JsonObject eventSpec, ApplicationSpec application, DataHolder dataHolder, View initiator) {
 		this.eventName 	= eventName;
-		this.eventSpec 	= (JsonObject) Json.resolve (eventSpec.duplicate (), dataHolder);
+		this.eventSpec 	= (JsonObject) Json.resolve (eventSpec.duplicate (), application.expressionCompiler (), dataHolder);
 		this.initiator 	= initiator;
 		this.dataHolder = dataHolder;
 	}
 
-	public static ActionInstance create (String eventName, JsonObject eventSpec, DataHolder dataHolder, View initiator) {
-		return new DefaultActionInstance (eventName, eventSpec, dataHolder, initiator);
+	public static ActionInstance create (String eventName, JsonObject eventSpec, ApplicationSpec application, DataHolder dataHolder, View initiator) {
+		return new DefaultActionInstance (eventName, eventSpec, application, dataHolder, initiator);
 	}
 
 	@Override

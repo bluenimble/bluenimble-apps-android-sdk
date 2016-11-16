@@ -31,7 +31,7 @@ public class SpecHelper {
 		JsonObject eventSpec = eventAwareSpec.event (DefaultRenderer.LifeCycleEvent.create.name ());
         if (eventSpec != null) {
 			controller.process (
-				DefaultActionInstance.create (DefaultRenderer.LifeCycleEvent.create.name (), eventSpec, dh, parent),
+				DefaultActionInstance.create (DefaultRenderer.LifeCycleEvent.create.name (), eventSpec, activity.getSpec (), dh, parent),
 				activity,
 				false
 			);
@@ -40,7 +40,7 @@ public class SpecHelper {
         // run default layer create event / bind all
         if (fireDefault) {
 			controller.process (
-				DefaultActionInstance.create (DefaultRenderer.LifeCycleEvent.create.name (), SpecHelper.newCreateEvent (bind), dh, parent),
+				DefaultActionInstance.create (DefaultRenderer.LifeCycleEvent.create.name (), SpecHelper.newCreateEvent (bind), activity.getSpec (), dh, parent),
 				activity,
 				false
 			);

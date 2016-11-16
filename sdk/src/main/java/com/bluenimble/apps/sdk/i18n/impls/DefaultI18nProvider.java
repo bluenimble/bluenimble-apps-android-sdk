@@ -3,7 +3,8 @@ package com.bluenimble.apps.sdk.i18n.impls;
 import java.util.Locale;
 
 import com.bluenimble.apps.sdk.Json;
-import com.bluenimble.apps.sdk.Lang.VariableResolver;
+import com.bluenimble.apps.sdk.spec.ApplicationSpec;
+import com.bluenimble.apps.sdk.templating.VariableResolver;
 import com.bluenimble.apps.sdk.i18n.I18nProvider;
 import com.bluenimble.apps.sdk.json.JsonObject;
 
@@ -24,7 +25,7 @@ public class DefaultI18nProvider implements I18nProvider {
 	}
 	
 	@Override
-	public Object get (String [] property, VariableResolver vr) {
+	public Object get (String [] property, ApplicationSpec application, VariableResolver vr) {
 		JsonObject data = (JsonObject)Json.find (i18n, property);
 		if (data == null) {
 			return null;
@@ -38,7 +39,7 @@ public class DefaultI18nProvider implements I18nProvider {
 			return null;
 		}
 		
-		return Json.resolve (value, vr);
+		return Json.resolve (value, application.expressionCompiler (), vr);
 	}
 
 	@Override

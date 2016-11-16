@@ -58,7 +58,7 @@ public class InputTextFactory extends AbstractComponentFactory {
 		if (binding.equals (ComponentSpec.Binding.Set)) {
 			String hint = (String)spec.get (Custom.Placeholder);
 			if (!Lang.isNullOrEmpty (hint)) {
-				Object vHint = application.i18nProvider ().get (Lang.split (hint, Lang.DOT), dh);
+				Object vHint = application.i18nProvider ().get (Lang.split (hint, Lang.DOT), application, dh);
 				if (vHint == null) {
 					vHint = hint;
 				}

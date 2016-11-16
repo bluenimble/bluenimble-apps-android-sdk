@@ -139,11 +139,11 @@ public class UIActivity extends AppCompatActivity implements ViewResolver {
 		super.onConfigurationChanged (config);
 		
 		if (config.orientation == Configuration.ORIENTATION_LANDSCAPE || config.orientation == Configuration.ORIENTATION_PORTRAIT) {
-			PageSpec page = ((UIApplication)getApplication ()).getSpec ().renderer ().current ();
+			PageSpec page = getSpec ().renderer ().current ();
 			JsonObject eventSpec = page.event (LifeCycleEvent.rotate.name ());
 			if (eventSpec != null) {
 				getSpec ().controller ()
-						.process (DefaultActionInstance.create (LifeCycleEvent.rotate.name (), eventSpec, null, root), this, false);
+						.process (DefaultActionInstance.create (LifeCycleEvent.rotate.name (), eventSpec, getSpec (), null, root), this, false);
 			}
 		}
 	}

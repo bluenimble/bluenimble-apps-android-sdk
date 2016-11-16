@@ -3,6 +3,7 @@ package com.bluenimble.apps.sdk.ui.components.impls.listeners;
 import com.bluenimble.apps.sdk.application.UIActivity;
 import com.bluenimble.apps.sdk.controller.impls.actions.DefaultActionInstance;
 import com.bluenimble.apps.sdk.json.JsonObject;
+import com.bluenimble.apps.sdk.spec.ApplicationSpec;
 import com.bluenimble.apps.sdk.utils.SpecHelper;
 
 import android.text.Editable;
@@ -46,13 +47,13 @@ public class OnChangeListenerImpl extends EventListener implements TextWatcher {
 	}
 
 	private void onChangeEvent () {
-		SpecHelper.application (editText)
-			.controller ()
-				.process (
-					DefaultActionInstance.create (event.name (), eventSpec, null, editText),
-					(UIActivity)editText.getContext (),
-					true
-				);
+		ApplicationSpec application = SpecHelper.application (editText);
+		application.controller ()
+			.process (
+				DefaultActionInstance.create (event.name (), eventSpec, application, null, editText),
+				(UIActivity)editText.getContext (),
+				true
+			);
 	}
 	
 }

@@ -133,7 +133,7 @@ public class DefaultRenderer implements Renderer {
 		RelativeLayout relativeLayout = new RelativeLayout (activity);
 
 		// line Layoiut Params
-		RelativeLayout.LayoutParams lineLayoutParams = layerLineLayout (layer, layerStyle, layerView.getLayoutParams ().height, dh);
+		RelativeLayout.LayoutParams lineLayoutParams = layerLineLayout (application, layer, layerStyle, layerView.getLayoutParams ().height, dh);
 
 		relativeLayout.setLayoutParams (lineLayoutParams);
 		layout.addView (relativeLayout);
@@ -249,7 +249,7 @@ public class DefaultRenderer implements Renderer {
 		JsonObject eventSpec = page.event (LifeCycleEvent.destroy.name ());
 		if (eventSpec != null) {
 			application.controller ().process (
-				DefaultActionInstance.create (DefaultRenderer.LifeCycleEvent.destroy.name (), eventSpec, null, activity.root ()),
+				DefaultActionInstance.create (DefaultRenderer.LifeCycleEvent.destroy.name (), eventSpec, application, null, activity.root ()),
 				activity,
 				false
 			);
@@ -283,7 +283,7 @@ public class DefaultRenderer implements Renderer {
 			JsonObject eventSpec = layer.event (LifeCycleEvent.destroy.name ());
 			if (eventSpec != null) {
 				SpecHelper.application (f.getView ()).controller ().process (
-					DefaultActionInstance.create (DefaultRenderer.LifeCycleEvent.destroy.name (), eventSpec, null, f.getView ()),
+					DefaultActionInstance.create (DefaultRenderer.LifeCycleEvent.destroy.name (), eventSpec, activity.getSpec (), null, f.getView ()),
 					activity,
 					false
 				);
@@ -296,7 +296,7 @@ public class DefaultRenderer implements Renderer {
 		
 	}
 
-	private RelativeLayout.LayoutParams layerLineLayout (LayerSpec layer, StyleSpec layerStyle, int layerHieght, DataHolder dh) {
+	private RelativeLayout.LayoutParams layerLineLayout (ApplicationSpec application, LayerSpec layer, StyleSpec layerStyle, int layerHieght, DataHolder dh) {
 		// Line Layout Params
 		// depending on lineHeight style property
 		// if all: means this layer will have only 1 line
@@ -307,7 +307,7 @@ public class DefaultRenderer implements Renderer {
 
 		String sLineHeight = null;
 		if (layerStyle != null) {
-			sLineHeight = (String) Json.resolve (layerStyle.get (StyleSpec.LineHeight), dh);
+			sLineHeight = (String) Json.resolve (layerStyle.get (StyleSpec.LineHeight), application.expressionCompiler (), dh);
 		}
 
 		int lineHeight = ViewGroup.LayoutParams.WRAP_CONTENT;

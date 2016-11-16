@@ -68,7 +68,7 @@ public class RenderEffect implements Effect {
 				JsonObject eventSpec = layer.event (LifeCycleEvent.destroy.name ());
 				if (eventSpec != null) {
 					application.controller ().process (
-						DefaultActionInstance.create (LifeCycleEvent.destroy.name (), eventSpec, dh, f.getView ()), activity, true
+						DefaultActionInstance.create (LifeCycleEvent.destroy.name (), eventSpec, application, dh, f.getView ()), activity, true
 					);
 				}
 
