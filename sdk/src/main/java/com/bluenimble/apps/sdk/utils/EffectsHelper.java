@@ -34,6 +34,8 @@ public class EffectsHelper {
 			return;
 		}
 
+		Json.resolve (effects, activity.getSpec ().expressionCompiler (), actionInstance.dataHolder ());
+
 		Iterator<String> ids = effects.keys ();
 		while (ids.hasNext ()) {
 			String effectId = ids.next ();
@@ -47,6 +49,5 @@ public class EffectsHelper {
 			effect.apply (activity, application, page, effects.get (effectId), actionInstance.initiator (), actionInstance.dataHolder ());
 		}
 	}
-
 
 }

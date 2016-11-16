@@ -77,11 +77,11 @@ public class BindingHelper {
 
 		JsonObject spec = actionInstance.eventSpec ();
 
-		String [] scope = Lang.split (spec.getString (Spec.page.event.Scope), Lang.COMMA, true);
+		String [] scope = Lang.split (spec.getString (Spec.page.event.Scope), Lang.SPACE, true);
 
 		if (actionInstance.dataHolder () == null) {
 			DefaultDataHolder dh = new DefaultDataHolder ();
-			dh.set (DataHolder.Namespace.Device, 	getDevice (activity));
+			dh.set (DataHolder.Namespace.Device, getDevice (activity));
 			actionInstance.dataHolder (dh);
 		}
 

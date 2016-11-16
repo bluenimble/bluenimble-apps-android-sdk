@@ -21,7 +21,7 @@ public class DefaultActionInstance implements ActionInstance {
 
 	protected DefaultActionInstance (String eventName, JsonObject eventSpec, ApplicationSpec application, DataHolder dataHolder, View initiator) {
 		this.eventName 	= eventName;
-		this.eventSpec 	= (JsonObject) Json.resolve (eventSpec.duplicate (), application.expressionCompiler (), dataHolder);
+		this.eventSpec 	= eventSpec.duplicate ();
 		this.initiator 	= initiator;
 		this.dataHolder = dataHolder;
 	}

@@ -26,25 +26,11 @@ public class EchoEffect implements Effect {
 	@Override
 	public void apply (UIActivity activity, ApplicationSpec application, PageSpec page, Object spec, View origin, DataHolder dh) {
 		
-		if (spec == null || !(spec instanceof String)) {
+		if (spec == null) {
 			return;
 		}
 
-		Object message = null;
-
-		String key = (String)spec;
-
-		int indexOfDot = key.indexOf (Lang.DOT);
-
-		if (indexOfDot > 0) {
-			message = dh.get (key.substring (0, indexOfDot), key.substring (indexOfDot + 1));
-		}
-
-		if (message == null) {
-			message = key;
-		}
-
-		Toast.makeText (activity, message.toString (), Toast.LENGTH_SHORT).show ();
+		Toast.makeText (activity, spec.toString (), Toast.LENGTH_SHORT).show ();
 
 	}
 
