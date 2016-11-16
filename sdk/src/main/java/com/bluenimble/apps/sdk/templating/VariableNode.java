@@ -17,7 +17,7 @@ public class VariableNode implements Node {
 		vars = new ArrayList<Property> (properties.length);
 		for (String p : properties) {
 			if (p.startsWith (Lang.APOS) && p.endsWith (Lang.APOS)) {
-				vars.add (new Property (p));
+				vars.add (new Property (p.substring (1, p.length () - 1)));
 				continue;
 			}
 			String [] keys = Lang.split (p, Lang.DOT);
