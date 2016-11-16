@@ -1,7 +1,5 @@
 {
-  "defaultLanguage": "en",
-
-  "index": "index",
-  "theme": "custom"
-
+	"defaultLanguage": "en",
+	"index": "index",
+	"theme": "custom"
 }

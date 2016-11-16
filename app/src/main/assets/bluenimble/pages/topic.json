@@ -1,7 +1,9 @@
 {
 	"layers": {
 		"header": [
-			"text static.icons.back ? icon", "image static.images.logo ? logo", "text view.topic.title ? title primary rounded"
+			"text static.icons.back ? icon",
+			"image static.images.logo ? logo",
+			"text view.topic.title ? title primary rounded"
 		],
 		"main": [
 			"list:topic view.topic.examples ? template=index.menuTpl layout=grid"
