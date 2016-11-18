@@ -10,12 +10,19 @@ import com.bluenimble.apps.sdk.spec.BindingSpec;
 import com.bluenimble.apps.sdk.spec.ComponentSpec;
 import com.bluenimble.apps.sdk.spec.LayerSpec;
 import com.bluenimble.apps.sdk.ui.components.AbstractComponentFactory;
+import com.bluenimble.apps.sdk.ui.components.impls.list.ListFactory;
 import com.bluenimble.apps.sdk.ui.components.impls.listeners.EventListener;
 import com.bluenimble.apps.sdk.ui.components.impls.listeners.OnChangeListenerImpl;
+import com.bluenimble.apps.sdk.utils.SpecHelper;
 
+import android.text.InputType;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethod;
 import android.widget.EditText;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class InputTextFactory extends AbstractComponentFactory {
 
@@ -24,7 +31,18 @@ public class InputTextFactory extends AbstractComponentFactory {
 	private static final String Id = "input";
 
 	interface Custom {
+		String Type 		= "type";
 		String Placeholder 	= "placeholder";
+	}
+
+	private static final Map<String, Integer> InputTypes = new HashMap<String, Integer> ();
+	static {
+		InputTypes.put ("number", 	InputType.TYPE_CLASS_NUMBER);
+		InputTypes.put ("datetime", InputType.TYPE_CLASS_TEXT | InputType.TYPE_CLASS_DATETIME);
+		InputTypes.put ("password", InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
+		InputTypes.put ("phone", 	InputType.TYPE_CLASS_TEXT | InputType.TYPE_CLASS_PHONE);
+		InputTypes.put ("email", 	InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
+		InputTypes.put ("url", 		InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_URI);
 	}
 
 	public InputTextFactory () {
@@ -41,7 +59,15 @@ public class InputTextFactory extends AbstractComponentFactory {
 	@Override
 	public View create (UIActivity activity, ViewGroup group, LayerSpec layer, ComponentSpec spec, DataHolder dh) {
 		EditText input = new EditText (activity);
-		
+
+		String inputMethod = SpecHelper.getString (spec, Custom.Type);
+		if (!Lang.isNullOrEmpty (inputMethod)) {
+			Integer type = InputTypes.get (inputMethod.trim ());
+			if (type != null) {
+				input.setInputType (type);
+			}
+		}
+
 		return applyStyle (group, input, spec, dh);
 	}
 
