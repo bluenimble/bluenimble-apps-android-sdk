@@ -1,6 +1,6 @@
 {
-  "layers": {
-    "header": [ "! Header" ],
-    "main": [ "! Main" ]
-  }
+	"layers": {
+		"header": [ "! Header" ],
+		"main": [ "! Main" ]
+	}
 }

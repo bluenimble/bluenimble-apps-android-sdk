@@ -1,39 +1,213 @@
 {
 
-  "icons": {
-    "back": { "en": "\uf060" }, "next": { "en": "\uf061" }, "up": { "en": "\uf062" },
-    "down": { "en": "\uf063" }, "menu": { "en": "\uf0ca" }, "profile": { "en": "\uf142" }
-  },
-  "title": {
-    "short": { "en": "Apps SDK Browser" }, "long": { "en": "BlueNimble Apps SDK Browser" }
-  },
-  "images": {
-    "logo": { "en": "https://www.bluenimble.com/images/BlueNimble15.png" }
-  },
-  "menu": {
-    "en": [{
-      "title": "Layers", "icon": "\uf0e8",
-      "examples": [{
-        "title": "Header Main", "icon": "\uf0e8", "page": "layers/header-main"
-      }, {
-        "title": "Split", "icon": "\uf0e8", "page": "layers/header-main"
-      }, {
-        "title": "Positioning", "icon": "\uf0e8", "page": "layers/header-main"
-      }]
-    }, {
-      "title": "Forms", "icon": "\uf044"
-    }, {
-      "title": "Tabs", "icon": "\uf24d"
-    }, {
-      "title": "Lists", "icon": "\uf0f7"
-    }, {
-      "title": "Content", "icon": "\uf20d"
-    }, {
-      "title": "Charts", "icon": "\uf080"
-    }, {
-      "title": "Maps", "icon": "\uf041"
-    }, {
-      "title": "Media", "icon": "\uf03e"
-    }]
-  }
+	"icons": {
+		"back": {
+			"en": "\uf060"
+		},
+		"next": {
+			"en": "\uf061"
+		},
+		"up": {
+			"en": "\uf062"
+		},
+		"down": {
+			"en": "\uf063"
+		},
+		"menu": {
+			"en": "\uf0ca"
+		},
+		"profile": {
+			"en": "\uf142"
+		}
+	},
+	"title": {
+		"short": {
+			"en": "Apps SDK Browser"
+		},
+		"long": {
+			"en": "BlueNimble Apps SDK Browser"
+		}
+	},
+	"images": {
+		"logo": {
+			"en": "https://www.bluenimble.com/images/BlueNimble15.png"
+		}
+	},
+	"menu": {
+		"en": [
+			{
+				"title": "Layers",
+				"icon": "\uf0e8",
+				"examples": [
+					{
+						"title": "Header Main",
+						"icon": "\uf0e8",
+						"page": "layers/header-main"
+					},
+					{
+						"title": "Split",
+						"icon": "\uf0e8",
+						"page": "layers/header-main"
+					},
+					{
+						"title": "Positioning",
+						"icon": "\uf0e8",
+						"page": "layers/header-main"
+					}
+				]
+			},
+			{
+				"title": "Forms",
+				"icon": "\uf044",
+				"examples": [
+					{
+						"title": "Single column Form",
+						"icon": "\uf044",
+						"page": "forms/single-cols"
+					},
+					{
+						"title": "Double columns Form",
+						"icon": "\uf044",
+						"page": "forms/double-cols"
+					},
+					{
+						"title": "Mixed columns Form",
+						"icon": "\uf044",
+						"page": "forms/mixed-cols"
+					}
+				]
+			},
+			{
+				"title": "Tabs",
+				"icon": "\uf24d",
+				"examples": [
+					{
+						"title": "Fixed tabs",
+						"icon": "\uf24d",
+						"page": "tabs/fixed"
+					},
+					{
+						"title": "Tile tabs",
+						"icon": "\uf24d",
+						"page": "tabs/tile"
+					},
+					{
+						"title": "Embedded list",
+						"icon": "\uf24d",
+						"page": "tabs/list"
+					}
+				]
+			},
+			{
+				"title": "Lists",
+				"icon": "\uf0f7",
+				"examples": [
+					{
+						"title": "Regular",
+						"icon": "\uf0f7",
+						"page": "lists/regular"
+					},
+					{
+						"title": "Horizontal",
+						"icon": "\uf0f7",
+						"page": "lists/horizontal"
+					},
+					{
+						"title": "Grid",
+						"icon": "\uf0f7",
+						"page": "list/grid"
+					}
+				]
+			},
+			{
+				"title": "Content",
+				"icon": "\uf20d",
+				"examples": [
+					{
+						"title": "Fixed",
+						"icon": "\uf20d",
+						"page": "contents/fixed"
+					},
+					{
+						"title": "Scrollable",
+						"icon": "\uf20d",
+						"page": "contents/scrollable"
+					},
+					{
+						"title": "Spannable",
+						"icon": "\uf20d",
+						"page": "contents/spannable"
+					}
+				]
+			},
+			{
+				"title": "Charts",
+				"icon": "\uf080",
+				"examples": [
+					{
+						"title": "Pie",
+						"icon": "\uf080",
+						"page": "charts/pie"
+					},
+					{
+						"title": "Line",
+						"icon": "\uf080",
+						"page": "charts/line"
+					},
+					{
+						"title": "Bar",
+						"icon": "\uf080",
+						"page": "charts/bar"
+					}
+				]
+			},
+			{
+				"title": "Maps",
+				"icon": "\uf041",
+				"examples": [
+					{
+						"title": "Basic",
+						"icon": "\uf041",
+						"page": "maps/basic"
+					},
+					{
+						"title": "Markers",
+						"icon": "\uf041",
+						"page": "maps/markers"
+					},
+					{
+						"title": "Actions",
+						"icon": "\uf041",
+						"page": "maps/actions"
+					}
+				]
+			},
+			{
+				"title": "Media",
+				"icon": "\uf03e",
+				"examples": [
+					{
+						"title": "Video",
+						"icon": "\uf03e",
+						"page": "medias/video"
+					},
+					{
+						"title": "Audio",
+						"icon": "\uf03e",
+						"page": "medias/audio"
+					},
+					{
+						"title": "Picture",
+						"icon": "\uf03e",
+						"page": "medias/picture"
+					},
+					{
+						"title": "Streaming",
+						"icon": "\uf03e",
+						"page": "medias/streaming"
+					}
+				]
+			}
+		]
+	}
 }

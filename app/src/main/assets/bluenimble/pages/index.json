@@ -1,19 +1,25 @@
 {
-  "layers": {
-    "header": [
-	  "image static.images.logo ? logo", "text static.title.short ? title primary rounded"
-    ],
-	"main": [
-	  "list:topic static.menu ? template=menuTpl layout=grid cols=3"
-    ],
-	"! menuTpl": [
-	  "text:menuItem record.icon ? rounded icon", "/", "text record.title ? center icon-title"
-	]
-  },
-  "events": {
-    "menuTpl.press": {
-      "scope": "main",
-      "onStart": { "echo": "Selected: [view.topic]", "goto": "[ view.topic.page | 'topic' ]" }
-    }
-  }
+	"layers": {
+		"header": [
+			"image static.images.logo ? logo",
+			"text static.title.short ? title primary rounded"
+		],
+		"main": [
+			"list:topic static.menu ? template=menuTpl layout=grid cols=3"
+		],
+		"! menuTpl": [
+			"text:menuItem record.icon ? rounded icon",
+			"/",
+			"text record.title ? center icon-title"
+		]
+	},
+	"events": {
+		"menuTpl.press": {
+			"scope": "main",
+			"onStart": {
+				"echo": "Selected: [view.topic]",
+				"goto": "[ view.topic.page | 'topic' ]"
+			}
+		}
+	}
 }
