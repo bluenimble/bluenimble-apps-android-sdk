@@ -28,6 +28,36 @@
 			"en": "BlueNimble Apps SDK Browser"
 		}
 	},
+	"identity": {
+		"fullName": {
+			"en": "Full Name"
+		},
+		"gender": {
+			"en": "Gender"
+		},
+		"age": {
+			"en": "Age"
+		},
+		"profile": {
+			"en": [
+				"Developer",
+				"Architect",
+				"Other"
+			]
+		},
+		"email": {
+			"en": "Email"
+		},
+		"password": {
+			"en": "Password"
+		},
+		"terms": {
+			"en": "Accept the terms and conditions."
+		},
+		"signup": {
+			"en": "Create account"
+		}
+	},
 	"images": {
 		"logo": {
 			"en": "https://www.bluenimble.com/images/BlueNimble15.png"
@@ -63,7 +93,7 @@
 					{
 						"title": "Single column Form",
 						"icon": "\uf044",
-						"page": "forms/single-cols"
+						"page": "forms/single-col"
 					},
 					{
 						"title": "Double columns Form",
