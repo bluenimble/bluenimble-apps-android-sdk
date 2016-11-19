@@ -15,7 +15,6 @@ import com.bluenimble.apps.sdk.ui.components.impls.listeners.EventListener;
 import com.bluenimble.apps.sdk.ui.components.impls.listeners.OnItemSelectedListenerImpl;
 import com.bluenimble.apps.sdk.utils.SpecHelper;
 
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Spinner;
@@ -86,7 +85,6 @@ public class DropDownFactory extends AbstractComponentFactory {
 
 				if (dh == null) {
 					adapter.load (null);
-					adapter.notifyDataSetChanged ();
 					return;
 				}
 				Object value = dh.valueOf (applicationSpec, bindingSpec);
@@ -99,10 +97,10 @@ public class DropDownFactory extends AbstractComponentFactory {
 					return;
 				}
 
-				boolean hasData = adapter.getRecords () != null;
-
 				// load data in adapter
 				adapter.load ((JsonArray)value);
+
+				boolean hasData = adapter.getRecords () != null;
 
 				// notify the view with data change
 				if (hasData) {
@@ -111,7 +109,12 @@ public class DropDownFactory extends AbstractComponentFactory {
 
 				break;
 			case Get:
-				Json.set ((JsonObject)dh.get (bindingSpec.source ()), dropdown.getSelectedItem (), property);
+				DefaultDropDownAdapter ad = (DefaultDropDownAdapter) dropdown.getAdapter ();
+				Json.set (
+					(JsonObject)dh.get (bindingSpec.source ()),
+					((DataHolder)dropdown.getSelectedItem ()).get (ad.getRecordNs (), DefaultDropDownAdapter.DefaultRecord.Id),
+					property
+				);
 				break;
 			default:
 				break;

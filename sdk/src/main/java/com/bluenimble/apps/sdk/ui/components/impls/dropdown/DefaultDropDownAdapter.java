@@ -1,6 +1,5 @@
 package com.bluenimble.apps.sdk.ui.components.impls.dropdown;
 
-import com.bluenimble.apps.sdk.Json;
 import com.bluenimble.apps.sdk.application.UIActivity;
 import com.bluenimble.apps.sdk.application.ux.LayerLayout;
 import com.bluenimble.apps.sdk.controller.DataHolder;
@@ -12,7 +11,6 @@ import com.bluenimble.apps.sdk.spec.ComponentSpec;
 import com.bluenimble.apps.sdk.spec.LayerSpec;
 import com.bluenimble.apps.sdk.utils.BindingHelper;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,7 +36,7 @@ public class DefaultDropDownAdapter extends ArrayAdapter<DataHolder> {
 	
 	public DefaultDropDownAdapter (UIActivity activity, ComponentSpec component, LayerSpec template, String recordNs) {
 		super (activity, 0);
-		
+
 		this.activity 		= activity;
 		this.recordNs		= recordNs;
 
@@ -53,6 +51,10 @@ public class DefaultDropDownAdapter extends ArrayAdapter<DataHolder> {
 
 	JsonArray getRecords () {
 		return records;
+	}
+
+	String getRecordNs () {
+		return recordNs;
 	}
 
 	@Override
@@ -84,70 +86,75 @@ public class DefaultDropDownAdapter extends ArrayAdapter<DataHolder> {
 		
 		return one.set (recordNs, JsonObject.Blank);
 	}
-	
+
+	@Override
+	public long getItemId (int position) {
+		return position;
+	}
+
 	@Override
 	public View getView (int position, View convertView, ViewGroup parent) {
-		ApplicationSpec application = activity.getSpec ();
-
 		DataHolder dh = getItem (position);
 
-		Log.e (DefaultDropDownAdapter.class.getSimpleName () + " --> getView", "Got here");
+		if (template == null) {
+			if (convertView == null) {
+				convertView = LayoutInflater.from (parent.getContext ()).inflate (android.R.layout.simple_spinner_dropdown_item, parent, false);
+			}
+
+			((TextView)convertView).setText ((String)dh.get (recordNs, DefaultRecord.Value));
+
+			return convertView;
+		}
+
+		ApplicationSpec application = activity.getSpec ();
 
 		if (convertView == null) {
-			if (template == null) {
-				Log.e (DefaultDropDownAdapter.class.getSimpleName () + " --> getView", "Got here : Template null : " + position);
-				convertView = LayoutInflater.from (parent.getContext ()).inflate (android.R.layout.simple_spinner_dropdown_item, parent, false);
-			} else {
-				Log.e (DefaultDropDownAdapter.class.getSimpleName () + " --> getView", "Got here : Template !null : " + position);
-				convertView = application.renderer ().render (application, template, dh, parent, activity);
-			}
+			convertView = application.renderer ().render (application, template, dh, parent, activity);
 			convertView.setTag (null);
 		}
 
 		// binding data and any other additional effects
-		if (template == null) {
-			((TextView)convertView).setText ((String)getItem (position).get (recordNs, DefaultRecord.Value));
-		} else {
-			BindingHelper.bindLayer (
-				LogTag,
-				activity.getSpec (),
-				template,
-				(LayerLayout)convertView,
-				one.set (recordNs, (JsonObject) records.get (position)),
-				true
-			);
-		}
+		BindingHelper.bindLayer (
+			LogTag,
+			activity.getSpec (),
+			template,
+			(LayerLayout)convertView,
+			one.set (recordNs, records.get (position)),
+			true
+		);
 
 		return convertView;
 	}
 	
 	@Override
 	public View getDropDownView (int position, View convertView, ViewGroup parent) {
+		DataHolder dh = getItem (position);
+
+		if (template == null) {
+			if (convertView == null) {
+				convertView = LayoutInflater.from (parent.getContext ()).inflate (android.R.layout.simple_spinner_dropdown_item, parent, false);
+			}
+
+			((TextView)convertView).setText ((String)dh.get (recordNs, DefaultRecord.Value));
+
+			return convertView;
+		}
+
 		ApplicationSpec application = activity.getSpec ();
 
 		if (convertView == null) {
-			if (template == null) {
-				Log.e (DefaultDropDownAdapter.class.getSimpleName () + " --> getDropDownView", "Got here : Template null : " + position);
-				convertView = LayoutInflater.from (parent.getContext ()).inflate (android.R.layout.simple_spinner_dropdown_item, null);
-			} else {
-				Log.e (DefaultDropDownAdapter.class.getSimpleName () + " --> getDropDownView", "Got here : Template !null : " + position);
-				convertView = application.renderer ().render (application, template, getItem (position), parent, activity);
-			}
+			convertView = application.renderer ().render (application, template, dh, parent, activity);
 		}
 
 		// binding data and any other additional effects
-		if (template == null) {
-			((TextView)convertView).setText ((String)getItem (position).get (recordNs, DefaultRecord.Value));
-		} else {
-			BindingHelper.bindLayer (
-					LogTag,
-					activity.getSpec (),
-					template,
-					(LayerLayout)convertView,
-					one.set (recordNs, (JsonObject) records.get (position)),
-					true
-			);
-		}
+		BindingHelper.bindLayer (
+			LogTag,
+			activity.getSpec (),
+			template,
+			(LayerLayout)convertView,
+			one.set (recordNs, records.get (position)),
+			true
+		);
 
 		return convertView;
 	}
