@@ -33,7 +33,11 @@
 			"en": "Full Name"
 		},
 		"gender": {
-			"en": "Gender"
+			"en": [
+				"Male",
+				"Female",
+				"Other"
+			]
 		},
 		"age": {
 			"en": "Age"

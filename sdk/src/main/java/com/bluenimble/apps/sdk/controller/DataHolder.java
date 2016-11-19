@@ -1,6 +1,5 @@
 package com.bluenimble.apps.sdk.controller;
 
-import java.io.InputStream;
 import java.io.Serializable;
 
 import com.bluenimble.apps.sdk.templating.VariableResolver;
@@ -8,8 +7,6 @@ import com.bluenimble.apps.sdk.spec.ApplicationSpec;
 import com.bluenimble.apps.sdk.spec.BindingSpec;
 
 public interface DataHolder extends VariableResolver, Serializable {
-
-	public static final
 	
 	String Code 			= "code";
 	String Message 			= "message";

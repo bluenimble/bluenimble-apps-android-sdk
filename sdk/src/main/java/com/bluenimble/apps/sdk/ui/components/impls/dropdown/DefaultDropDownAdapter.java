@@ -1,5 +1,6 @@
 package com.bluenimble.apps.sdk.ui.components.impls.dropdown;
 
+import com.bluenimble.apps.sdk.Json;
 import com.bluenimble.apps.sdk.application.UIActivity;
 import com.bluenimble.apps.sdk.application.ux.LayerLayout;
 import com.bluenimble.apps.sdk.controller.DataHolder;
@@ -11,9 +12,12 @@ import com.bluenimble.apps.sdk.spec.ComponentSpec;
 import com.bluenimble.apps.sdk.spec.LayerSpec;
 import com.bluenimble.apps.sdk.utils.BindingHelper;
 
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.TextView;
 
 public class DefaultDropDownAdapter extends ArrayAdapter<DataHolder> {
 
@@ -87,18 +91,32 @@ public class DefaultDropDownAdapter extends ArrayAdapter<DataHolder> {
 
 		DataHolder dh = getItem (position);
 
+		Log.e (DefaultDropDownAdapter.class.getSimpleName () + " --> getView", "Got here");
+
 		if (convertView == null) {
-			convertView = application.renderer ().render (application, template, dh, parent, activity);
+			if (template == null) {
+				Log.e (DefaultDropDownAdapter.class.getSimpleName () + " --> getView", "Got here : Template null : " + position);
+				convertView = LayoutInflater.from (parent.getContext ()).inflate (android.R.layout.simple_spinner_dropdown_item, parent, false);
+			} else {
+				Log.e (DefaultDropDownAdapter.class.getSimpleName () + " --> getView", "Got here : Template !null : " + position);
+				convertView = application.renderer ().render (application, template, dh, parent, activity);
+			}
 			convertView.setTag (null);
 		}
 
 		// binding data and any other additional effects
-		BindingHelper.bindLayer (
+		if (template == null) {
+			((TextView)convertView).setText (Json.getString ((JsonObject) records.get (position), DefaultRecord.Value));
+		} else {
+			BindingHelper.bindLayer (
 				LogTag,
 				activity.getSpec (),
-				template, (LayerLayout)convertView, one.set (recordNs, (JsonObject) records.get (position)),
+				template,
+				(LayerLayout)convertView,
+				one.set (recordNs, (JsonObject) records.get (position)),
 				true
-		);
+			);
+		}
 
 		return convertView;
 	}
@@ -108,7 +126,27 @@ public class DefaultDropDownAdapter extends ArrayAdapter<DataHolder> {
 		ApplicationSpec application = activity.getSpec ();
 
 		if (convertView == null) {
-			convertView = application.renderer ().render (application, template, getItem (position), parent, activity);
+			if (template == null) {
+				Log.e (DefaultDropDownAdapter.class.getSimpleName () + " --> getDropDownView", "Got here : Template null : " + position);
+				convertView = LayoutInflater.from (parent.getContext ()).inflate (android.R.layout.simple_spinner_dropdown_item, null);
+			} else {
+				Log.e (DefaultDropDownAdapter.class.getSimpleName () + " --> getDropDownView", "Got here : Template !null : " + position);
+				convertView = application.renderer ().render (application, template, getItem (position), parent, activity);
+			}
+		}
+
+		// binding data and any other additional effects
+		if (template == null) {
+			((TextView)convertView).setText (Json.getString ((JsonObject) records.get (position), DefaultRecord.Value));
+		} else {
+			BindingHelper.bindLayer (
+					LogTag,
+					activity.getSpec (),
+					template,
+					(LayerLayout)convertView,
+					one.set (recordNs, (JsonObject) records.get (position)),
+					true
+			);
 		}
 
 		return convertView;

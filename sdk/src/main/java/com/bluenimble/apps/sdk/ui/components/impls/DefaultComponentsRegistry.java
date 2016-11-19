@@ -14,6 +14,7 @@ import com.bluenimble.apps.sdk.ui.components.impls.chart.PieChartFactory;
 import com.bluenimble.apps.sdk.ui.components.impls.chart.RadarChartFactory;
 import com.bluenimble.apps.sdk.ui.components.impls.chart.ScatterChartFactory;
 import com.bluenimble.apps.sdk.ui.components.impls.checkbox.CheckboxFactory;
+import com.bluenimble.apps.sdk.ui.components.impls.dropdown.DropDownFactory;
 import com.bluenimble.apps.sdk.ui.components.impls.generic.BreakFactory;
 import com.bluenimble.apps.sdk.ui.components.impls.list.ListFactory;
 import com.bluenimble.apps.sdk.ui.components.impls.media.ImageFactory;
@@ -47,6 +48,7 @@ public class DefaultComponentsRegistry implements ComponentsRegistry {
 		register (new MapFactory ());
 
 		register (new ListFactory ());
+		register (new DropDownFactory ());
 
 		register (new TabsFactory());
 
