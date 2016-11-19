@@ -15,6 +15,7 @@ import com.bluenimble.apps.sdk.ui.components.impls.listeners.EventListener;
 import com.bluenimble.apps.sdk.ui.components.impls.listeners.OnItemSelectedListenerImpl;
 import com.bluenimble.apps.sdk.utils.SpecHelper;
 
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Spinner;
@@ -54,6 +55,7 @@ public class DropDownFactory extends AbstractComponentFactory {
 		}
 
 		DefaultDropDownAdapter adapter = new DefaultDropDownAdapter (activity, spec, template, recordNs);
+
 		dropdown.setAdapter (adapter);
 
 		return applyStyle (group, dropdown, spec, dh);
@@ -61,7 +63,7 @@ public class DropDownFactory extends AbstractComponentFactory {
 
 	@Override
 	public void bind (ComponentSpec.Binding binding, View view, ApplicationSpec applicationSpec, ComponentSpec spec, DataHolder dh) {
-		
+
 		if (view == null || !(view instanceof Spinner)) {
 			// TODO: log
 			return;

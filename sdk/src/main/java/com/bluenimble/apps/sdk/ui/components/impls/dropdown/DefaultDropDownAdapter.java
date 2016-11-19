@@ -106,7 +106,7 @@ public class DefaultDropDownAdapter extends ArrayAdapter<DataHolder> {
 
 		// binding data and any other additional effects
 		if (template == null) {
-			((TextView)convertView).setText (Json.getString ((JsonObject) records.get (position), DefaultRecord.Value));
+			((TextView)convertView).setText ((String)getItem (position).get (recordNs, DefaultRecord.Value));
 		} else {
 			BindingHelper.bindLayer (
 				LogTag,
@@ -137,7 +137,7 @@ public class DefaultDropDownAdapter extends ArrayAdapter<DataHolder> {
 
 		// binding data and any other additional effects
 		if (template == null) {
-			((TextView)convertView).setText (Json.getString ((JsonObject) records.get (position), DefaultRecord.Value));
+			((TextView)convertView).setText ((String)getItem (position).get (recordNs, DefaultRecord.Value));
 		} else {
 			BindingHelper.bindLayer (
 					LogTag,

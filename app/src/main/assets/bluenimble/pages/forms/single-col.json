@@ -8,7 +8,7 @@
 		"main": [
 			"input:fullName ? ? center placeholder=identity.fullName",
 			"/",
-			"dropdown:gender static.gender ?",
+			"dropdown:gender static.identity.gender ?",
 			"/",
 			"input:age ? ? center placeholder=identity.age type=number",
 			"/",
