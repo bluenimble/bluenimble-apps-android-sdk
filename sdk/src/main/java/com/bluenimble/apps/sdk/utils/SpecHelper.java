@@ -324,13 +324,19 @@ public class SpecHelper {
             return oComponent;
         }
 
+        boolean _break = false;
+
         String style = Lang.BLANK;
 
         for (int i = 2; i < tokens.length; i++) {
             String token = tokens [i].trim ();
             int indexOfEqual = token.indexOf (Lang.EQUALS);
             if (indexOfEqual <= 0) {
-                style += Lang.SPACE + token;
+				if (token.equals (Lang.SLASH)) {
+					_break = true;
+				} else {
+					style += Lang.SPACE + token;
+				}
                 continue;
             }
             String n = token.substring (0, indexOfEqual);
@@ -341,6 +347,10 @@ public class SpecHelper {
         if (!Lang.isNullOrEmpty (style)) {
             Json.set (oComponent, style.trim (), Spec.page.layer.component.Style);
         }
+
+		if (_break) {
+			Json.set (oComponent, _break, Spec.page.layer.component.Break);
+		}
 
         return oComponent;
     }
