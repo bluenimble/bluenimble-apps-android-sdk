@@ -85,7 +85,6 @@ public class DropDownFactory extends AbstractComponentFactory {
 
 				if (dh == null) {
 					adapter.load (null);
-					//adapter.notifyDataSetChanged (); no need moved to the adapter
 					return;
 				}
 				Object value = dh.valueOf (applicationSpec, bindingSpec);
@@ -100,14 +99,6 @@ public class DropDownFactory extends AbstractComponentFactory {
 
 				// load data in adapter
 				adapter.load ((JsonArray)value);
-
-				/* no need moved to the adapter
-				boolean hasData = adapter.getRecords () != null;
-
-				// notify the view with data change
-				if (hasData) {
-					adapter.notifyDataSetChanged ();
-				}*/
 
 				break;
 			case Get:
