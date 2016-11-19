@@ -77,6 +77,11 @@ public class DefaultDataHolder implements DataHolder  {
 		}
 		
 		JsonObject section = Json.getObject (data, ns);
+
+		if (name != null && name.length == 1 && Lang.STAR.equals (name [0])) {
+			return section;
+		}
+
 		if (section == null) {
 			return null;
 		}

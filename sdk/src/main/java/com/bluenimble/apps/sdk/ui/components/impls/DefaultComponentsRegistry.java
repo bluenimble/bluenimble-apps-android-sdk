@@ -69,7 +69,7 @@ public class DefaultComponentsRegistry implements ComponentsRegistry {
 
 	@Override
 	public void register (ComponentFactory factory) {
-		factories.put (factory.id (), factory);
+		factories.put (factory.id ().toLowerCase (), factory);
 	}
 
 }

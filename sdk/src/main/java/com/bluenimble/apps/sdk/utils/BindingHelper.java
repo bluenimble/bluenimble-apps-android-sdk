@@ -12,7 +12,6 @@ import com.bluenimble.apps.sdk.application.ux.LayerLayout;
 import com.bluenimble.apps.sdk.controller.Action;
 import com.bluenimble.apps.sdk.controller.ActionInstance;
 import com.bluenimble.apps.sdk.controller.DataHolder;
-import com.bluenimble.apps.sdk.controller.impls.actions.DefaultAction;
 import com.bluenimble.apps.sdk.controller.impls.data.AgnosticDataHolder;
 import com.bluenimble.apps.sdk.controller.impls.data.DefaultDataHolder;
 import com.bluenimble.apps.sdk.json.JsonObject;
@@ -36,7 +35,7 @@ public class BindingHelper {
             application.logger ().debug (BindEffect.class.getSimpleName (), "\t\t    -> ERR: View Not found [" + layer.id () + Lang.DOT + component.id () + "]");
             return;
         }
-        application.componentsRegistry ().lookup (component.type ()).bind (ComponentSpec.Binding.Set, view, application, component, useDh ? dh : AgnosticDataHolder.Instance);
+        application.componentsRegistry ().lookup (component.type ().toLowerCase ()).bind (ComponentSpec.Binding.Set, view, application, component, useDh ? dh : AgnosticDataHolder.Instance);
     }
 
     public static void bindLayer (String tag, ApplicationSpec application, LayerSpec layer, LayerLayout layerView, DataHolder dh, boolean useDh) {
@@ -131,7 +130,7 @@ public class BindingHelper {
                 continue;
             }
 
-			ComponentFactory factory = registry.lookup (c.type ());
+			ComponentFactory factory = registry.lookup (c.type ().toLowerCase ());
             if (factory == null) {
                 continue;
             }

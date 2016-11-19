@@ -2,6 +2,7 @@ package com.bluenimble.apps.sdk.ui.components.impls.radio;
 
 import com.bluenimble.apps.sdk.Json;
 import com.bluenimble.apps.sdk.application.UIActivity;
+import com.bluenimble.apps.sdk.application.UIApplication;
 import com.bluenimble.apps.sdk.controller.DataHolder;
 import com.bluenimble.apps.sdk.json.JsonArray;
 import com.bluenimble.apps.sdk.json.JsonObject;
@@ -46,7 +47,7 @@ public class RadioGroupFactory extends AbstractComponentFactory {
 
 	@Override
 	public void bind (ComponentSpec.Binding binding, View view, ApplicationSpec applicationSpec, ComponentSpec spec, DataHolder dh) {
-		
+
 		if (view == null || !(view instanceof RadioGroup)) {
 			// TODO: log
 			return;
@@ -82,6 +83,7 @@ public class RadioGroupFactory extends AbstractComponentFactory {
 				for (int i = 0; i < array.count (); i++) {
 					Object record = array.get (i);
 					RadioButton radio = new RadioButton (view.getContext ());
+					radio.setId (UIApplication.newId ());
 					if (record instanceof JsonObject) {
 						JsonObject oRecord = (JsonObject)record;
 						radio.setText 	(Json.getString (oRecord, Record.Value));
@@ -97,12 +99,12 @@ public class RadioGroupFactory extends AbstractComponentFactory {
 							
 				break;
 			case Get:
-				for (int i = 0; i < group.getChildCount (); i++) {
-					RadioButton btn = (RadioButton)group.getChildAt (i);
-					if (btn.isChecked ()) {
-						Json.set ((JsonObject)dh.get (bindingSpec.source ()), btn.getTag (), property);
-						break;
-					}
+				if (group.getCheckedRadioButtonId () != -1) {
+					Json.set (
+						(JsonObject)dh.get (bindingSpec.source ()),
+						group.findViewById (group.getCheckedRadioButtonId ()).getTag (),
+						property
+					);
 				}
 				break;
 			default:
