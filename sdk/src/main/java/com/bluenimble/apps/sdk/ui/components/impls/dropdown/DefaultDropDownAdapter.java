@@ -47,6 +47,7 @@ public class DefaultDropDownAdapter extends ArrayAdapter<DataHolder> {
 
 	void load (JsonArray records) {
 		this.records = records;
+		notifyDataSetChanged ();
 	}
 
 	JsonArray getRecords () {
