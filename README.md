@@ -2,7 +2,7 @@
 
 **BlueNimble Apps SDK** let you create android applications **almost without writing a single line of code**. You can create complex pages, styling components, adding effects and integrate with your backend using simple json configuration files.
 
-With almost no android experience, you can create advanced applications without the hassle of understanding how layouts, visual components, asyc tasks or backend integration works in android.
+With almost no android experience, you can create advanced applications without the hassle of understanding how layouts, visual components, async tasks or backend integration works in android.
 
 > **BlueNimble Apps SDK** sdk provides android developers with simple java interfaces which they can extend to create new themes, component types, effects, data binding, backend integration and more
 
