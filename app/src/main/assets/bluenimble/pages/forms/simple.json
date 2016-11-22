@@ -1,0 +1,37 @@
+{
+	"layers": {
+		"header": [
+			"text static.icons.back ? icon",
+			"image static.images.logo ? logo",
+			"text view.topic.title ? title primary rounded"
+		],
+		"main": [
+			"input:fullName ? ? center placeholder=identity.fullName",
+			"/",
+			"dropdown:gender static.identity.gender ?",
+			"/",
+			"input:age ? ? center placeholder=identity.age type=number",
+			"/",
+			"radioGroup:profile static.identity.profile ?",
+			"/",
+			"input:email ? ? center placeholder=identity.email type=email",
+			"/",
+			"input:password ? ? center placeholder=identity.password type=password",
+			"/",
+			"checkbox:terms static.identity.terms ? center",
+			"/",
+			"button:signup static.identity.signup ? center"
+		],
+		"! genderTpl": [
+			"text:genderChoice record.icon ? rounded icon"
+		]
+	},
+	"events": {
+		"main.signup.press": {
+			"scope": "main",
+			"onStart": {
+				"echo": "[view.*]"
+			}
+		}
+	}
+}

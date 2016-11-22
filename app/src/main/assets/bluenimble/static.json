@@ -29,6 +29,12 @@
 		}
 	},
 	"identity": {
+		"section": {
+			"en": [
+				"login",
+				"signup"
+			]
+		},
 		"fullName": {
 			"en": "Full Name"
 		},
@@ -57,6 +63,9 @@
 		},
 		"terms": {
 			"en": "Accept the terms and conditions."
+		},
+		"login": {
+			"en": "Login"
 		},
 		"signup": {
 			"en": "Create account"
@@ -95,19 +104,24 @@
 				"icon": "\uf044",
 				"examples": [
 					{
-						"title": "Single column Form",
+						"title": "Simple",
 						"icon": "\uf044",
-						"page": "forms/single-col"
+						"page": "forms/simple"
 					},
 					{
-						"title": "Double columns Form",
+						"title": "Authentication",
 						"icon": "\uf044",
-						"page": "forms/double-cols"
+						"page": "forms/authentication"
 					},
 					{
-						"title": "Mixed columns Form",
+						"title": "Master Details",
 						"icon": "\uf044",
-						"page": "forms/mixed-cols"
+						"page": "forms/master-details"
+					},
+					{
+						"title": "Wizard",
+						"icon": "\uf044",
+						"page": "forms/wizard"
 					}
 				]
 			},
