@@ -76,6 +76,14 @@ public class JsonPageSpec extends JsonEventAwareSpec implements PageSpec {
 				addRenderFalse = true;
 			}
 
+			String layerStyle = null;
+
+			String [] layerTokens = Lang.split (resolvedLyrId, Lang.SPACE, true);
+			if (layerTokens.length > 1) {
+				resolvedLyrId = layerTokens [0];
+				layerStyle = Lang.join (Lang.moveLeft (layerTokens, 1), Lang.SPACE);
+			}
+
 			JsonObject oLayer = null;
 			Object o = oLayers.get (lyrId);
 			if (o instanceof JsonObject) {
@@ -90,6 +98,10 @@ public class JsonPageSpec extends JsonEventAwareSpec implements PageSpec {
 
 			if (addRenderFalse) {
 				oLayer.set (Spec.page.layer.Render, false);
+			}
+
+			if (!Lang.isNullOrEmpty (layerStyle)) {
+				oLayer.set (Spec.page.layer.component.Style, layerStyle);
 			}
 
 			addLayer (resolvedLyrId, oLayer, application);
