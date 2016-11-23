@@ -11,12 +11,10 @@ import com.bluenimble.apps.sdk.spec.BindingSpec;
 import com.bluenimble.apps.sdk.spec.ComponentSpec;
 import com.bluenimble.apps.sdk.spec.LayerSpec;
 import com.bluenimble.apps.sdk.ui.components.AbstractComponentFactory;
-import com.bluenimble.apps.sdk.ui.components.impls.list.ListFactory;
 import com.bluenimble.apps.sdk.ui.components.impls.listeners.EventListener;
 import com.bluenimble.apps.sdk.ui.components.impls.listeners.OnRadioSelectedListenerImpl;
 import com.bluenimble.apps.sdk.utils.SpecHelper;
 
-import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
@@ -33,10 +31,10 @@ public class RadioGroupFactory extends AbstractComponentFactory {
 	private static final String Id = "radioGroup";
 
 	interface Custom {
-		String Direction	= "dir";
+		String Direction = "dir";
 	}
 
-	private static final String 				DefaultDirection 	= "v";
+	private static final String DefaultDirection        = "v";
 
 	interface Record {
 		String Id 		= "id";
@@ -44,10 +42,10 @@ public class RadioGroupFactory extends AbstractComponentFactory {
 		String Current 	= "current";
 	}
 
-	private static final Map<String, Integer> Direction 			= new HashMap<String, Integer>();
+	private static final Map<String, Integer> Direction = new HashMap<String, Integer>();
 	static {
 		Direction.put ("h", LinearLayout.HORIZONTAL);
-		Direction.put ("v", LinearLayout.HORIZONTAL);;
+		Direction.put ("v", LinearLayout.VERTICAL);
 	}
 
 	public RadioGroupFactory () {
@@ -67,10 +65,10 @@ public class RadioGroupFactory extends AbstractComponentFactory {
 		String direction = SpecHelper.getString (spec, Custom.Direction, DefaultDirection);
 		Integer dir = Direction.get (direction);
 		if (dir == null) {
-			dir = LinearLayoutManager.VERTICAL;
+			dir = LinearLayout.VERTICAL;
 		}
 		rgroup.setOrientation (dir);
-		return applyStyle (group, new RadioGroup (activity), spec, dh);
+		return applyStyle (group, rgroup, spec, dh);
 	}
 
 	@Override

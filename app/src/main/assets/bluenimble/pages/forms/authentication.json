@@ -6,14 +6,14 @@
 			"text view.topic.title ? title primary rounded"
 		],
 		"main": [
-			"radioGroup:section static.identity.section ?"
+			"radioGroup:section static.identity.section ? dir=h /"
 		],
 		"login": [
 			"input:email ? ? center placeholder=identity.email type=email /",
 			"input:password ? ? center placeholder=identity.password type=password /",
 			"button:login static.identity.login ? center"
 		],
-		"signup": [
+		"signup invisible": [
 			"input:fullName ? ? center placeholder=identity.fullName /",
 			"dropdown:gender static.identity.gender ? /",
 			"radioGroup:profile static.identity.profile ? /",

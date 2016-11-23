@@ -10,7 +10,6 @@ import com.bluenimble.apps.sdk.spec.LayerSpec;
 import com.bluenimble.apps.sdk.spec.PageSpec;
 import com.bluenimble.apps.sdk.ui.effects.Effect;
 
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 public abstract class VisibilityEffect implements Effect {
