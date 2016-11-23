@@ -11,13 +11,20 @@ import com.bluenimble.apps.sdk.spec.BindingSpec;
 import com.bluenimble.apps.sdk.spec.ComponentSpec;
 import com.bluenimble.apps.sdk.spec.LayerSpec;
 import com.bluenimble.apps.sdk.ui.components.AbstractComponentFactory;
+import com.bluenimble.apps.sdk.ui.components.impls.list.ListFactory;
 import com.bluenimble.apps.sdk.ui.components.impls.listeners.EventListener;
 import com.bluenimble.apps.sdk.ui.components.impls.listeners.OnRadioSelectedListenerImpl;
+import com.bluenimble.apps.sdk.utils.SpecHelper;
 
+import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class RadioGroupFactory extends AbstractComponentFactory {
 
@@ -25,10 +32,22 @@ public class RadioGroupFactory extends AbstractComponentFactory {
 	
 	private static final String Id = "radioGroup";
 
+	interface Custom {
+		String Direction	= "dir";
+	}
+
+	private static final String 				DefaultDirection 	= "v";
+
 	interface Record {
 		String Id 		= "id";
 		String Value 	= "value";
 		String Current 	= "current";
+	}
+
+	private static final Map<String, Integer> Direction 			= new HashMap<String, Integer>();
+	static {
+		Direction.put ("h", LinearLayout.HORIZONTAL);
+		Direction.put ("v", LinearLayout.HORIZONTAL);;
 	}
 
 	public RadioGroupFactory () {
@@ -42,6 +61,15 @@ public class RadioGroupFactory extends AbstractComponentFactory {
 	
 	@Override
 	public View create (UIActivity activity, ViewGroup group, LayerSpec layer, ComponentSpec spec, DataHolder dh) {
+
+		RadioGroup rgroup = new RadioGroup (activity);
+
+		String direction = SpecHelper.getString (spec, Custom.Direction, DefaultDirection);
+		Integer dir = Direction.get (direction);
+		if (dir == null) {
+			dir = LinearLayoutManager.VERTICAL;
+		}
+		rgroup.setOrientation (dir);
 		return applyStyle (group, new RadioGroup (activity), spec, dh);
 	}
 
