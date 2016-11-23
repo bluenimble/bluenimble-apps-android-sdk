@@ -205,7 +205,7 @@ public class JsonStyleSpec implements StyleSpec {
 				params.height = height;
 			}
 
-			// if follow
+			/* TODO: follow: this code should apply only if not using fragments
 			View vFollow = null;
 			String follow = Json.getString (rStyle, Follow);
 			if (!Lang.isNullOrEmpty (follow)) {
@@ -216,7 +216,8 @@ public class JsonStyleSpec implements StyleSpec {
 				Log.d (JsonStyleSpec.class.getSimpleName (), "\t-> addRule BELOW " + Lang.ARRAY_OPEN + follow + Lang.SLASH + sibling + Lang.ARRAY_CLOSE);
 				((RelativeLayout.LayoutParams)params).addRule (RelativeLayout.BELOW, sibling);
 			}
-			
+			*/
+
 			// apply align.vertical & align.horizontal
 			applyAlign (rStyle, params, parent, isLayer, isBreak);
 			
