@@ -84,16 +84,20 @@ public class RadioGroupFactory extends AbstractComponentFactory {
 					Object record = array.get (i);
 					RadioButton radio = new RadioButton (view.getContext ());
 					radio.setId (UIApplication.newId ());
+					JsonObject oRecord = null;
 					if (record instanceof JsonObject) {
-						JsonObject oRecord = (JsonObject)record;
+						oRecord = ((JsonObject)record).duplicate ();
 						radio.setText 	(Json.getString (oRecord, Record.Value));
-						radio.setTag 	(1000, Json.getString (oRecord, Record.Id));
 						radio.setChecked (Json.getBoolean (oRecord, Record.Current, false));
 					} else {
-						String radioValue = String.valueOf (record);
-						radio.setText 	(radioValue);
-						radio.setTag 	(1000, String.valueOf (i));
+						oRecord = new JsonObject ();
+						oRecord.set (Record.Id, String.valueOf (i));
+						oRecord.set (Record.Value, String.valueOf (record));
+						radio.setText 	(Json.getString (oRecord, Record.Value));
 					}
+
+					radio.setTag 	(oRecord);
+
 					group.addView (radio);
 				}
 							
@@ -102,7 +106,7 @@ public class RadioGroupFactory extends AbstractComponentFactory {
 				if (group.getCheckedRadioButtonId () != -1) {
 					Json.set (
 						(JsonObject)dh.get (bindingSpec.source ()),
-						group.findViewById (group.getCheckedRadioButtonId ()).getTag (1000),
+						Json.getString ((JsonObject)(group.findViewById (group.getCheckedRadioButtonId ())).getTag (), Record.Id),
 						property
 					);
 				}

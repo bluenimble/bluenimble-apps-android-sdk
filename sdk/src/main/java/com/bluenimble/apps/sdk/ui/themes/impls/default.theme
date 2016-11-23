@@ -17,6 +17,9 @@
 		"invisible": { 
 			"visible": "false" 
 		},
+        "hidden": {
+            "visible": "false"
+        },
 		"center": {
 			"align": "center"
 		},
