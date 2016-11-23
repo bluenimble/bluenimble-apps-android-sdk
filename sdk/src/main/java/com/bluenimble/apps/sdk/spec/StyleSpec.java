@@ -41,6 +41,7 @@ public interface StyleSpec extends Serializable {
 	String 	LineHeight			= "lineHeight";
 	String 	Scroll				= "scroll";
 	String 	Render				= "render";
+	String 	Follow				= "follow";
 
 	interface Group {
 		String Text 		= "text";

@@ -68,6 +68,7 @@ public class RadioGroupFactory extends AbstractComponentFactory {
 			dir = LinearLayout.VERTICAL;
 		}
 		rgroup.setOrientation (dir);
+
 		return applyStyle (group, rgroup, spec, dh);
 	}
 

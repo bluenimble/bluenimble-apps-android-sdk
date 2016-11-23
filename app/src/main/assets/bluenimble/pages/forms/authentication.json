@@ -8,12 +8,12 @@
 		"main": [
 			"radioGroup:section static.identity.section ? dir=h /"
 		],
-		"login": [
+		"login follow": [
 			"input:email ? ? center placeholder=identity.email type=email /",
 			"input:password ? ? center placeholder=identity.password type=password /",
 			"button:login static.identity.login ? center"
 		],
-		"signup invisible": [
+		"signup follow invisible": [
 			"input:fullName ? ? center placeholder=identity.fullName /",
 			"dropdown:gender static.identity.gender ? /",
 			"radioGroup:profile static.identity.profile ? /",

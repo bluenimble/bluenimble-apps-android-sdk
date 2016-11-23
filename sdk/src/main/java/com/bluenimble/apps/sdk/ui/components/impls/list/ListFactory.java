@@ -51,7 +51,7 @@ public class ListFactory extends AbstractComponentFactory {
 	private static final Map<String, Integer> 	Direction 			= new HashMap<String, Integer>();
 	static {
 		Direction.put ("h", LinearLayoutManager.HORIZONTAL);
-		Direction.put ("v", LinearLayoutManager.HORIZONTAL);;
+		Direction.put ("v", LinearLayoutManager.VERTICAL);
 	}
 
 	public ListFactory () {

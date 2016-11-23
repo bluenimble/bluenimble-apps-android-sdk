@@ -84,8 +84,12 @@
       }
     },
     "main": {
-      "margin": "200 0 0 0",
+      "follow": "header",
       "background": { "image": "background.jpg" }
+    },
+
+    "follow": {
+      "follow": "main"
     },
 
     "menuTpl": {
