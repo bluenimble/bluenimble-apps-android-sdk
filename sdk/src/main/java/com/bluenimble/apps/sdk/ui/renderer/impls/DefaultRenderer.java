@@ -75,8 +75,6 @@ public class DefaultRenderer implements Renderer {
 			View layerView = render (activity.getSpec (), layer, dh, activity.root (), activity);
 			activity.root ().addView (layerView);
 
-			layerView.setTag (layer.id ());
-
 			SpecHelper.fireCreateEvent (layer, layer.id (), activity, activity.root (), true, dh);
 		}
 		
@@ -104,6 +102,8 @@ public class DefaultRenderer implements Renderer {
 		if (dh == null || dh.get (DataHolder.Internal.NoTag) == null) {
 			layout.setTag (layer.id ());
 		}
+
+		application.logger ().debug (DefaultRenderer.class.getSimpleName (), "\tLayer Tag " + layer.id ());
 
 		if (layer.count () == 0) {
 			return layout;
