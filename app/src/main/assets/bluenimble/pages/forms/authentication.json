@@ -13,7 +13,7 @@
 			"input:password ? ? center placeholder=identity.password type=password /",
 			"button:login static.identity.login ? center"
 		],
-		"signup invisible": [
+		"signup": [
 			"input:fullName ? ? center placeholder=identity.fullName /",
 			"dropdown:gender static.identity.gender ? /",
 			"radioGroup:profile static.identity.profile ? /",
