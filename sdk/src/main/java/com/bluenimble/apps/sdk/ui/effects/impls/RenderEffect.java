@@ -6,7 +6,6 @@ import java.util.Set;
 
 import com.bluenimble.apps.sdk.Lang;
 import com.bluenimble.apps.sdk.application.UIActivity;
-import com.bluenimble.apps.sdk.application.UILayer;
 import com.bluenimble.apps.sdk.controller.DataHolder;
 import com.bluenimble.apps.sdk.controller.impls.actions.DefaultActionInstance;
 import com.bluenimble.apps.sdk.json.JsonObject;
@@ -16,9 +15,6 @@ import com.bluenimble.apps.sdk.spec.PageSpec;
 import com.bluenimble.apps.sdk.ui.effects.Effect;
 import com.bluenimble.apps.sdk.ui.renderer.Renderer.LifeCycleEvent;
 
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 
 public class RenderEffect implements Effect {
@@ -53,9 +49,6 @@ public class RenderEffect implements Effect {
 			application.renderer ().render (page, activity, dh);
 			return;
 		}
-		
-		FragmentManager manager = activity.getSupportFragmentManager ();
-		FragmentTransaction transaction = manager.beginTransaction ();
 
 		for (String layerId : pageOrLayers) {
 			LayerSpec layer = page.layer (layerId);
@@ -63,24 +56,21 @@ public class RenderEffect implements Effect {
 				// TODO log
 				continue;
 			}
-			Fragment f = manager.findFragmentByTag (layer.id ());
-			if (f != null) {
+			View layerView = activity.findView (layer.id ());
+			if (layerView != null) {
 				JsonObject eventSpec = layer.event (LifeCycleEvent.destroy.name ());
 				if (eventSpec != null) {
 					application.controller ().process (
-						DefaultActionInstance.create (LifeCycleEvent.destroy.name (), eventSpec, application, dh, f.getView ()), activity, true
+						DefaultActionInstance.create (LifeCycleEvent.destroy.name (), eventSpec, application, dh, layerView), activity, true
 					);
 				}
 
-				transaction.remove (f);
+				activity.root ().removeView (layerView);
 			}
 			
-			Fragment newFragment = UILayer.create (layer, dh);
-			// add the 
-			transaction.add (activity.root ().getId (), newFragment, layer.id ());
+			// add the
+			activity.root ().addView (application.renderer ().render (application, layer, dh, activity.root (), activity));
 		}
-		
-		transaction.commit ();
 		
 	}
 

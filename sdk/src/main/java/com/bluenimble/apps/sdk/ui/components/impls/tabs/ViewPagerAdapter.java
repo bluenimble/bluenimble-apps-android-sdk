@@ -1,13 +1,11 @@
 package com.bluenimble.apps.sdk.ui.components.impls.tabs;
 
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
 import com.bluenimble.apps.sdk.Lang;
 import com.bluenimble.apps.sdk.application.UIActivity;
 import com.bluenimble.apps.sdk.application.UILayer;
-import com.bluenimble.apps.sdk.controller.DataHolder;
 import com.bluenimble.apps.sdk.spec.LayerSpec;
 
 public class ViewPagerAdapter extends FragmentStatePagerAdapter {

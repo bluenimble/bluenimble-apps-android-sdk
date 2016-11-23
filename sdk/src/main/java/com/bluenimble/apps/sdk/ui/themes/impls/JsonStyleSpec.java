@@ -205,18 +205,19 @@ public class JsonStyleSpec implements StyleSpec {
 				params.height = height;
 			}
 
-			/* TODO: follow: this code should apply only if not using fragments
+			// follow: this code will apply only if NOT using fragments
 			View vFollow = null;
 			String follow = Json.getString (rStyle, Follow);
 			if (!Lang.isNullOrEmpty (follow)) {
+				Log.d (JsonStyleSpec.class.getSimpleName (), "\t-> Render right after [" + follow + "]");
 				vFollow = ((UIActivity)view.getContext()).findView (follow);
+				Log.d (JsonStyleSpec.class.getSimpleName (), "\t-> Layer " + vFollow);
 			}
 			if (isLayer && vFollow != null) {
 				int sibling = vFollow.getId ();
 				Log.d (JsonStyleSpec.class.getSimpleName (), "\t-> addRule BELOW " + Lang.ARRAY_OPEN + follow + Lang.SLASH + sibling + Lang.ARRAY_CLOSE);
 				((RelativeLayout.LayoutParams)params).addRule (RelativeLayout.BELOW, sibling);
 			}
-			*/
 
 			// apply align.vertical & align.horizontal
 			applyAlign (rStyle, params, parent, isLayer, isBreak);

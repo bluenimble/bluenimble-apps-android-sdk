@@ -61,20 +61,6 @@ public class UILayer extends Fragment {
 	@Override
     public void onViewCreated (View container, Bundle state) {
 		UIActivity activity = (UIActivity)getActivity ();
-
-		// if follow
-		View vFollow = null;
-		String follow = (String)layer.style ().get (StyleSpec.Follow);
-		if (!Lang.isNullOrEmpty (follow)) {
-			vFollow = activity.findView (follow);
-		}
-		if (vFollow != null) {
-			int sibling = vFollow.getId ();
-			Log.d (JsonStyleSpec.class.getSimpleName (), "\t-> addRule BELOW " + Lang.ARRAY_OPEN + follow + Lang.SLASH + sibling + Lang.ARRAY_CLOSE);
-			FrameLayout group = (FrameLayout)container.getParent ();
-			((RelativeLayout.LayoutParams)group.getLayoutParams ()).addRule (RelativeLayout.BELOW, sibling);
-		}
-
 		SpecHelper.fireCreateEvent (layer, layer.id (), (UIActivity)getActivity (), activity.root (), true, dh);
     }
 	

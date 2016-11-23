@@ -8,7 +8,6 @@ import com.bluenimble.apps.sdk.Json;
 import com.bluenimble.apps.sdk.Lang;
 import com.bluenimble.apps.sdk.application.UIActivity;
 import com.bluenimble.apps.sdk.application.UIApplication;
-import com.bluenimble.apps.sdk.application.UILayer;
 import com.bluenimble.apps.sdk.application.ux.LayerLayout;
 import com.bluenimble.apps.sdk.controller.DataHolder;
 import com.bluenimble.apps.sdk.controller.impls.actions.DefaultActionInstance;
@@ -26,9 +25,6 @@ import com.bluenimble.apps.sdk.ui.components.impls.listeners.OnPressListenerImpl
 import com.bluenimble.apps.sdk.ui.renderer.Renderer;
 import com.bluenimble.apps.sdk.utils.SpecHelper;
 
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -51,12 +47,13 @@ public class DefaultRenderer implements Renderer {
 	@Override
 	public void render (PageSpec page, UIActivity activity, DataHolder dh) {
 
-		// fragment manager transaction need to clear current layers and new news
+		/* fragment manager transaction need to clear current layers and new news
 		FragmentManager manager = activity.getSupportFragmentManager ();
 		FragmentTransaction transaction = manager.beginTransaction ();
+		*/
 
 		// remove all content from the activity main layout
-		clear (activity, page, manager, transaction);
+		clear (activity, page /*, manager, transaction */);
 
 		// read layers, create layouts, create fragments, add to activity
 			// each layer is a fragment / linear layout
@@ -71,12 +68,19 @@ public class DefaultRenderer implements Renderer {
 			if (!layer.isRendered ()) {
 				continue;
 			}
-
+			/*
 			Fragment f = UILayer.create (page.layer (lyrId), dh);
 			transaction.add (activity.root ().getId (), f, lyrId);
+			*/
+			View layerView = render (activity.getSpec (), layer, dh, activity.root (), activity);
+			activity.root ().addView (layerView);
+
+			layerView.setTag (layer.id ());
+
+			SpecHelper.fireCreateEvent (layer, layer.id (), activity, activity.root (), true, dh);
 		}
 		
-		transaction.commit ();
+		// transaction.commit ();
 
 		if (page.style () != null) {
 			page.style ().apply (page, activity.root (), null, dh);
@@ -263,7 +267,7 @@ public class DefaultRenderer implements Renderer {
 		return page;
 	}
 	
-	private void clear (UIActivity activity, PageSpec page, FragmentManager manager, FragmentTransaction transaction) {
+	private void clear (UIActivity activity, PageSpec page /*, FragmentManager manager, FragmentTransaction transaction */ ) {
 		// remove all content from the activity main layout
 		Iterator<String> layers = page.layers ();
 		while (layers.hasNext ()) {
@@ -274,8 +278,9 @@ public class DefaultRenderer implements Renderer {
 				continue;
 			}
 
-			Fragment f = manager.findFragmentByTag (lyrId);
-			if (f == null) {
+			// Fragment f = manager.findFragmentByTag (lyrId);
+			View view = activity.findView (lyrId);
+			if (view == null || !(view instanceof LayerLayout)) {
 				continue;
 			}
 
@@ -283,14 +288,15 @@ public class DefaultRenderer implements Renderer {
 
 			JsonObject eventSpec = layer.event (LifeCycleEvent.destroy.name ());
 			if (eventSpec != null) {
-				SpecHelper.application (f.getView ()).controller ().process (
-					DefaultActionInstance.create (DefaultRenderer.LifeCycleEvent.destroy.name (), eventSpec, activity.getSpec (), null, f.getView ()),
+				SpecHelper.application (view).controller ().process (
+					DefaultActionInstance.create (DefaultRenderer.LifeCycleEvent.destroy.name (), eventSpec, activity.getSpec (), null, view),
 					activity,
 					false
 				);
 			}
 
-			transaction.remove (f);
+			// transaction.remove (f);
+			activity.root ().removeView (view);
 		}
 		// reset the page
 		page = null;
