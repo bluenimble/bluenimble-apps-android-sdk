@@ -87,12 +87,12 @@ public class RadioGroupFactory extends AbstractComponentFactory {
 					if (record instanceof JsonObject) {
 						JsonObject oRecord = (JsonObject)record;
 						radio.setText 	(Json.getString (oRecord, Record.Value));
-						radio.setTag 	(Json.getString (oRecord, Record.Id));
+						radio.setTag 	(1000, Json.getString (oRecord, Record.Id));
 						radio.setChecked (Json.getBoolean (oRecord, Record.Current, false));
 					} else {
 						String radioValue = String.valueOf (record);
 						radio.setText 	(radioValue);
-						radio.setTag 	(String.valueOf (i));
+						radio.setTag 	(1000, String.valueOf (i));
 					}
 					group.addView (radio);
 				}
@@ -102,7 +102,7 @@ public class RadioGroupFactory extends AbstractComponentFactory {
 				if (group.getCheckedRadioButtonId () != -1) {
 					Json.set (
 						(JsonObject)dh.get (bindingSpec.source ()),
-						group.findViewById (group.getCheckedRadioButtonId ()).getTag (),
+						group.findViewById (group.getCheckedRadioButtonId ()).getTag (1000),
 						property
 					);
 				}
