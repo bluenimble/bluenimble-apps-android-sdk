@@ -86,7 +86,7 @@ public class RadioGroupFactory extends AbstractComponentFactory {
 					radio.setId (UIApplication.newId ());
 					JsonObject oRecord = null;
 					if (record instanceof JsonObject) {
-						oRecord = ((JsonObject)record).duplicate ();
+						oRecord = (JsonObject)record;
 						radio.setText 	(Json.getString (oRecord, Record.Value));
 						radio.setChecked (Json.getBoolean (oRecord, Record.Current, false));
 					} else {
