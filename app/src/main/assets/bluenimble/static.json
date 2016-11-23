@@ -31,8 +31,14 @@
 	"identity": {
 		"section": {
 			"en": [
-				"login",
-				"signup"
+				{
+					"id": "login",
+					"value": "Login"
+				},
+				{
+					"id": "signup",
+					"value": "Signup"
+				}
 			]
 		},
 		"fullName": {
