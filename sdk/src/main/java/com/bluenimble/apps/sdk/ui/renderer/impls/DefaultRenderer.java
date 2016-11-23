@@ -134,7 +134,7 @@ public class DefaultRenderer implements Renderer {
 
 		// line Layoiut Params
 		RelativeLayout.LayoutParams lineLayoutParams =
-			layerLineLayout (application, layer, layerStyle, layerView.getLayoutParams () == null ? layerView.getLayoutParams ().height : ViewGroup.LayoutParams.WRAP_CONTENT, dh);
+			layerLineLayout (application, layer, layerStyle, layerView.getLayoutParams () != null ? layerView.getLayoutParams ().height : ViewGroup.LayoutParams.WRAP_CONTENT, dh);
 
 		relativeLayout.setLayoutParams (lineLayoutParams);
 		layout.addView (relativeLayout);
