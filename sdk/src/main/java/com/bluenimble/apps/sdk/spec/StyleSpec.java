@@ -33,6 +33,8 @@ public interface StyleSpec extends Serializable {
 	int 	DefaultShadowTick 	= 20;
 	String 	Zero 				= "0";
 	String 	Unknown 			= "?";
+	String 	Wrap 				= "wrap";
+	String 	None 				= "none";
 
 	int 	UndefinedInteger 	= Integer.MAX_VALUE;
 
@@ -41,7 +43,7 @@ public interface StyleSpec extends Serializable {
 	String 	LineHeight			= "lineHeight";
 	String 	Scroll				= "scroll";
 	String 	Render				= "render";
-	String 	Follow				= "follow";
+	String 	After				= "after";
 
 	interface Group {
 		String Text 		= "text";
@@ -109,6 +111,8 @@ public interface StyleSpec extends Serializable {
 	}
 
 	Object 	get		(String name);
+
+	void 	set		(String name, Object value);
 	
 	void 	apply 	(StylishSpec stylish, View view, ViewGroup parent, DataHolder dh);
 	

@@ -40,8 +40,8 @@ public class JsonLayerSpec extends JsonEventAwareSpec implements LayerSpec {
 
 	private 	int						lines = 1;
 	
-	public JsonLayerSpec (String id, JsonObject spec, PageSpec parentPage, ApplicationSpec application) {
-		super (id, parentPage, Json.getObject (spec, Spec.Events), id);
+	public JsonLayerSpec (String id, JsonObject spec, String previous, PageSpec parentPage, ApplicationSpec application) {
+		super (id, parentPage, Json.getObject (spec, Spec.Events), null);
 
 		this.id 	= id;
 		this.spec 	= spec;
@@ -50,10 +50,15 @@ public class JsonLayerSpec extends JsonEventAwareSpec implements LayerSpec {
 		}
 
 		ThemeSpec theme = application.theme ();
-		
-		String [] styles = Lang.split (Json.getString (spec, Spec.page.layer.component.Style), Lang.BLANK, true);
+
+		String [] styles = Lang.split (Json.getString (spec, Spec.page.layer.component.Style), Lang.SPACE, true);
 		
 		style = new JsonStyleSpec (theme, Lang.add (new String [] { Lang.STAR, ComponentsRegistry.Default.Layer, id () }, styles));
+
+		// set by default renderering this layer right after the previous one
+		if (style.get (StyleSpec.After) == null) {
+			style.set (StyleSpec.After, previous);
+		}
 
 		JsonArray oComponents = Json.getArray (spec, Spec.page.layer.Components);
 		if (oComponents == null || oComponents.isEmpty ()) {

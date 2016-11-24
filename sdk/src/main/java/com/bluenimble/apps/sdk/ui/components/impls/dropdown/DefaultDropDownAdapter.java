@@ -9,6 +9,7 @@ import com.bluenimble.apps.sdk.json.JsonObject;
 import com.bluenimble.apps.sdk.spec.ApplicationSpec;
 import com.bluenimble.apps.sdk.spec.ComponentSpec;
 import com.bluenimble.apps.sdk.spec.LayerSpec;
+import com.bluenimble.apps.sdk.spec.StyleSpec;
 import com.bluenimble.apps.sdk.utils.BindingHelper;
 
 import android.view.LayoutInflater;
@@ -43,6 +44,12 @@ public class DefaultDropDownAdapter extends ArrayAdapter<DataHolder> {
 		this.one 			= new DefaultDataHolder ();
 		
 		this.template 		= template;
+
+		// set style / after to none
+		if (this.template != null) {
+			this.template.style ().set (StyleSpec.After, StyleSpec.None);
+		}
+
 	}
 
 	void load (JsonArray records) {

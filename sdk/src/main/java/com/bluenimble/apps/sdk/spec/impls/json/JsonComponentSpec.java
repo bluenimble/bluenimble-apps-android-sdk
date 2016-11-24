@@ -28,6 +28,8 @@ public class JsonComponentSpec extends JsonEventAwareSpec implements ComponentSp
 
 	protected String 		id;
 
+	protected boolean		idCreated;
+
 	protected LayerSpec 	layer;
 	
 	public JsonComponentSpec (JsonObject spec, String layerId, PageSpec page, ApplicationSpec application) {
@@ -43,6 +45,7 @@ public class JsonComponentSpec extends JsonEventAwareSpec implements ComponentSp
 		id = Json.getString (spec, Spec.page.layer.component.Id);
 		if (Lang.isNullOrEmpty (id)) {
 			id = Lang.UUID (8);
+			idCreated = true;
 		}
 		
 		JsonObject oBinding = Json.getObject (spec, Spec.page.layer.component.binding.class.getSimpleName ());
@@ -57,7 +60,7 @@ public class JsonComponentSpec extends JsonEventAwareSpec implements ComponentSp
 		style = new JsonStyleSpec (application.theme (), Lang.add (new String [] { Lang.STAR, type (), id () }, styles));
 
 		if (LayerFactory.Id.equals (type ())) {
-			layer = new JsonLayerSpec (id, spec, page, application);
+			layer = new JsonLayerSpec (id, spec, null, page, application);
 		}
 		
 	}
@@ -125,7 +128,7 @@ public class JsonComponentSpec extends JsonEventAwareSpec implements ComponentSp
 		}
 		
 		if ((oBindingByKey == null || oBindingByKey.isEmpty ()) && Spec.page.layer.component.binding.Get.equals (key)) {
-			if (Lang.isNullOrEmpty (id ())) {
+			if (Lang.isNullOrEmpty (id ()) || idCreated) {
 				return null;
 			}
 			oBindingByKey = (JsonObject)new JsonObject ().set (Spec.page.layer.component.binding.Property, id ());

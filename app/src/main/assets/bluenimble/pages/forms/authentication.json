@@ -5,41 +5,38 @@
 			"image static.images.logo ? logo",
 			"text view.topic.title ? title primary rounded"
 		],
-		"main": [
-			"radioGroup:section static.identity.section ? dir=h /"
+		"choose wrap-height": [
+			"radioGroup:section static.identity.section ? dir=h"
 		],
-		"login follow": [
+		"login": [
 			"input:email ? ? center placeholder=identity.email type=email /",
 			"input:password ? ? center placeholder=identity.password type=password /",
-			"button:login static.identity.login ? center"
+			"button:submit static.identity.login ? center"
 		],
-		"signup follow invisible": [
+		"signup after-choose hidden": [
 			"input:fullName ? ? center placeholder=identity.fullName /",
 			"dropdown:gender static.identity.gender ? /",
 			"radioGroup:profile static.identity.profile ? /",
 			"input:email ? ? center placeholder=identity.email type=email /",
 			"input:password ? ? center placeholder=identity.password type=password /",
 			"checkbox:terms static.identity.terms ? center /",
-			"button:signup static.identity.signup ? center"
+			"button:submit static.identity.signup ? center"
 		]
 	},
 	"events": {
-		"main.section.select": {
-			"scope": "main",
+		"choose.section.select": {
 			"onStart": {
 				"hide": "login signup",
 				"show": "[view.section]",
 				"echo": "[view.*]"
 			}
 		},
-		"login.login.press": {
-			"scope": "login",
+		"login.submit.press": {
 			"onStart": {
 				"echo": "[view.*]"
 			}
 		},
-		"signup.signup.press": {
-			"scope": "signup",
+		"signup.submit.press": {
 			"onStart": {
 				"echo": "[view.*]"
 			}

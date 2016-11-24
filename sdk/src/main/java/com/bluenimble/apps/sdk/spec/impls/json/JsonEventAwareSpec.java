@@ -30,8 +30,9 @@ public class JsonEventAwareSpec implements EventAwareSpec {
 			return;
 		}
 
+		Log.e ("Trash", id + " -> Event Scope -> " + this.defaultScope);
+
 		// add events declared at the page level
-		Log.d (JsonEventAwareSpec.class.getSimpleName (), "Event Aware : " + id);
 
 		Iterator<String> itEvents = page.events ();
 		if (itEvents == null) {
@@ -52,7 +53,6 @@ public class JsonEventAwareSpec implements EventAwareSpec {
 			if (this.events == null) {
 				this.events = new JsonObject ();
 			}
-			Log.d (JsonEventAwareSpec.class.getSimpleName (), "Add Event : " + sEvent);
 			this.events.set (sEvent, page.event (event));
 		}
 	}

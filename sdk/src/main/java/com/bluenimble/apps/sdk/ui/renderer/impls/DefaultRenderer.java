@@ -1,5 +1,6 @@
 package com.bluenimble.apps.sdk.ui.renderer.impls;
 
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
@@ -53,7 +54,7 @@ public class DefaultRenderer implements Renderer {
 		*/
 
 		// remove all content from the activity main layout
-		clear (activity, page /*, manager, transaction */);
+		clear (activity, this.page /*, manager, transaction */);
 
 		// read layers, create layouts, create fragments, add to activity
 			// each layer is a fragment / linear layout
@@ -68,12 +69,12 @@ public class DefaultRenderer implements Renderer {
 			if (!layer.isRendered ()) {
 				continue;
 			}
-			/*
-			Fragment f = UILayer.create (page.layer (lyrId), dh);
-			transaction.add (activity.root ().getId (), f, lyrId);
-			*/
-			View layerView = render (activity.getSpec (), layer, dh, activity.root (), activity);
-			activity.root ().addView (layerView);
+
+			activity.root ().addView (
+				render (activity.getSpec (), layer, dh, activity.root (), activity)
+			);
+
+			activity.getSpec ().logger ().debug (DefaultRenderer.class.getSimpleName (), "\tLayer Added " + layer.id () + Lang.SLASH + activity.findView (layer.id ()));
 
 			SpecHelper.fireCreateEvent (layer, layer.id (), activity, activity.root (), true, dh);
 		}
@@ -95,7 +96,7 @@ public class DefaultRenderer implements Renderer {
 		// Layer layout should be vertical
 		layout.setOrientation (LinearLayout.VERTICAL);
 		
-		if (layer == null) {
+		if (layer == null || layer.count () == 0) {
 			return layout;
 		}
 		
@@ -104,10 +105,6 @@ public class DefaultRenderer implements Renderer {
 		}
 
 		application.logger ().debug (DefaultRenderer.class.getSimpleName (), "\tLayer Tag " + layer.id ());
-
-		if (layer.count () == 0) {
-			return layout;
-		}
 
 		boolean scrollable = layer.isScrollable ();
 
@@ -136,7 +133,7 @@ public class DefaultRenderer implements Renderer {
 		// line RelativeLayout
 		RelativeLayout relativeLayout = new RelativeLayout (activity);
 
-		// line Layoiut Params
+		// line Layout Params
 		RelativeLayout.LayoutParams lineLayoutParams =
 			layerLineLayout (application, layer, layerStyle, layerView.getLayoutParams () != null ? layerView.getLayoutParams ().height : ViewGroup.LayoutParams.WRAP_CONTENT, dh);
 
@@ -268,23 +265,31 @@ public class DefaultRenderer implements Renderer {
 	}
 	
 	private void clear (UIActivity activity, PageSpec page /*, FragmentManager manager, FragmentTransaction transaction */ ) {
+
+		if (page == null || page.count () == 0) {
+			return;
+		}
+
 		// remove all content from the activity main layout
 		Iterator<String> layers = page.layers ();
 		while (layers.hasNext ()) {
 			String lyrId = layers.next ();
+
+			activity.getSpec ().logger ().debug (DefaultRenderer.class.getSimpleName (), "Destroy " + lyrId);
+
 			LayerSpec layer = page.layer (lyrId);
 
 			if (layer.isGlobal ()) {
+				activity.getSpec ().logger ().debug (DefaultRenderer.class.getSimpleName (), "\tIs Global -> skip");
 				continue;
 			}
 
 			// Fragment f = manager.findFragmentByTag (lyrId);
 			View view = activity.findView (lyrId);
 			if (view == null || !(view instanceof LayerLayout)) {
+				activity.getSpec ().logger ().debug (DefaultRenderer.class.getSimpleName (), "\tView found -> " + view);
 				continue;
 			}
-
-			activity.getSpec ().logger ().debug (DefaultRenderer.class.getSimpleName (), "Destroy " + layer.id ());
 
 			JsonObject eventSpec = layer.event (LifeCycleEvent.destroy.name ());
 			if (eventSpec != null) {
@@ -295,8 +300,10 @@ public class DefaultRenderer implements Renderer {
 				);
 			}
 
-			// transaction.remove (f);
 			activity.root ().removeView (view);
+
+			activity.getSpec ().logger ().debug (DefaultRenderer.class.getSimpleName (), layer.id () + " destroyed");
+
 		}
 		// reset the page
 		page = null;

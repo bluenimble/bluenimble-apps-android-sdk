@@ -84,12 +84,11 @@
       }
     },
     "main": {
-      "follow": "header",
       "background": { "image": "background.jpg" }
     },
 
-    "follow": {
-      "follow": "main"
+    "after-choose": {
+      "after": "choose"
     },
 
     "menuTpl": {

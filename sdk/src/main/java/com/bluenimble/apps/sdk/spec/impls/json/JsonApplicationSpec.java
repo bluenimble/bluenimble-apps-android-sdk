@@ -105,7 +105,7 @@ public class JsonApplicationSpec extends AbstractApplicationSpec {
 		logger ().debug (JsonApplicationSpec.class.getSimpleName (), "Get Index Page " + Lang.ARRAY_OPEN + Json.getString (spec, Spec.Index) + Lang.ARRAY_CLOSE);
 		PageSpec main = page (Json.getString (spec, Spec.Index));
 		if (main != null) {
-			logger ().debug (JsonApplicationSpec.class.getSimpleName (), "... Main Page Found ");
+			logger ().debug (JsonApplicationSpec.class.getSimpleName (), "... Index Page Found ");
 			return main;
 		}
 		return first ();
@@ -113,7 +113,6 @@ public class JsonApplicationSpec extends AbstractApplicationSpec {
 	
 
 	public PageSpec add	(String id, JsonObject pageSpec) {
-		Log.d (JsonApplicationSpec.class.getSimpleName (), "Adding Page " + id);
 		if (Lang.isNullOrEmpty (id) || Json.isNullOrEmpty (pageSpec)) {
 			return null;
 		}

@@ -144,8 +144,6 @@ public class AssetsApplicationSpec extends JsonApplicationSpec {
 
 			String child = path + Lang.SLASH + fPage;
 
-			logger ().debug (AssetsApplicationSpec.class.getSimpleName (), "Load page " + child);
-
 			InputStream stream = null;
 
 			boolean isFolder = true;
@@ -156,8 +154,6 @@ public class AssetsApplicationSpec extends JsonApplicationSpec {
 			} catch (Exception ex) {
 				// ignore
 			}
-
-			logger ().debug (AssetsApplicationSpec.class.getSimpleName (), "\t isFolder " + isFolder);
 
 			// if it's a folder, load pages inside
 			if (isFolder) {

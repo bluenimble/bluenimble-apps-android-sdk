@@ -5,6 +5,7 @@ import android.util.Log;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 import com.bluenimble.apps.sdk.Json;
@@ -35,7 +36,7 @@ public class JsonPageSpec extends JsonEventAwareSpec implements PageSpec {
 	}
 	
 	public JsonPageSpec (String id, JsonObject spec, ApplicationSpec application) {
-		super (id, null, Json.getObject (spec, Spec.Events), Action.Scope.None);
+		super (id, null, Json.getObject (spec, Spec.Events), null);
 
 		this.id = id;
 		
@@ -55,7 +56,7 @@ public class JsonPageSpec extends JsonEventAwareSpec implements PageSpec {
 		
 		this.spec = spec;
 
-		String [] styles = Lang.split (Json.getString (spec, Spec.page.layer.component.Style), Lang.BLANK, true);
+		String [] styles = Lang.split (Json.getString (spec, Spec.page.layer.component.Style), Lang.SPACE, true);
 		
 		style = new JsonStyleSpec (application.theme (), Lang.add (new String [] { Lang.STAR, ComponentsRegistry.Default.Page, id }, styles));
 		
@@ -64,6 +65,7 @@ public class JsonPageSpec extends JsonEventAwareSpec implements PageSpec {
 		}
 		
 		// create SpecLayer objects
+		String previous = null;
 		Iterator<String> layers = oLayers.keys ();
 		while (layers.hasNext ()) {
 			String lyrId 			= layers.next ();
@@ -104,7 +106,10 @@ public class JsonPageSpec extends JsonEventAwareSpec implements PageSpec {
 				oLayer.set (Spec.page.layer.component.Style, layerStyle);
 			}
 
-			addLayer (resolvedLyrId, oLayer, application);
+			addLayer (resolvedLyrId, oLayer, previous, application);
+
+			previous = resolvedLyrId;
+
 		}
 		
 	}
@@ -152,12 +157,11 @@ public class JsonPageSpec extends JsonEventAwareSpec implements PageSpec {
 		return layers.get (id);
 	}
 	
-	public void addLayer (String id, JsonObject layer, ApplicationSpec application) {
+	public void addLayer (String id, JsonObject layer, String previous, ApplicationSpec application) {
 		if (layers == null) {
-			layers = new HashMap<String, LayerSpec> ();
+			layers = new LinkedHashMap<String, LayerSpec>();
 		}
-		Log.d ("Trash", "Add Layer " + id);
-		layers.put (id, new JsonLayerSpec (id, layer, this, application));
+		layers.put (id, new JsonLayerSpec (id, layer, previous, this, application));
 	}
 
 }

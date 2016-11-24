@@ -14,10 +14,7 @@
 		"visible": { 
 			"visible": "true" 
 		},
-		"invisible": { 
-			"visible": "false" 
-		},
-        "hidden": {
+		"hidden": {
             "visible": "false"
         },
 		"center": {
@@ -34,7 +31,24 @@
 			"border": {
 				"radius": "50%"
 			}
-		}
+		},
+		"after-none": {
+            "after": "none"
+        },
+
+        "wrap-height": {
+            "size": { "height": "wrap" }
+        },
+        "wrap-width": {
+            "size": { "width": "wrap" }
+        },
+
+		"lh-all": {
+		    "lineHeight": "all"
+		},
+        "lh-fit": {
+            "lineHeight": "fit"
+        }
 		
 	}
 }

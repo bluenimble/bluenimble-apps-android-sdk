@@ -33,7 +33,6 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -105,6 +104,7 @@ public class JsonStyleSpec implements StyleSpec {
 			if (style == null) {
 				continue;
 			}
+
 			JsonObject sAppStyle = appTheme.style (style);
 			if (sAppStyle != null) {
 				styles.add (sAppStyle);
@@ -112,7 +112,14 @@ public class JsonStyleSpec implements StyleSpec {
 		}
 		style = merge (styles);
 		styles.clear ();
-		Log.d ("Style", "\t" + style);
+	}
+
+	@Override
+	public void set (String name, Object value) {
+		if (style == null) {
+			style = new JsonObject ();
+		}
+		style.set (name, value);
 	}
 	
 	private static JsonObject merge (Set<JsonObject> styles) {
@@ -166,35 +173,13 @@ public class JsonStyleSpec implements StyleSpec {
 
 		// set width & height / default to width->match , height (layout->wrap, all->match)
 		if (!isPage) {
-			ViewGroup.LayoutParams params = view.getLayoutParams ();
+			RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams)view.getLayoutParams ();
 			JsonObject oSize = Json.getObject (rStyle, Group.Size);
 
-			int width = (int)parseFloat (oSize, Size.Width, (int)maxSize.getWidth (), UndefinedInteger);
-			if (width < 0) {
-				width = (int)maxSize.getWidth () + width;
-			}
-			
-			if (width == UndefinedInteger) {
-				if (isLayer || isBreak) {
-					width = ViewGroup.LayoutParams.MATCH_PARENT;
-				} else {
-					width = ViewGroup.LayoutParams.WRAP_CONTENT;
-				}
-			}
+			int width = width (oSize, maxSize, isLayer, isBreak);
 			Log.d (JsonStyleSpec.class.getSimpleName (), "\t-> width " + Lang.ARRAY_OPEN + width + Lang.ARRAY_CLOSE);
-			
-			int height = (int)parseFloat (oSize, Size.Height, (int)maxSize.getHeight (), UndefinedInteger);
-			if (height < 0) {
-				height = (int)maxSize.getHeight () + height;
-			}
 
-			if (height == UndefinedInteger) {
-				if (isLayer) {
-					height = ViewGroup.LayoutParams.MATCH_PARENT;
-				} else {
-					height = ViewGroup.LayoutParams.WRAP_CONTENT;
-				}
-			}
+			int height = height (oSize, maxSize, isLayer, isBreak);
 			Log.d (JsonStyleSpec.class.getSimpleName (), "\t-> height " + Lang.ARRAY_OPEN + height + Lang.ARRAY_CLOSE);
 
 			if (params == null) {
@@ -206,17 +191,17 @@ public class JsonStyleSpec implements StyleSpec {
 			}
 
 			// follow: this code will apply only if NOT using fragments
-			View vFollow = null;
-			String follow = Json.getString (rStyle, Follow);
-			if (!Lang.isNullOrEmpty (follow)) {
-				Log.d (JsonStyleSpec.class.getSimpleName (), "\t-> Render right after [" + follow + "]");
-				vFollow = ((UIActivity)view.getContext()).findView (follow);
-				Log.d (JsonStyleSpec.class.getSimpleName (), "\t-> Layer " + vFollow);
+			View vAfter = null;
+			String after = Json.getString (rStyle, After);
+			if (!Lang.isNullOrEmpty (after) && !None.equals (after)) {
+				Log.d (JsonStyleSpec.class.getSimpleName (), "\t-> Render right after [" + after + "]");
+				vAfter = ((UIActivity)view.getContext()).findView (after);
+				application.getSpec ().logger ().debug (JsonStyleSpec.class.getSimpleName (), "\t-> Layer " + vAfter);
 			}
-			if (isLayer && vFollow != null) {
-				int sibling = vFollow.getId ();
-				Log.d (JsonStyleSpec.class.getSimpleName (), "\t-> addRule BELOW " + Lang.ARRAY_OPEN + follow + Lang.SLASH + sibling + Lang.ARRAY_CLOSE);
-				((RelativeLayout.LayoutParams)params).addRule (RelativeLayout.BELOW, sibling);
+			if (isLayer && vAfter != null) {
+				int sibling = vAfter.getId ();
+				application.getSpec ().logger ().debug (JsonStyleSpec.class.getSimpleName (), "\t-> addRule BELOW " + Lang.ARRAY_OPEN + after + Lang.SLASH + sibling + Lang.ARRAY_CLOSE);
+				params.addRule (RelativeLayout.BELOW, sibling);
 			}
 
 			// apply align.vertical & align.horizontal
@@ -260,7 +245,7 @@ public class JsonStyleSpec implements StyleSpec {
 		return stylish instanceof PageSpec;
 	}
 	
-	private void applyMargin (JsonObject style, ViewGroup.LayoutParams params, boolean isLayout, ViewSize maxSize) {
+	private void applyMargin (JsonObject style, RelativeLayout.LayoutParams params, boolean isLayout, ViewSize maxSize) {
 		String margin = Json.getString (style, Group.Margin);
 		if (Lang.isNullOrEmpty (margin)) {
 			return;
@@ -269,25 +254,23 @@ public class JsonStyleSpec implements StyleSpec {
 
 		if (bounds [0] != UndefinedInteger) {
 			Log.d (JsonStyleSpec.class.getSimpleName (), "\t-> apply topMargin " + Lang.ARRAY_OPEN + bounds [0] + Lang.ARRAY_CLOSE);
-			((RelativeLayout.LayoutParams)params).topMargin 	= (int)bounds [0];
+			params.topMargin 	= (int)bounds [0];
 		}
 		if (bounds [1] != UndefinedInteger) {
 			Log.d (JsonStyleSpec.class.getSimpleName (), "\t-> apply rightMargin " + Lang.ARRAY_OPEN + bounds [1] + Lang.ARRAY_CLOSE);
-			((RelativeLayout.LayoutParams)params).rightMargin 	= (int)bounds [1];
+			params.rightMargin 	= (int)bounds [1];
 		}
 		if (bounds [2] != UndefinedInteger) {
 			Log.d (JsonStyleSpec.class.getSimpleName (), "\t-> apply bottomMargin " + Lang.ARRAY_OPEN + bounds [2] + Lang.ARRAY_CLOSE);
-			((RelativeLayout.LayoutParams)params).bottomMargin 	= (int)bounds [2];
+			params.bottomMargin 	= (int)bounds [2];
 		}
 		if (bounds [3] != UndefinedInteger) {
 			Log.d (JsonStyleSpec.class.getSimpleName (), "\t-> apply leftMargin " + Lang.ARRAY_OPEN + bounds [3] + Lang.ARRAY_CLOSE);
-			((RelativeLayout.LayoutParams)params).leftMargin 	= (int)bounds [3];
+			params.leftMargin 	= (int)bounds [3];
 		}
 	}
 
-	private void applyAlign (JsonObject style, ViewGroup.LayoutParams params, ViewGroup parent, boolean isLayer, boolean isBreak) {
-
-		RelativeLayout.LayoutParams layoutParams = ((RelativeLayout.LayoutParams)params);
+	private void applyAlign (JsonObject style, RelativeLayout.LayoutParams params, ViewGroup parent, boolean isLayer, boolean isBreak) {
 
 		boolean alignAssigned = false;
 
@@ -299,7 +282,7 @@ public class JsonStyleSpec implements StyleSpec {
 					continue;
 				}
 				Log.d (JsonStyleSpec.class.getSimpleName (), "\t applyAlign " + align);
-				layoutParams.addRule (a);
+				params.addRule (a);
 				alignAssigned = true;
 			}
 		}
@@ -307,7 +290,7 @@ public class JsonStyleSpec implements StyleSpec {
 		if (!alignAssigned && !isLayer && !isBreak && parent.getChildCount () > 0) {
 			int sibling = parent.getChildAt (parent.getChildCount () - 1).getId ();
 			Log.d (JsonStyleSpec.class.getSimpleName (), "\t-> addRule RIGHT_OF sibling " + Lang.ARRAY_OPEN + sibling + Lang.ARRAY_CLOSE);
-			((RelativeLayout.LayoutParams)params).addRule (RelativeLayout.RIGHT_OF, sibling);
+			params.addRule (RelativeLayout.RIGHT_OF, sibling);
 		}
 
 	}
@@ -711,6 +694,69 @@ public class JsonStyleSpec implements StyleSpec {
 			iColors [i] = Color.parseColor (colors [i]);
 		}
 		return iColors;
+	}
+
+	private int width (JsonObject oSize, ViewSize maxSize, boolean isLayer, boolean isBreak) {
+
+		int width = UndefinedInteger;
+
+		// if wrap content
+		String maybeWrap = Json.getString (oSize, Size.Width);
+		if (Wrap.equals (maybeWrap)) {
+			return ViewGroup.LayoutParams.WRAP_CONTENT;
+		}
+
+		if (!Json.isNullOrEmpty (oSize)) {
+			width = (int)parseFloat (oSize, Size.Width, (int)maxSize.getWidth (), UndefinedInteger);
+			if (width < 0) {
+				width = (int)maxSize.getWidth () + width;
+			}
+		}
+
+		if (width != UndefinedInteger) {
+			return width;
+		}
+
+		if (isLayer || isBreak) {
+			width = ViewGroup.LayoutParams.MATCH_PARENT;
+		} else {
+			width = ViewGroup.LayoutParams.WRAP_CONTENT;
+		}
+
+		return width;
+
+	}
+
+	private int height (JsonObject oSize, ViewSize maxSize, boolean isLayer, boolean isBreak) {
+
+		int height = UndefinedInteger;
+
+		// if wrap content
+		String maybeWrap = Json.getString (oSize, Size.Height);
+		if (Wrap.equals (maybeWrap)) {
+			Log.e ("Trash", maybeWrap);
+			return ViewGroup.LayoutParams.WRAP_CONTENT;
+		}
+
+		if (!Json.isNullOrEmpty (oSize)) {
+			height = (int)parseFloat (oSize, Size.Height, (int)maxSize.getHeight (), UndefinedInteger);
+			if (height < 0) {
+				height = (int)maxSize.getHeight () + height;
+			}
+		}
+
+		if (height != UndefinedInteger) {
+			return height;
+		}
+
+		if (isLayer) {
+			height = ViewGroup.LayoutParams.MATCH_PARENT;
+		} else {
+			height = ViewGroup.LayoutParams.WRAP_CONTENT;
+		}
+
+		return height;
+
 	}
 
 }

@@ -11,6 +11,7 @@ import com.bluenimble.apps.sdk.json.JsonArray;
 import com.bluenimble.apps.sdk.json.JsonObject;
 import com.bluenimble.apps.sdk.spec.ComponentSpec;
 import com.bluenimble.apps.sdk.spec.LayerSpec;
+import com.bluenimble.apps.sdk.spec.StyleSpec;
 import com.bluenimble.apps.sdk.ui.components.impls.listeners.EventListener;
 import com.bluenimble.apps.sdk.utils.BindingHelper;
 import com.bluenimble.apps.sdk.utils.SpecHelper;
@@ -78,7 +79,11 @@ public class DefaultListAdapter extends RecyclerView.Adapter<DefaultListAdapter.
 		// initialize templates
 		Object templateSpec = component.get (ListFactory.Custom.Template);
 		if (templateSpec instanceof String) {
-			templates.put (Default, SpecHelper.template (activity.getSpec (), (String)templateSpec));
+			LayerSpec tpl = SpecHelper.template (activity.getSpec (), (String)templateSpec);
+			// set style / after to none
+			tpl.style ().set (StyleSpec.After, StyleSpec.None);
+
+			templates.put (Default, tpl);
 			viewTypesById.put (Default, 0); viewTypesByIndex.put (0, Default);
 			return;
 		}
