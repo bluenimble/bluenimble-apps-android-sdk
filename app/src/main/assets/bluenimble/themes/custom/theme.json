@@ -87,10 +87,6 @@
       "background": { "image": "background.jpg" }
     },
 
-    "after-choose": {
-      "after": "choose"
-    },
-
     "menuTpl": {
       "size": {
         "width": 340,
