@@ -77,6 +77,104 @@
 			"en": "Create account"
 		}
 	},
+	"todo": {
+		"list": {
+			"en": [
+				{
+					"name": "Task A",
+					"details": "Call Mr A",
+					"creationDate": "10 Nov 2016",
+					"dueDate": "12 Nov 2016"
+				},
+				{
+					"name": "Task B",
+					"details": "Call Mr B",
+					"creationDate": "10 Nov 2016",
+					"dueDate": "13 Nov 2016"
+				},
+				{
+					"name": "Task C",
+					"details": "Call Mr C",
+					"creationDate": "10 Nov 2016",
+					"dueDate": "12 Nov 2016"
+				},
+				{
+					"name": "Task D",
+					"details": "Call Mr D",
+					"creationDate": "10 Nov 2016",
+					"dueDate": "12 Nov 2016"
+				},
+				{
+					"name": "Task E",
+					"details": "Call Mr E",
+					"creationDate": "10 Nov 2016",
+					"dueDate": "12 Nov 2016"
+				},
+				{
+					"name": "Task F",
+					"details": "Call Mr F",
+					"creationDate": "10 Nov 2016",
+					"dueDate": "12 Nov 2016"
+				},
+				{
+					"name": "Task G",
+					"details": "Call Mr G",
+					"creationDate": "10 Nov 2016",
+					"dueDate": "12 Nov 2016"
+				},
+				{
+					"name": "Task H",
+					"details": "Call Mr H",
+					"creationDate": "10 Nov 2016",
+					"dueDate": "12 Nov 2016"
+				},
+				{
+					"name": "Task I",
+					"details": "Call Mr I",
+					"creationDate": "10 Nov 2016",
+					"dueDate": "12 Nov 2016"
+				},
+				{
+					"name": "Task J",
+					"details": "Call Mr J",
+					"creationDate": "10 Nov 2016",
+					"dueDate": "12 Nov 2016"
+				},
+				{
+					"name": "Task K",
+					"details": "Call Mr K",
+					"creationDate": "10 Nov 2016",
+					"dueDate": "12 Nov 2016"
+				},
+				{
+					"name": "Task L",
+					"details": "Call Mr L",
+					"creationDate": "10 Nov 2016",
+					"dueDate": "12 Nov 2016"
+				},
+				{
+					"name": "Task M",
+					"details": "Call Mr M",
+					"creationDate": "10 Nov 2016",
+					"dueDate": "12 Nov 2016"
+				}
+			]
+		},
+		"edit": {
+			"name": {
+				"en": "Name"
+			},
+			"details": {
+				"en": "Details"
+			},
+			"due": {
+				"en": "Due Date"
+			},
+			"submit": {
+				"en": "Update"
+			}
+		}
+	},
 	"images": {
 		"logo": {
 			"en": "https://www.bluenimble.com/images/BlueNimble15.png"
