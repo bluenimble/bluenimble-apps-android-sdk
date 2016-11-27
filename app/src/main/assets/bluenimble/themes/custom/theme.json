@@ -1,100 +1,138 @@
 {
-
-  "*": {
-
-    "primary": {
-      "padding": "20 20 20 20",
-      "text": {
-        "align": "center middle",
-        "color": "#FFFFFF",
-        "shadow": "#7F000000 1 1 2"
-      },
-      "background": {
-        "color": "#09afdf"
-      }
-    },
-
-    "secondary": {
-      "padding": "20 20 20 20",
-      "text": {
-        "align": "center middle",
-        "color": "#FFFFFF",
-        "shadow": "#7F000000 1 1 2"
-      },
-      "background": {
-        "color": "#8bc43f"
-      }
-    },
-
-    "logo": {
-      "align": "middle",
-      "margin": "? ? ? 20",
-      "size": { "width": "500" }
-    },
-
-    "title": {
-      "align": "right middle",
-      "margin": "? 10 ? 10",
-      "text": {
-        "size": "14"
-      }
-    },
-
-    "icon": {
-      "size": { "width": "200", "height": "200" },
-      "text": {
-        "font": "fontawesome",
-        "color": "#FFFFFF",
-        "size": "24",
-        "shadow": "#7F000000 1 1 2",
-        "align": "center middle"
-      },
-      "background": {
-        "color": "#FFFFFF #09afdf",
-        "gradient": {
-          "radius": "300"
-        },
-        "opacity": ".4"
-      },
-      "shadow": {
-        "color": "#0293BD",
-        "tick": "3"
-      },
-      "align": "center"
-    },
-
-    "icon-title": {
-      "padding": "10 ? ? ?",
-      "text": {
-        "color": "#FFFFFF",
-        "shadow": "#7F000000 1 1 2",
-        "size": "16"
-      }
-    },
-
-    "header": {
-      "lineHeight": "all",
-      "size": { "height": "200" },
-      "background": {
-        "color": "#FFFFFF"
-      },
-      "shadow": {
-        "color": "#00aff0",
-        "tick": "0 0 5 0"
-      }
-    },
-    "main": {
-      "background": { "image": "background.jpg" }
-    },
-
-    "menuTpl": {
-      "size": {
-        "width": 340,
-        "height": 340
-      },
-      "margin": "60 60 60 60"
-    }
-
-  }
-
+	"*": {
+		"primary": {
+			"padding": "20 20 20 20",
+			"text": {
+				"align": "center middle",
+				"color": "#FFFFFF",
+				"shadow": "#7F000000 1 1 2"
+			},
+			"background": {
+				"color": "#09afdf"
+			}
+		},
+		"secondary": {
+			"padding": "20 20 20 20",
+			"text": {
+				"align": "center middle",
+				"color": "#FFFFFF",
+				"shadow": "#7F000000 1 1 2"
+			},
+			"background": {
+				"color": "#8bc43f"
+			}
+		},
+		"logo": {
+			"align": "middle",
+			"margin": "? ? ? 20",
+			"size": {
+				"width": "500"
+			}
+		},
+		"title": {
+			"align": "right middle",
+			"margin": "? 10 ? 10",
+			"text": {
+				"size": "14"
+			}
+		},
+		"icon": {
+			"size": {
+				"width": "200",
+				"height": "200"
+			},
+			"text": {
+				"font": "fontawesome",
+				"color": "#FFFFFF",
+				"size": "24",
+				"shadow": "#7F000000 1 1 2",
+				"align": "center middle"
+			},
+			"background": {
+				"color": "#FFFFFF #09afdf",
+				"gradient": {
+					"radius": "300"
+				},
+				"opacity": ".4"
+			},
+			"shadow": {
+				"color": "#0293BD",
+				"tick": "3"
+			},
+			"align": "center"
+		},
+		"icon-title": {
+			"padding": "10 ? ? ?",
+			"text": {
+				"color": "#FFFFFF",
+				"shadow": "#7F000000 1 1 2",
+				"size": "16"
+			}
+		},
+		"header": {
+			"lineHeight": "all",
+			"size": {
+				"height": "200"
+			},
+			"background": {
+				"color": "#FFFFFF"
+			},
+			"shadow": {
+				"color": "#00aff0",
+				"tick": "0 0 5 0"
+			}
+		},
+		"main": {
+			"background": {
+				"image": "background.jpg"
+			}
+		},
+		"menuTpl": {
+			"size": {
+				"width": 340,
+				"height": 340
+			},
+			"margin": "60 60 60 60"
+		},
+		"todoTpl": {
+			"padding": "20 20 20 20",
+			"margin": "0 0 0 0",
+			"background": {
+				"color": "#FFFFFF"
+			},
+			"size": {
+				"height": 100
+			}
+		},
+		"todoName": {
+			"margin": "? ? ? 60",
+			"size": {
+				"width": 250,
+				"height": 100
+			},
+			"text": {
+				"align": "middle",
+				"size": "18"
+			}
+		},
+		"todoDetails": {
+			"text": {
+				"align": "center middle",
+				"size": "15"
+			}
+		},
+		"todoCreate": {
+			"text": {
+				"color": "#00b33c",
+				"size": "13"
+			}
+		},
+		"todoDue": {
+			"text": {
+				"color": "#FF0000",
+				"size": "13"
+			},
+			"align": "right"
+		}
+	}
 }

@@ -1,36 +1,46 @@
 {
 	"layers": {
 		"header": [
-			"text static.icons.back ? icon",
-			"image static.images.logo ? logo",
-			"text view.topic.title ? title primary rounded"
+			"text               static.icons.back           ?                   icon",
+			"image              static.images.logo          ?                   logo",
+			"text               view.topic.title            ?                   title primary rounded"
 		],
-		"main": [
-			"input:fullName ? ? center placeholder=identity.fullName",
-			"/",
-			"dropdown:gender static.identity.gender ?",
-			"/",
-			"input:age ? ? center placeholder=identity.age type=number",
-			"/",
-			"radioGroup:profile static.identity.profile ?",
-			"/",
-			"input:email ? ? center placeholder=identity.email type=email",
-			"/",
-			"input:password ? ? center placeholder=identity.password type=password",
-			"/",
-			"checkbox:terms static.identity.terms ? center",
-			"/",
-			"button:signup static.identity.signup ? center"
+		"core": [
+			"list:todo          static.todo.list            ?                   template=todoTpl"
 		],
-		"! genderTpl": [
-			"text:genderChoice record.icon ? rounded icon"
+		"edit wrap-height": [
+			"text               static.todo.edit.name       ?   /",
+			"input:name         view.todo.name              view.todo.name      /",
+			"text               static.todo.edit.details    ?   /",
+			"input:details      view.todo.details           view.todo.details   /",
+			"text               static.todo.edit.due        ?   /",
+			"input:dueDate      view.todo.dueDate           view.todo.name      type=datetime /",
+			"button:submit      static.todo.edit.submit     ?                   /"
+		],
+		"! todoTpl wrap-height": [
+			"text:name          record.name                 ?                   todoName",
+			"text:details       record.details              ?                   todoDetails /",
+			"text:creationDate  record.creationDate         ?                   todoCreate",
+			"text:dueDate       record.dueDate              ?                   todoDue"
 		]
 	},
 	"events": {
-		"main.signup.press": {
-			"scope": "main",
+		"todoTpl.press": {
+			"scope": "core",
 			"onStart": {
-				"echo": "[view.*]"
+				"echo": "Selected: [view.*]",
+				"show": "edit",
+				"bind": "edit",
+				"hide": "core"
+			}
+		},
+		"edit.submit.press": {
+			"scope": "edit",
+			"onStart": {
+				"echo": "Selected: [view.*]",
+				"show": "core",
+				"bind": "core",
+				"hide": "edit"
 			}
 		}
 	}
