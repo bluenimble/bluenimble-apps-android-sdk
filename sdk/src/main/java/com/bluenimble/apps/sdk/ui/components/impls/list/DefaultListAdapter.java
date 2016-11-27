@@ -8,6 +8,7 @@ import com.bluenimble.apps.sdk.controller.DataHolder;
 import com.bluenimble.apps.sdk.controller.impls.data.DefaultDataHolder;
 import com.bluenimble.apps.sdk.controller.impls.data.InternalDataHolder;
 import com.bluenimble.apps.sdk.json.JsonArray;
+import com.bluenimble.apps.sdk.json.JsonEntity;
 import com.bluenimble.apps.sdk.json.JsonObject;
 import com.bluenimble.apps.sdk.spec.ComponentSpec;
 import com.bluenimble.apps.sdk.spec.LayerSpec;
@@ -191,6 +192,24 @@ public class DefaultListAdapter extends RecyclerView.Adapter<DefaultListAdapter.
 			records.remove (position);
 			// remove views
 			notifyItemRemoved (position);
+		}
+	}
+
+	public void updateSelected (JsonObject _new) {
+		if (selected == null || selected.isEmpty () || _new == null) {
+			return;
+		}
+
+		if (records == null || records.isEmpty ()) {
+			return;
+		}
+
+		for (Integer position : selected) {
+			// remove from data
+			JsonObject old = (JsonObject)records.get (position);
+			old.merge (_new);
+			// remove views
+			notifyItemChanged (position);
 		}
 	}
 

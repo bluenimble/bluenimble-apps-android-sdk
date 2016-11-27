@@ -38,6 +38,7 @@ public class DefaultEffectsRegistry implements EffectsRegistry {
 		// mostly grid related effects
 		register (new SelectEffect ());
 		register (new ClearEffect ());
+		register (new UpdateEffect ());
 		register (new DeleteEffect ());
 
 		// video effects
