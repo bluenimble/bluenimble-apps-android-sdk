@@ -17,7 +17,7 @@ public class UpdateEffect implements Effect {
 
 	private static final long serialVersionUID = 3783743185246914342L;
 	
-	private static final String Id = "delete";
+	private static final String Id = "update";
 
 	@Override
 	public String id () {
