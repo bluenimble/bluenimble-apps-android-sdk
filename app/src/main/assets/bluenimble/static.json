@@ -361,5 +361,54 @@
 				]
 			}
 		]
+	},
+	"wizard": {
+		"name": {
+			"en": "BlueNimble API-first Platform"
+		},
+		"step1": {
+			"name": {
+				"en": "Build Web - Mobile - IoT Apps faster."
+			},
+			"icon": {
+				"en": "custom/images/common/slide1.jpg"
+			},
+			"button": {
+				"en": "Next"
+			}
+		},
+		"step2": {
+			"name": {
+				"en": "Security - Storage - Database - Cache... and more... Provided."
+			},
+			"icon": {
+				"en": "custom/images/common/slide2.jpg"
+			},
+			"button": {
+				"en": "Next"
+			}
+		},
+		"step3": {
+			"name": {
+				"en": "Own your code and manage the whole thing with a light weight console, we call it the iCli"
+			},
+			"icon": {
+				"en": "custom/images/common/slide3.jpg"
+			},
+			"button": {
+				"en": "Next"
+			}
+		},
+		"step4": {
+			"name": {
+				"en": "Built by developers for developers."
+			},
+			"icon": {
+				"en": "custom/images/common/logo.png"
+			},
+			"button": {
+				"en": "Give it a try!"
+			}
+		}
 	}
 }

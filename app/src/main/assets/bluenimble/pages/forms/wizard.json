@@ -1,34 +1,63 @@
 {
 	"layers": {
 		"header": [
-			"text static.icons.back ? icon",
-			"image static.images.logo ? logo",
-			"text view.topic.title ? title primary rounded"
+			"text               static.icons.back           ?   icon",
+			"image              static.images.logo          ?   logo",
+			"text               view.topic.title            ?   title primary rounded"
 		],
-		"main": [
-			"input:fullName ? ? center placeholder=identity.fullName",
-			"/",
-			"dropdown:gender static.identity.gender ?",
-			"/",
-			"input:age ? ? center placeholder=identity.age type=number",
-			"/",
-			"radioGroup:profile static.identity.profile ?",
-			"/",
-			"input:email ? ? center placeholder=identity.email type=email",
-			"/",
-			"input:password ? ? center placeholder=identity.password type=password",
-			"/",
-			"checkbox:terms static.identity.terms ? center",
-			"/",
-			"button:signup static.identity.signup ? center"
+		"core wrap-height": [
+			"text               static.wizard.name          ?   center bigTitle /"
 		],
-		"! genderTpl": [
-			"text:genderChoice record.icon ? rounded icon"
+		"step1 wrap-height": [
+			"image              static.wizard.step1.icon    ?   ",
+			"text               static.wizard.step1.name    ?   center whiteSubtitle /",
+			"input:fullName     ?                           ?   center placeholder=identity.fullName /",
+			"button:next        static.wizard.step1.button  ?   center"
+		],
+		"step2 hidden": [
+			"image              static.wizard.step2.icon    ?   ",
+			"text               static.wizard.step2.name    ?   center whiteSubtitle /",
+			"input:email        ?                           ?   center placeholder=identity.email type=email /",
+			"button:next        static.wizard.step2.button  ?   center"
+		],
+		"step3 hidden wrap-height": [
+			"image              static.wizard.step3.icon    ?   /",
+			"text               static.wizard.step3.name    ?   center whiteSubtitle /",
+			"radioGroup:profile static.identity.profile     ?   center /",
+			"button:next        static.wizard.step3.button  ?   center"
+		],
+		"step4 hidden wrap-height": [
+			"image              static.wizard.step4.icon    ?   ",
+			"text               static.wizard.step4.name    ?   center blackSubtitle /",
+			"button:submit      static.wizard.step4.button  ?   center"
 		]
 	},
 	"events": {
-		"main.signup.press": {
-			"scope": "main",
+		"step1.next.press": {
+			"scope": "step1",
+			"onStart": {
+				"hide": "step1",
+				"show": "step2",
+				"slide": "step2"
+			}
+		},
+		"step2.next.press": {
+			"scope": "step2",
+			"onStart": {
+				"hide": "step2",
+				"show": "step3",
+				"slide": "step3"
+			}
+		},
+		"step3.next.press": {
+			"scope": "step3",
+			"onStart": {
+				"hide": "step3",
+				"show": "step4",
+				"slide": "step4"
+			}
+		},
+		"step4.submit.press": {
 			"onStart": {
 				"echo": "[view.*]"
 			}

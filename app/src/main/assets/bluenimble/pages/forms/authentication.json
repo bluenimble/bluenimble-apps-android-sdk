@@ -1,26 +1,26 @@
 {
 	"layers": {
 		"header": [
-			"text static.icons.back ? icon",
-			"image static.images.logo ? logo",
-			"text view.topic.title ? title primary rounded"
+			"text               static.icons.back       ?   icon",
+			"image              static.images.logo      ?   logo",
+			"text               view.topic.title        ?   title primary rounded"
 		],
 		"choose wrap-height": [
-			"radioGroup:section static.identity.section ? dir=h"
+			"radioGroup:section static.identity.section ?   dir=h"
 		],
 		"login": [
-			"input:email ? ? center placeholder=identity.email type=email /",
-			"input:password ? ? center placeholder=identity.password type=password /",
-			"button:submit static.identity.login ? center"
+			"input:email        ?                       ?   center placeholder=identity.email type=email /",
+			"input:password     ?                       ?   center placeholder=identity.password type=password /",
+			"button:submit      static.identity.login   ?   center"
 		],
 		"signup hidden": [
-			"input:fullName ? ? center placeholder=identity.fullName /",
-			"dropdown:gender static.identity.gender ? center /",
-			"radioGroup:profile static.identity.profile ? center /",
-			"input:email ? ? center placeholder=identity.email type=email /",
-			"input:password ? ? center placeholder=identity.password type=password /",
-			"checkbox:terms static.identity.terms ? center /",
-			"button:submit static.identity.signup ? center"
+			"input:fullName     ?                       ?   center placeholder=identity.fullName /",
+			"dropdown:gender    static.identity.gender  ?   center /",
+			"radioGroup:profile static.identity.profile ?   center /",
+			"input:email        ?                       ?   center placeholder=identity.email type=email /",
+			"input:password     ?                       ?   center placeholder=identity.password type=password /",
+			"checkbox:terms     static.identity.terms   ?   center /",
+			"button:submit      static.identity.signup  ?   center"
 		]
 	},
 	"events": {

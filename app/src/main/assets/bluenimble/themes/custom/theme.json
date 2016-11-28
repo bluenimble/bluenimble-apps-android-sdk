@@ -105,34 +105,68 @@
 			}
 		},
 		"todoName": {
-			"margin": "? ? ? 60",
+			"margin": "0 0 0 0",
+			"align": "middle",
 			"size": {
-				"width": 250,
-				"height": 100
+				"width": 250
 			},
 			"text": {
-				"align": "middle",
 				"size": "18"
 			}
 		},
 		"todoDetails": {
+			"margin": "0 0 0 250",
 			"text": {
-				"align": "center middle",
 				"size": "15"
-			}
+			},
+			"size": {
+				"height": 60
+			},
+			"align": "middle"
 		},
 		"todoCreate": {
+			"margin": "0 0 0 250",
 			"text": {
 				"color": "#00b33c",
 				"size": "13"
-			}
+			},
+			"align": "top"
 		},
 		"todoDue": {
+			"align": "right middle",
 			"text": {
 				"color": "#FF0000",
-				"size": "13"
+				"size": "13",
+				"align": "right middle"
 			},
-			"align": "right"
+			"size": {
+				"width": 250,
+				"height": 100
+			}
+		},
+		"bigTitle": {
+			"margin": "20 20 20 20",
+			"text": {
+				"color": "#000000",
+				"size": "20",
+				"align": "center"
+			}
+		},
+		"whiteSubtitle": {
+			"margin": "100 20 20 20",
+			"text": {
+				"color": "#FCFCFC",
+				"size": "20",
+				"align": "left"
+			}
+		},
+		"blackSubtitle": {
+			"margin": "100 20 20 20",
+			"text": {
+				"color": "#000000",
+				"size": "20",
+				"align": "center"
+			}
 		}
 	}
 }
