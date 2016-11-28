@@ -13,7 +13,7 @@
 			"input:name         view.todo.name              view.todo.name      /",
 			"text               static.todo.edit.details    ?   /",
 			"input:details      view.todo.details           view.todo.details   /",
-			"text               static.todo.edit.due        ?   /",
+			"text               static.todo.edit.due        ?                   /",
 			"input:dueDate      view.todo.dueDate           view.todo.dueDate   type=datetime /",
 			"button:submit      static.todo.edit.submit     ?                   /"
 		],
