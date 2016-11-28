@@ -48,7 +48,7 @@ public class TabsFactory extends AbstractComponentFactory {
 	@Override
 	public View create (UIActivity activity, ViewGroup group, LayerSpec layer, ComponentSpec spec, DataHolder dh) {
 
-		String [] templates = Lang.split ((String)spec.get (Custom.Template), Lang.COMMA, true);
+		String [] templates = Lang.split ((String)spec.get (Custom.Template), Lang.SPACE, true);
 
 		LayerSpec [] layers = new LayerSpec [templates.length];
 		for (int i = 0; i < templates.length; i++) {
