@@ -1,5 +1,23 @@
 {
 
-
+	"layers": {
+		"header": [
+			"text       static.icons.back       ?   icon",
+			"image      static.images.logo      ?   logo",
+			"text       view.topic.title        ?   title primary rounded"
+		],
+		"core": [
+			"tabs       static.articles.titles  ?   template=tabTpl1+tabTpl2+tabTpl3"
+		],
+		"! tabTpl1 wrap-height": [
+			"text:name  static.articles.news    ?   "
+		],
+		"! tabTpl2 wrap-height": [
+			"text:name  static.articles.sport   ?   "
+		],
+		"! tabTpl3 wrap-height": [
+			"text:name  static.articles.finance ?   "
+		]
+	}
 
 }

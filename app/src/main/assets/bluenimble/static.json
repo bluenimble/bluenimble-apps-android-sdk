@@ -410,5 +410,23 @@
 				"en": "Give it a try!"
 			}
 		}
+	},
+	"articles": {
+		"titles": {
+			"en": [
+				"News",
+				"Sport",
+				"Finance"
+			]
+		},
+		"news": {
+			"en": "News Page"
+		},
+		"sport": {
+			"en": "Sport Page"
+		},
+		"finance": {
+			"en": "Finance Page"
+		}
 	}
 }
