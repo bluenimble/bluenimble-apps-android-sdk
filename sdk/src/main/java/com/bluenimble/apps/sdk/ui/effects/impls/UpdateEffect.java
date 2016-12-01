@@ -3,6 +3,7 @@ package com.bluenimble.apps.sdk.ui.effects.impls;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
+import com.bluenimble.apps.sdk.Json;
 import com.bluenimble.apps.sdk.Lang;
 import com.bluenimble.apps.sdk.application.UIActivity;
 import com.bluenimble.apps.sdk.application.ux.LayerLayout;
@@ -62,7 +63,9 @@ public class UpdateEffect implements Effect {
 
 		DefaultListAdapter adapter = (DefaultListAdapter)((RecyclerView)list).getAdapter ();
 
-		adapter.updateSelected ((JsonObject) dh.get (dhNs));
+		JsonObject updatedRecord = Json.getObject ((JsonObject) dh.get (dhNs), gridId);
+
+		adapter.updateSelected (updatedRecord);
 
 	}
 

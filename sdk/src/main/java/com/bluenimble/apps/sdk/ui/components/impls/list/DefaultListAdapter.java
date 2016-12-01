@@ -8,12 +8,10 @@ import com.bluenimble.apps.sdk.controller.DataHolder;
 import com.bluenimble.apps.sdk.controller.impls.data.DefaultDataHolder;
 import com.bluenimble.apps.sdk.controller.impls.data.InternalDataHolder;
 import com.bluenimble.apps.sdk.json.JsonArray;
-import com.bluenimble.apps.sdk.json.JsonEntity;
 import com.bluenimble.apps.sdk.json.JsonObject;
 import com.bluenimble.apps.sdk.spec.ComponentSpec;
 import com.bluenimble.apps.sdk.spec.LayerSpec;
 import com.bluenimble.apps.sdk.spec.StyleSpec;
-import com.bluenimble.apps.sdk.ui.components.impls.listeners.EventListener;
 import com.bluenimble.apps.sdk.utils.BindingHelper;
 import com.bluenimble.apps.sdk.utils.SpecHelper;
 
