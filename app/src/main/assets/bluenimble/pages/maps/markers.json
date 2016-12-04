@@ -1,3 +1,19 @@
 {
-
+	"layers": {
+		"header": [
+			"text       static.icons.back   ?   icon",
+			"image      static.images.logo  ?   logo",
+			"text       view.topic.title    ?   title primary rounded"
+		],
+		"core": [
+			"map:world  static.markers      ?"
+		]
+	},
+	"events": {
+		"core.world.markerPress": {
+			"onStart": {
+				"echo": "Marker Press Event : [view.*]"
+			}
+		}
+	}
 }

@@ -8,12 +8,5 @@
 		"core": [
 			"map:world  ?                   ?"
 		]
-	},
-	"events": {
-		"core.world.move": {
-			"onStart": {
-				"echo": "[view.*]"
-			}
-		}
 	}
 }

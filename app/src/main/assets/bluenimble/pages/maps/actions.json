@@ -1,3 +1,29 @@
 {
-
+	"layers": {
+		"header": [
+			"text       static.icons.back   ?   icon",
+			"image      static.images.logo  ?   logo",
+			"text       view.topic.title    ?   title primary rounded"
+		],
+		"core": [
+			"map:world  ?                   ?"
+		]
+	},
+	"events": {
+		"core.world.markerPress": {
+			"onStart": {
+				"echo": "Move Event : [view.*]"
+			}
+		},
+		"core.world.press": {
+			"onStart": {
+				"echo": "Press Event : [view.*]"
+			}
+		},
+		"core.world.longPress": {
+			"onStart": {
+				"echo": "Long Press Event : [view.*]"
+			}
+		}
+	}
 }

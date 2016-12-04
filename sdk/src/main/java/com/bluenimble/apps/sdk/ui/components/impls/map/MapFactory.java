@@ -63,6 +63,7 @@ public class MapFactory extends AbstractComponentFactory {
 	public View create (final UIActivity activity, ViewGroup group, LayerSpec layer, final ComponentSpec spec, DataHolder dh) {
 		
 		final MapFragment fragment = MapFragment.create (spec);
+		fragment.setData (dh);
 		
 		FragmentManager manager = activity.getSupportFragmentManager ();
 		FragmentTransaction transaction = manager.beginTransaction ();
@@ -72,6 +73,7 @@ public class MapFactory extends AbstractComponentFactory {
 		transaction.commit ();
 
 		fragment.getMapAsync (new OnMapReadyCallback () {
+
 			@Override
 			public void onMapReady (final GoogleMap map) {
 				fragment.setMap (map);
@@ -97,7 +99,6 @@ public class MapFactory extends AbstractComponentFactory {
 	@Override
 	public void bind (ComponentSpec.Binding binding, View view, ApplicationSpec applicationSpec, ComponentSpec spec, DataHolder dh) {
 		Log.d (MapFactory.class.getSimpleName (), " .bind > view: " + String.valueOf (view));
-	
 		FragmentManager manager = ((UIActivity)view.getContext ()).getSupportFragmentManager ();
 		
 		MapFragment mapFragment = (MapFragment)manager.findFragmentByTag (spec.id ());
@@ -116,7 +117,7 @@ public class MapFactory extends AbstractComponentFactory {
 		}
 		
 		String [] property = bindingSpec.property ();
-		
+
 		switch (binding) {
 			case Set:
 				if (dh == null) {
@@ -127,7 +128,7 @@ public class MapFactory extends AbstractComponentFactory {
 				if (value == null) {
 					return;
 				}
-				
+
 				if (!(value instanceof JsonArray)) {
 					// TODO: log
 					return;
@@ -160,9 +161,10 @@ public class MapFactory extends AbstractComponentFactory {
 					}
 
 					MarkerOptions markerOptions = new MarkerOptions ()
-                            .position (new LatLng (lat, lng))
-                            .title (Json.getString (record, Record.Name));
-                            //.icon (BitmapDescriptorFactory.fromResource (0)); // need to review based on "custom": { "icon": "house_icon": { "name": "houseType", "value": "Home" } }
+                        .position (new LatLng (lat, lng))
+                        .title (Json.getString (record, Record.Name));
+                        //.icon (BitmapDescriptorFactory.fromResource (0)); // need to review based on "custom": { "icon": "house_icon": { "name": "houseType", "value": "Home" } }
+
 					Marker marker = map.addMarker (markerOptions);
                     marker.setTag (Json.getString (record, Record.Id));
 

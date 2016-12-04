@@ -428,5 +428,89 @@
 		"finance": {
 			"en": "Finance Page"
 		}
+	},
+	"markers": {
+		"en": [
+			{
+				"id": "loc1",
+				"name": "Location 1",
+				"loc": [
+					50.15547,
+					-5.08197
+				]
+			},
+			{
+				"id": "loc2",
+				"name": "Location 2",
+				"loc": [
+					50.2786,
+					-5.1645
+				]
+			},
+			{
+				"id": "loc3",
+				"name": "Location 3",
+				"loc": [
+					50.27857,
+					-5.16394
+				]
+			},
+			{
+				"id": "loc4",
+				"name": "Location 4",
+				"loc": [
+					50.39173,
+					-4.9333
+				]
+			},
+			{
+				"id": "loc5",
+				"name": "Location 5",
+				"loc": [
+					50.37231,
+					-4.17507
+				]
+			},
+			{
+				"id": "loc6",
+				"name": "Location 6",
+				"loc": [
+					50.37674,
+					-4.1987
+				]
+			},
+			{
+				"id": "loc7",
+				"name": "Location 7",
+				"loc": [
+					50.38651,
+					-4.1601
+				]
+			},
+			{
+				"id": "loc8",
+				"name": "Location 8",
+				"loc": [
+					50.39075,
+					-4.152
+				]
+			},
+			{
+				"id": "loc9",
+				"name": "Location 9",
+				"loc": [
+					50.46918,
+					-3.54413
+				]
+			},
+			{
+				"id": "loc10",
+				"name": "Location 10",
+				"loc": [
+					50.49092,
+					-3.57576
+				]
+			}
+		]
 	}
 }

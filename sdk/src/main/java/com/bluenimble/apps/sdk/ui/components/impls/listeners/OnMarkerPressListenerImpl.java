@@ -1,5 +1,6 @@
 package com.bluenimble.apps.sdk.ui.components.impls.listeners;
 
+import com.bluenimble.apps.sdk.Lang;
 import com.bluenimble.apps.sdk.application.UIActivity;
 import com.bluenimble.apps.sdk.controller.impls.actions.DefaultActionInstance;
 import com.bluenimble.apps.sdk.json.JsonArray;
@@ -34,6 +35,11 @@ public class OnMarkerPressListenerImpl extends EventListener implements GoogleMa
 		state.set (MapFactory.Record.Loc, loc);
 		state.set (MapFactory.Record.Id, marker.getId ());
 
+		boolean hasTitle = !Lang.isNullOrEmpty (marker.getTitle ());
+		if (hasTitle) {
+			state.put (MapFactory.Record.Name, marker.getTitle ());
+		}
+
 		mapFragment.setState (state);
 
 		ApplicationSpec application = SpecHelper.application (mapFragment.getView ());
@@ -44,6 +50,11 @@ public class OnMarkerPressListenerImpl extends EventListener implements GoogleMa
 				true
 			);
 
-		return true;
+		if (hasTitle) {
+			marker.showInfoWindow ();
+			return true;
+		}
+
+		return false;
 	}
 }
