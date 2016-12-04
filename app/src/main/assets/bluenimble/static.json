@@ -512,5 +512,15 @@
 				]
 			}
 		]
+	},
+	"medias": {
+		"videos": {
+			"online": {
+				"en": "http://www.sample-videos.com/video/mp4/480/big_buck_bunny_480p_2mb.mp4"
+			},
+			"offline": {
+				"en": ""
+			}
+		}
 	}
 }

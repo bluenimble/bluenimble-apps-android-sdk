@@ -1,3 +1,12 @@
 {
-
+	"layers": {
+		"header": [
+			"text           static.icons.back               ?   icon",
+			"image          static.images.logo              ?   logo",
+			"text           view.topic.title                ?   title primary rounded"
+		],
+		"core": [
+			"video:movie    static.medias.videos.online     ?"
+		]
+	}
 }
