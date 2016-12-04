@@ -25,6 +25,10 @@ public class MapTouchableWrapper extends FrameLayout {
 
 	@Override
 	public boolean dispatchTouchEvent (MotionEvent ev) {
+		if (interaction == null) {
+			return super.dispatchTouchEvent (ev);
+		}
+
 		int action  = ev.getAction ();
 		int fingers = ev.getPointerCount ();
 
@@ -34,9 +38,7 @@ public class MapTouchableWrapper extends FrameLayout {
 			long now = SystemClock.uptimeMillis ();
 			if (now - lastTouched > SCROLL_TIME) {
 				// Update the map
-				if (interaction != null) {
-					interaction.onMapUpdated ();
-				}
+				interaction.onMapUpdated ();
 			}
 		}
 
