@@ -1,6 +1,5 @@
 package com.bluenimble.apps.sdk.ui.renderer.impls;
 
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
@@ -138,6 +137,7 @@ public class DefaultRenderer implements Renderer {
 			layerLineLayout (application, layer, layerStyle, layerView.getLayoutParams () != null ? layerView.getLayoutParams ().height : ViewGroup.LayoutParams.WRAP_CONTENT, dh);
 
 		relativeLayout.setLayoutParams (lineLayoutParams);
+		relativeLayout.setId (UIApplication.newId ());
 		layout.addView (relativeLayout);
 
 		// add components
@@ -157,6 +157,7 @@ public class DefaultRenderer implements Renderer {
 				lineLayoutParams.height = ViewGroup.LayoutParams.WRAP_CONTENT;
 				relativeLayout = new RelativeLayout (activity); 
 				relativeLayout.setLayoutParams (lineLayoutParams);
+				relativeLayout.setId (UIApplication.newId ()); // TODO : remove this one ? first one mandatory for map
 				layout.addView (relativeLayout);
 			}
 			
@@ -183,11 +184,13 @@ public class DefaultRenderer implements Renderer {
 			application.logger ().debug (
 				DefaultRenderer.class.getSimpleName (),
 				"Component Added to Layout " + Lang.ARRAY_OPEN + type + Lang.SLASH + spec.id () + Lang.SPACE + (view != null ? view.getId () : "NullView") +
-				Lang.SPACE + "tag: " + view.getTag () + Lang.ARRAY_CLOSE
+				Lang.SPACE + "tag: " + (view != null ? view.getTag () : "NullView => Null Tag") + Lang.ARRAY_CLOSE
 			);
 
 			// attach component events
-			addComponentEvents  (application, spec, factory, view, activity);
+			if (view != null) {
+				addComponentEvents (application, spec, factory, view, activity);
+			}
 			
 			// back to new line
 			if (type.equals (ComponentsRegistry.Default.Break)) {

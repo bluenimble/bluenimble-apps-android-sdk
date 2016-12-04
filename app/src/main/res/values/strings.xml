@@ -1,3 +1,8 @@
 <resources>
+
     <string name="app_name">Bluenimble-apps-android-sdk</string>
+
+    <!-- Third Party Services Keys -->
+    <string name="google_maps_key">AIzaSyCYZyOnML5ZTSFkemGsP7MD1mz8dXRM6bA</string>
+
 </resources>

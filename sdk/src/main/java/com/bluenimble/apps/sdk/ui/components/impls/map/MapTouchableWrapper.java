@@ -7,38 +7,40 @@ import android.widget.FrameLayout;
 
 public class MapTouchableWrapper extends FrameLayout {
 
-	private final static long SCROLL_TIME = 800L; // 800 Milliseconds, but you
-													// can adjust that to your
-													// liking
+	private final static long SCROLL_TIME = 800L; // 800 Milliseconds, but you can adjust that to your liking
 
 	private long 			lastTouched;
 	private UserInteraction interaction;
 
-	public MapTouchableWrapper(Context context) {
-		super(context);
+	public MapTouchableWrapper (Context context) {
+		super (context);
 		// Force the host activity to implement the
 		// UpdateMapAfterUserInterection Interface
-		try {
+		//try {
 			//updateMapAfterUserInteraction = (FuelFinderActivity) context;
-		} catch (ClassCastException e) {
-			throw new ClassCastException(context.toString() + " must implement UpdateMapAfterUserInterection");
-		}
+		//} catch (ClassCastException e) {
+		//	throw new ClassCastException (context.toString () + " must implement UpdateMapAfterUserInterection");
+		//}
 	}
 
 	@Override
 	public boolean dispatchTouchEvent (MotionEvent ev) {
-		int action = ev.getAction();
-		int fingers = ev.getPointerCount();
+		int action  = ev.getAction ();
+		int fingers = ev.getPointerCount ();
+
 		if (fingers == 1 && action == MotionEvent.ACTION_DOWN) {
-			lastTouched = SystemClock.uptimeMillis();
+			lastTouched = SystemClock.uptimeMillis ();
 		} else if (fingers == 1 && action == MotionEvent.ACTION_UP) {
-			final long now = SystemClock.uptimeMillis();
+			long now = SystemClock.uptimeMillis ();
 			if (now - lastTouched > SCROLL_TIME) {
 				// Update the map
-				interaction.onMapUpdated ();
+				if (interaction != null) {
+					interaction.onMapUpdated ();
+				}
 			}
 		}
-		return super.dispatchTouchEvent(ev);
+
+		return super.dispatchTouchEvent (ev);
 	}
 
 	public void setOnMapUpdated (UserInteraction interaction) {

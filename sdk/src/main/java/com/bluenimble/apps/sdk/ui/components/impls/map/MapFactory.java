@@ -29,7 +29,6 @@ import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewParent;
 
 import java.util.Iterator;
 
@@ -67,6 +66,7 @@ public class MapFactory extends AbstractComponentFactory {
 		
 		FragmentManager manager = activity.getSupportFragmentManager ();
 		FragmentTransaction transaction = manager.beginTransaction ();
+
 		transaction.add (group.getId (), fragment, spec.id ());
 		
 		transaction.commit ();
