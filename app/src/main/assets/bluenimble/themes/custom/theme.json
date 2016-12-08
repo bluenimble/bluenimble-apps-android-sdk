@@ -167,6 +167,13 @@
 				"size": "20",
 				"align": "center"
 			}
+		},
+		"chart": {
+			"align": "center middle",
+			"size": {
+				"width": "80%",
+				"height": "70%"
+			}
 		}
 	}
 }

@@ -310,6 +310,21 @@
 						"title": "Bar",
 						"icon": "\uf080",
 						"page": "charts/bar"
+					},
+					{
+						"title": "Bubble",
+						"icon": "\uf080",
+						"page": "charts/bubble"
+					},
+					{
+						"title": "Radar",
+						"icon": "\uf080",
+						"page": "charts/radar"
+					},
+					{
+						"title": "Scatter",
+						"icon": "\uf080",
+						"page": "charts/scatter"
 					}
 				]
 			},
@@ -521,6 +536,206 @@
 			"offline": {
 				"en": ""
 			}
+		}
+	},
+	"charts": {
+		"bar": {
+			"en": [
+				{
+					"id": "year1990",
+					"values": [
+						[
+							[
+								10
+							]
+						]
+					]
+				},
+				{
+					"id": "year1991",
+					"values": [
+						[
+							[
+								20
+							]
+						]
+					]
+				},
+				{
+					"id": "year1992",
+					"values": [
+						[
+							[
+								2
+							]
+						]
+					]
+				},
+				{
+					"id": "year1993",
+					"values": [
+						[
+							[
+								7
+							]
+						]
+					]
+				}
+			]
+		},
+		"line": {
+			"en": [
+				{
+					"id": "company1",
+					"values": [
+						[1, 4],
+						[2, 8],
+						[3, 1],
+						[4, 10],
+						[5, 20],
+						[6, 0],
+						[7, 3],
+						[8, 6],
+						[9, 1],
+						[10, 21],
+						[11, 18],
+						[12, 7]
+					]
+				},
+				{
+					"id": "company2",
+					"values": [
+						[1, 1],
+						[2, 3],
+						[3, 6],
+						[4, 8],
+						[5, 11],
+						[6, 14],
+						[7, 2],
+						[8, 12],
+						[9, 19],
+						[10, 7],
+						[11, 10],
+						[12, 9]
+					]
+				},
+				{
+					"id": "company3",
+					"values": [
+						[1, 1],
+						[2, 3],
+						[3, 6],
+						[4, 8],
+						[5, 11],
+						[6, 14],
+						[7, 17],
+						[8, 20],
+						[9, 23],
+						[10, 27],
+						[11, 30],
+						[12, 33]
+					]
+				}
+			]
+		},
+		"pie": {
+			"en": [
+				["Java",        20],
+				["JavaScript",  30],
+				["Python",      10],
+				["C",           12],
+				["Ruby",        7],
+				["Swift",       18],
+				["Other",       3]
+			]
+		},
+		"radar": {
+			"en": [
+				{
+					"id": "strength",
+					"title": "Strength",
+					"values": [
+						10, 8, 9
+					]
+				},
+				{
+					"id": "speed",
+					"title": "Speed",
+					"values": [
+						9, 10, 6
+					]
+				},
+				{
+					"id": "technique",
+					"title": "Technique",
+					"values": [
+						2, 5, 10
+					]
+				},
+				{
+					"id": "endurance",
+					"title": "Endurance",
+					"values": [
+						7, 5, 10
+					]
+				}
+			]
+		},
+		"scatter": {
+			"en": [
+				{
+					"id": "company1",
+					"values": [
+						[7, 1],
+						[2, 5],
+						[1, 3]
+					]
+				},
+				{
+					"id": "company2",
+					"values": [
+						[2, 8],
+						[2, 3],
+						[0, 8]
+					]
+				},
+				{
+					"id": "company3",
+					"values": [
+						[8, 8],
+						[0, 1],
+						[2, 5]
+					]
+				}
+			]
+		},
+		"bubble": {
+			"en": [
+				{
+					"id": "company1",
+					"values": [
+						[7, 1],
+						[2, 5],
+						[1, 3]
+					]
+				},
+				{
+					"id": "company2",
+					"values": [
+						[2, 8],
+						[2, 3],
+						[0, 8]
+					]
+				},
+				{
+					"id": "company3",
+					"values": [
+						[8, 8],
+						[0, 1],
+						[2, 5]
+					]
+				}
+			]
 		}
 	}
 }

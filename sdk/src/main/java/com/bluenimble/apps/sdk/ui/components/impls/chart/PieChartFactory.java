@@ -100,7 +100,6 @@ public class PieChartFactory extends ChartFactory {
 				PieData data = chart.getData ();
 				if (data == null) {
 					data = new PieData ();
-					chart.setData (data);
 				}
 
 				List<PieEntry> entries = new ArrayList<PieEntry> ();
@@ -110,6 +109,7 @@ public class PieChartFactory extends ChartFactory {
 				}
 
 				data.addDataSet (new PieDataSet (entries, (String)spec.get (Custom.Title)));
+				chart.setData (data);
 
 				chart.invalidate (); // refresh
 

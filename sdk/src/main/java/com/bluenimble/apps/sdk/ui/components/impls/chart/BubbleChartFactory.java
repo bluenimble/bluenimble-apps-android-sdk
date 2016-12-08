@@ -99,7 +99,6 @@ public class BubbleChartFactory extends ChartFactory {
 				BubbleData data = chart.getData ();
 				if (data == null) {
 					data = new BubbleData ();
-					chart.setData (data);
 				}
 
 				for (int i = 0; i < array.count (); i++) {
@@ -120,7 +119,9 @@ public class BubbleChartFactory extends ChartFactory {
 					// add data set
 					data.addDataSet ( new BubbleDataSet (entries, Json.getString (series, Custom.Title)) );
 				}
-				
+
+				chart.setData (data);
+
 				chart.invalidate (); // refresh
 
 				break;

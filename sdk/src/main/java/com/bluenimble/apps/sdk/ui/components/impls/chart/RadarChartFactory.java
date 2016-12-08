@@ -13,7 +13,6 @@ import com.bluenimble.apps.sdk.spec.BindingSpec;
 import com.bluenimble.apps.sdk.spec.ComponentSpec;
 import com.bluenimble.apps.sdk.spec.LayerSpec;
 import com.github.mikephil.charting.charts.RadarChart;
-import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.RadarData;
 import com.github.mikephil.charting.data.RadarDataSet;
 import com.github.mikephil.charting.data.RadarEntry;
@@ -101,9 +100,8 @@ public class RadarChartFactory extends ChartFactory {
 				RadarData data = chart.getData ();
 				if (data == null) {
 					data = new RadarData ();
-					chart.setData (data);
 				}
-				
+
 				for (int i = 0; i < array.count (); i++) {
 					JsonObject series = (JsonObject)array.get (i);
 					if (Json.isNullOrEmpty (series)) {
@@ -120,6 +118,8 @@ public class RadarChartFactory extends ChartFactory {
 					}
 					data.addDataSet ( new RadarDataSet (entries, Json.getString (series, Custom.Title)) );
 				}
+
+				chart.setData (data);
 
 				chart.invalidate (); // refresh
 
