@@ -312,6 +312,11 @@
 						"page": "charts/bar"
 					},
 					{
+						"title": "Horizontal Bar",
+						"icon": "\uf080",
+						"page": "charts/horizontal-bar"
+					},
+					{
 						"title": "Bubble",
 						"icon": "\uf080",
 						"page": "charts/bubble"

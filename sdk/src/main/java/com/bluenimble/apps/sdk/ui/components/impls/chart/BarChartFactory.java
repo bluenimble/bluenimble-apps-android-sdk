@@ -44,7 +44,7 @@ public class BarChartFactory extends ChartFactory {
 
 		String orientation = Json.getString (style, Style.bar.Orientation, Orientations.BottomTop);
 		
-		BarChart chart = null;
+		BarChart chart;
 		if (orientation.equals (Orientations.LeftRight)) {
 			chart = new HorizontalBarChart (activity);
 		} else {
@@ -132,7 +132,7 @@ public class BarChartFactory extends ChartFactory {
 					for (int j = 0; j < values.count (); j++) {
 						JsonArray record = (JsonArray)values.get (j);
 						
-						JsonArray jValues = (JsonArray)record.get (1);
+						JsonArray jValues = (JsonArray)record.get (0); // What's this?
 						float [] fValues = null;
 						if (jValues == null) {
 							fValues = new float [] { 0f };

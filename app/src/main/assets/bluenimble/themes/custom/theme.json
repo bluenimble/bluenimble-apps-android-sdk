@@ -174,6 +174,10 @@
 				"width": "80%",
 				"height": "70%"
 			}
+		},
+		"hor": {
+			"orientation": "lr",
+			"animate": "3"
 		}
 	}
 }
