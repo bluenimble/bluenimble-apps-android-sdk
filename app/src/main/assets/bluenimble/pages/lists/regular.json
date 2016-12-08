@@ -1,3 +1,15 @@
 {
-
+	"layers": {
+		"header": [
+			"text               static.icons.back           ?      icon",
+			"image              static.images.logo          ?      logo",
+			"text               view.topic.title            ?      title primary rounded"
+		],
+		"testCenter": [
+			"text:name          static.record.name          ?      testName",
+			"text:details       static.record.details       ?      testDetails",
+			"text:creationDate  static.record.creationDate  ?      testCreate",
+			"text:dueDate       static.record.dueDate       ?      testDue"
+		]
+	}
 }

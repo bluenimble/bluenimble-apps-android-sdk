@@ -95,18 +95,20 @@
 			"margin": "60 60 60 60"
 		},
 		"todoTpl": {
-			"padding": "20 20 20 20",
-			"margin": "0 0 0 0",
+			"lineHeight": "all",
+			"margin": "100 0 0 0",
 			"background": {
-				"color": "#FFFFFF"
+				"color": "#9ab6e2"
 			},
 			"size": {
-				"height": 100
+				"height": 150
 			}
 		},
 		"todoName": {
-			"margin": "0 0 0 0",
 			"align": "middle",
+			"background": {
+				"color": "#e29ade"
+			},
 			"size": {
 				"width": 250
 			},
@@ -116,32 +118,44 @@
 		},
 		"todoDetails": {
 			"margin": "0 0 0 250",
+			"background": {
+				"color": "#9ae29c"
+			},
 			"text": {
-				"size": "15"
+				"size": "15",
+				"align": "bottom"
 			},
 			"size": {
-				"height": 60
+				"height": "75"
 			},
-			"align": "middle"
+			"align": "top"
 		},
 		"todoCreate": {
 			"margin": "0 0 0 250",
+			"background": {
+				"color": "#9ae2dc"
+			},
 			"text": {
 				"color": "#00b33c",
 				"size": "13"
 			},
-			"align": "top"
+			"size": {
+				"height": "75"
+			},
+			"align": "bottom"
 		},
 		"todoDue": {
-			"align": "right middle",
+			"align": "right bottom",
+			"background": {
+				"color": "#e29aa2"
+			},
 			"text": {
 				"color": "#FF0000",
 				"size": "13",
-				"align": "right middle"
+				"align": "right"
 			},
 			"size": {
-				"width": 250,
-				"height": 100
+				"width": 250
 			}
 		},
 		"bigTitle": {
@@ -178,6 +192,70 @@
 		"hor": {
 			"orientation": "lr",
 			"animate": "3"
+		},
+		"testCenter": {
+			"lineHeight": "all",
+			"margin": "100 0 0 0",
+			"background": {
+				"color": "#9ab6e2"
+			},
+			"size": {
+				"height": 150
+			}
+		},
+		"testName": {
+			"align": "middle",
+			"background": {
+				"color": "#e29ade"
+			},
+			"size": {
+				"width": 250
+			},
+			"text": {
+				"size": "18"
+			}
+		},
+		"testDetails": {
+			"margin": "0 0 0 250",
+			"background": {
+				"color": "#9ae29c"
+			},
+			"text": {
+				"size": "15",
+				"align": "bottom"
+			},
+			"size": {
+				"height": "75"
+			},
+			"align": "top"
+		},
+		"testCreate": {
+			"margin": "0 0 0 250",
+			"background": {
+				"color": "#9ae2dc"
+			},
+			"text": {
+				"color": "#00b33c",
+				"size": "13"
+			},
+			"size": {
+				"height": "75"
+			},
+			"align": "bottom"
+		},
+		"testDue": {
+			"align": "right bottom",
+			"background": {
+				"color": "#e29aa2"
+			},
+			"text": {
+				"color": "#FF0000",
+				"size": "13",
+				"align": "right"
+			},
+			"size": {
+				"width": 250
+			}
 		}
 	}
 }
