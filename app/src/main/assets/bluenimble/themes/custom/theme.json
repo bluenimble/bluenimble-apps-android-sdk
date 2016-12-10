@@ -187,11 +187,15 @@
 			"size": {
 				"width": "80%",
 				"height": "70%"
+			},
+			"bar": {
+				"animate": "1500"
 			}
 		},
 		"hor": {
-			"orientation": "lr",
-			"animate": "3"
+			"bar": {
+				"orientation": "lr"
+			}
 		},
 		"testCenter": {
 			"lineHeight": "all",

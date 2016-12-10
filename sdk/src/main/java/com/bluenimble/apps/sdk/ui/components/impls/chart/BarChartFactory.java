@@ -25,7 +25,7 @@ import android.widget.RadioGroup;
 public class BarChartFactory extends ChartFactory {
 
 	private static final long serialVersionUID = 8437367345924192857L;
-	
+
 	private static final String Id = "chart.bar";
 
 	public BarChartFactory () {
@@ -36,30 +36,30 @@ public class BarChartFactory extends ChartFactory {
 	public String id () {
 		return Id;
 	}
-	
+
 	@Override
 	public View create (UIActivity activity, ViewGroup group, LayerSpec layer, ComponentSpec spec, DataHolder dh) {
-		
+
 		style = (JsonObject)spec.style ().get (Style.bar.class.getSimpleName ());
 
 		String orientation = Json.getString (style, Style.bar.Orientation, Orientations.BottomTop);
-		
+
 		BarChart chart;
 		if (orientation.equals (Orientations.LeftRight)) {
 			chart = new HorizontalBarChart (activity);
 		} else {
 			chart = new BarChart (activity);
 		}
-		
+
 		// animation
 		int animate = Json.getInteger (style, Style.Animate, 0);
 		if (animate > 0) {
 			chart.animateY (animate);
 		}
-		
+
 		// apply specific styles
 		chart.setFitBars (Json.getBoolean (style, Style.bar.Fit, true));
-		
+
 		// apply global style
 		return applyStyle (group, chart, spec, dh);
 	}
@@ -74,19 +74,19 @@ public class BarChartFactory extends ChartFactory {
 	 **/
 	@Override
 	public void bind (ComponentSpec.Binding binding, View view, ApplicationSpec applicationSpec, ComponentSpec spec, DataHolder dh) {
-		
+
 		if (view == null || !(view instanceof BarChart)) {
 			// TODO: log
 			return;
 		}
-		
+
 		BindingSpec bindingSpec = spec.binding (binding);
 		if (bindingSpec == null) {
 			return;
 		}
-		
+
 		BarChart chart = (BarChart)view;
-		
+
 		switch (binding) {
 			case Set:
 				if (dh == null) {
@@ -98,12 +98,12 @@ public class BarChartFactory extends ChartFactory {
 				if (value == null) {
 					return;
 				}
-				
+
 				if (!(value instanceof JsonArray)) {
 					// TODO: log
 					return;
 				}
-				
+
 				JsonArray array = (JsonArray)value;
 				if (array.isEmpty ()) {
 					// TODO: log
@@ -127,11 +127,11 @@ public class BarChartFactory extends ChartFactory {
 					if (values == null || values.isEmpty ()) {
 						continue;
 					}
-					
+
 					List<BarEntry> entries = new ArrayList<BarEntry> ();
 					for (int j = 0; j < values.count (); j++) {
 						JsonArray record = (JsonArray)values.get (j);
-						
+
 						JsonArray jValues = (JsonArray)record.get (0); // What's this?
 						float [] fValues = null;
 						if (jValues == null) {
@@ -143,7 +143,7 @@ public class BarChartFactory extends ChartFactory {
 							}
 						}
 						entries.add (new BarEntry (i, fValues, String.valueOf (record.get (0))));
-						
+
 					}
 					// add data set
 					data.addDataSet (new BarDataSet (entries, Json.getString (series, Custom.Title)));
@@ -155,7 +155,7 @@ public class BarChartFactory extends ChartFactory {
 			default:
 				break;
 		}
-		
+
 	}
 
 	@Override
@@ -164,14 +164,14 @@ public class BarChartFactory extends ChartFactory {
 			// TODO: log
 			return;
 		}
-		
+
 		if (!isEventSupported (eventName)) {
 			// TODO: log
 			return;
 		}
-		
+
 		// attach events
-		
+
 	}
-	
+
 }
