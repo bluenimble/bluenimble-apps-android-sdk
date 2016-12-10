@@ -6,7 +6,7 @@
 			"text           view.topic.title        ?   title primary rounded"
 		],
 		"core": [
-			"chart.radar    static.charts.radar     ?   animate=3 chart"
+			"chart.radar    static.charts.radar     ?   chart"
 		]
 	}
 }

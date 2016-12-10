@@ -16,6 +16,7 @@ import com.github.mikephil.charting.charts.BubbleChart;
 import com.github.mikephil.charting.data.BubbleData;
 import com.github.mikephil.charting.data.BubbleDataSet;
 import com.github.mikephil.charting.data.BubbleEntry;
+import com.github.mikephil.charting.data.DataSet;
 
 import android.view.View;
 import android.view.ViewGroup;
@@ -116,8 +117,12 @@ public class BubbleChartFactory extends ChartFactory {
 						JsonArray record = (JsonArray)values.get (j);
 						entries.add (new BubbleEntry (j, Float.valueOf ((String)record.get (0)), Float.valueOf ((String)record.get (1))));
 					}
+
+					BubbleDataSet dataSet = new BubbleDataSet (entries, Json.getString (series, Custom.Title));
+					customStyle (dataSet);
+
 					// add data set
-					data.addDataSet ( new BubbleDataSet (entries, Json.getString (series, Custom.Title)) );
+					data.addDataSet (dataSet);
 				}
 
 				chart.setData (data);

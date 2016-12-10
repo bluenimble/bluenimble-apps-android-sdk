@@ -6,7 +6,7 @@
 			"text           view.topic.title        ?   title primary rounded"
 		],
 		"core": [
-			"chart.pie      static.charts.pie       ?   animate=3 chart"
+			"chart.pie      static.charts.pie       ?   chart"
 		]
 	}
 }

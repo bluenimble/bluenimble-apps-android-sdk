@@ -1,7 +1,13 @@
 package com.bluenimble.apps.sdk.ui.components.impls.chart;
 
+import android.graphics.Color;
+
+import com.bluenimble.apps.sdk.Json;
+import com.bluenimble.apps.sdk.json.JsonArray;
 import com.bluenimble.apps.sdk.json.JsonObject;
 import com.bluenimble.apps.sdk.ui.components.AbstractComponentFactory;
+import com.github.mikephil.charting.data.DataSet;
+
 
 public abstract class ChartFactory extends AbstractComponentFactory {
 
@@ -25,6 +31,9 @@ public abstract class ChartFactory extends AbstractComponentFactory {
 	
 	interface Style {
 		String Animate 			= "animate";
+		String Background       = "background";
+		String Colors           = "colors";
+
 		interface bar	{
 			String 	Width 		= "width";
 			String 	Fit	 		= "fit";
@@ -48,5 +57,19 @@ public abstract class ChartFactory extends AbstractComponentFactory {
 	}
 	
 	protected JsonObject style;
-	
+
+	protected void customStyle (DataSet dataSet) {
+		if (style == null || style.isEmpty ()) {
+			return;
+		}
+
+		JsonArray aColors = Json.getArray (style, Style.Colors);
+		if (aColors != null && aColors.size () > 0) {
+			int[] colors = new int [aColors.size ()];
+			for (int i = 0; i < aColors.size (); i ++) {
+				colors [i] = Color.parseColor ((String) aColors.get (i));
+			}
+			dataSet.setColors (colors);
+		}
+	}
 }

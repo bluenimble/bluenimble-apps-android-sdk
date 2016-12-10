@@ -116,7 +116,10 @@ public class RadarChartFactory extends ChartFactory {
 					for (int j = 0; j < values.count (); j++) {
 						entries.add (new RadarEntry (Float.valueOf ((String)values.get (j))));
 					}
-					data.addDataSet ( new RadarDataSet (entries, Json.getString (series, Custom.Title)) );
+
+					RadarDataSet dataSet = new RadarDataSet (entries, Json.getString (series, Custom.Title));
+					customStyle (dataSet);
+					data.addDataSet (dataSet);
 				}
 
 				chart.setData (data);

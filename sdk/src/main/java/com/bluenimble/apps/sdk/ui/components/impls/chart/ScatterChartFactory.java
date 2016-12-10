@@ -118,7 +118,10 @@ public class ScatterChartFactory extends ChartFactory {
 						JsonArray record = (JsonArray)values.get (j);
 						entries.add (new Entry (Float.valueOf ((String)record.get (0)), Float.valueOf ((String)record.get (1))));
 					}
-					data.addDataSet ( new ScatterDataSet (entries, Json.getString (series, Custom.Title)) );
+
+					ScatterDataSet dataSet = new ScatterDataSet (entries, Json.getString (series, Custom.Title));
+					customStyle (dataSet);
+					data.addDataSet (dataSet);
 				}
 
 				chart.invalidate (); // refresh

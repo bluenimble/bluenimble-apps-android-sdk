@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.bluenimble.apps.sdk.Json;
+import com.bluenimble.apps.sdk.R;
 import com.bluenimble.apps.sdk.application.UIActivity;
 import com.bluenimble.apps.sdk.controller.DataHolder;
 import com.bluenimble.apps.sdk.json.JsonArray;
@@ -119,7 +120,10 @@ public class LineChartFactory extends ChartFactory {
 						JsonArray record = (JsonArray)values.get (j);
 						entries.add (new Entry (Float.valueOf ((String)record.get (0)), Float.valueOf ((String)record.get (1))));
 					}
-					data.addDataSet ( new LineDataSet (entries, Json.getString (series, Custom.Title)) );
+
+					LineDataSet dataSet = new LineDataSet (entries, Json.getString (series, Custom.Title));
+					customStyle (dataSet);
+					data.addDataSet (dataSet);
 				}
 
 				chart.invalidate (); // refresh

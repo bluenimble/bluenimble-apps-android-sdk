@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.bluenimble.apps.sdk.Json;
+import com.bluenimble.apps.sdk.R;
 import com.bluenimble.apps.sdk.application.UIActivity;
 import com.bluenimble.apps.sdk.controller.DataHolder;
 import com.bluenimble.apps.sdk.json.JsonArray;
@@ -108,7 +109,10 @@ public class PieChartFactory extends ChartFactory {
 					entries.add (new PieEntry (Float.valueOf ((String)record.get (1)), (String)record.get (0)));
 				}
 
-				data.addDataSet (new PieDataSet (entries, (String)spec.get (Custom.Title)));
+				PieDataSet dataSet = new PieDataSet (entries, (String)spec.get (Custom.Title));
+				customStyle (dataSet);
+
+				data.addDataSet (dataSet);
 				chart.setData (data);
 
 				chart.invalidate (); // refresh
