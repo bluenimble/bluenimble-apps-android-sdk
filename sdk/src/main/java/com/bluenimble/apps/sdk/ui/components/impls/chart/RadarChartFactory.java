@@ -118,11 +118,13 @@ public class RadarChartFactory extends ChartFactory {
 					}
 
 					RadarDataSet dataSet = new RadarDataSet (entries, Json.getString (series, Custom.Title));
-					customStyle (dataSet);
+					customStyle (dataSet, array.count ());
 					data.addDataSet (dataSet);
 				}
 
 				chart.setData (data);
+
+				chart.setDescription (null);
 
 				chart.invalidate (); // refresh
 

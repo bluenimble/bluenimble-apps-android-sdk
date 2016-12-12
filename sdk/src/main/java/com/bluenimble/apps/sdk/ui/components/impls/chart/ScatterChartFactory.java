@@ -14,7 +14,6 @@ import com.bluenimble.apps.sdk.spec.ComponentSpec;
 import com.bluenimble.apps.sdk.spec.LayerSpec;
 import com.github.mikephil.charting.charts.ScatterChart;
 import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.data.RadarData;
 import com.github.mikephil.charting.data.ScatterData;
 import com.github.mikephil.charting.data.ScatterDataSet;
 
@@ -100,7 +99,6 @@ public class ScatterChartFactory extends ChartFactory {
 				ScatterData data = chart.getData ();
 				if (data == null) {
 					data = new ScatterData ();
-					chart.setData (data);
 				}
 
 				for (int i = 0; i < array.count (); i++) {
@@ -120,9 +118,13 @@ public class ScatterChartFactory extends ChartFactory {
 					}
 
 					ScatterDataSet dataSet = new ScatterDataSet (entries, Json.getString (series, Custom.Title));
-					customStyle (dataSet);
+					customStyle (dataSet, array.count ());
 					data.addDataSet (dataSet);
 				}
+
+				chart.setData (data);
+
+				chart.setDescription (null);
 
 				chart.invalidate (); // refresh
 

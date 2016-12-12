@@ -190,30 +190,21 @@
 			},
 			"bar": {
 				"animate": "1500",
-				"colors": [
-					"#C390D4",
-					"#A556BF",
-					"#9A2CBF",
-					"#8211A8"
-				]
+				"dataSet": {
+					"color": "#C390D4 #A556BF #9A2CBF #8211A8"
+				}
 			},
 			"pie": {
 				"animate": "1500",
-				"colors": [
-					"#C390D4",
-					"#A556BF",
-					"#9A2CBF",
-					"#8211A8"
-				]
+				"dataSet": {
+					"color": "#C390D4 #A556BF #9A2CBF #8211A8"
+				}
 			},
 			"line": {
 				"animate": "1500",
-				"colors": [
-					"#C390D4",
-					"#A556BF",
-					"#9A2CBF",
-					"#8211A8"
-				]
+				"dataSet": {
+					"color": "#C390D4 #A556BF #9A2CBF #8211A8"
+				}
 			}
 		},
 		"hor": {

@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.bluenimble.apps.sdk.Json;
-import com.bluenimble.apps.sdk.R;
 import com.bluenimble.apps.sdk.application.UIActivity;
 import com.bluenimble.apps.sdk.controller.DataHolder;
 import com.bluenimble.apps.sdk.json.JsonArray;
@@ -148,11 +147,13 @@ public class BarChartFactory extends ChartFactory {
 					}
 
 					BarDataSet dataSet = new BarDataSet (entries, Json.getString (series, Custom.Title));
-					customStyle (dataSet);
+					customStyle (dataSet, array.count ());
 
 					// add data set
 					data.addDataSet (dataSet);
 				}
+
+				chart.setDescription (null);
 
 				chart.invalidate (); // refresh
 

@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.bluenimble.apps.sdk.Json;
-import com.bluenimble.apps.sdk.R;
 import com.bluenimble.apps.sdk.application.UIActivity;
 import com.bluenimble.apps.sdk.controller.DataHolder;
 import com.bluenimble.apps.sdk.json.JsonArray;
@@ -14,7 +13,6 @@ import com.bluenimble.apps.sdk.spec.BindingSpec;
 import com.bluenimble.apps.sdk.spec.ComponentSpec;
 import com.bluenimble.apps.sdk.spec.LayerSpec;
 import com.github.mikephil.charting.charts.LineChart;
-import com.github.mikephil.charting.data.BubbleData;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
@@ -102,7 +100,6 @@ public class LineChartFactory extends ChartFactory {
 				LineData data = chart.getData ();
 				if (data == null) {
 					data = new LineData ();
-					chart.setData (data);
 				}
 
 				for (int i = 0; i < array.count (); i++) {
@@ -122,9 +119,13 @@ public class LineChartFactory extends ChartFactory {
 					}
 
 					LineDataSet dataSet = new LineDataSet (entries, Json.getString (series, Custom.Title));
-					customStyle (dataSet);
+					customStyle (dataSet, array.count ());
 					data.addDataSet (dataSet);
 				}
+
+				chart.setData (data);
+
+				chart.setDescription (null);
 
 				chart.invalidate (); // refresh
 
