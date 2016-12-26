@@ -210,6 +210,7 @@ public class RemoteService implements Service {
 		Request request = rBuilder.build ();
 		application.logger ().error (RemoteService.class.getSimpleName () + " ---> Execute", "Request : " + request.toString ());
 		final Response response;
+		//TODO : to remove try / catch
 		try {
 			response = HttpClient.newCall (request).execute ();
 		} catch (IOException e) {
