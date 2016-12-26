@@ -1,3 +1,15 @@
 {
-
+	"login": {
+		"type": "remote",
+		"url": "http://192.168.56.1:12345/bnb-sdk-backend/api/login",
+		"verb": "post",
+		"headers": {
+			"Content-Type": "application/json",
+			"Accept": "application/json"
+		},
+		"data": {
+			"username": "USERNAME",
+			"password": "Python"
+		}
+	}
 }

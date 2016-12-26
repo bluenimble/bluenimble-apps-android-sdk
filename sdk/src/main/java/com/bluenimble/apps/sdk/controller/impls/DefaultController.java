@@ -1,7 +1,5 @@
 package com.bluenimble.apps.sdk.controller.impls;
 
-import android.view.View;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -12,8 +10,6 @@ import com.bluenimble.apps.sdk.application.UIActivity;
 import com.bluenimble.apps.sdk.controller.Action;
 import com.bluenimble.apps.sdk.controller.ActionInstance;
 import com.bluenimble.apps.sdk.controller.Controller;
-import com.bluenimble.apps.sdk.controller.DataHolder;
-import com.bluenimble.apps.sdk.json.JsonObject;
 import com.bluenimble.apps.sdk.utils.SecurityHelper;
 
 public class DefaultController implements Controller {

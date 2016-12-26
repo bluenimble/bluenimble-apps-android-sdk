@@ -1,12 +1,7 @@
 package com.bluenimble.apps.sdk.utils;
 
-import android.content.pm.PackageManager;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
-
 import com.bluenimble.apps.sdk.Json;
 import com.bluenimble.apps.sdk.application.UIActivity;
-import com.bluenimble.apps.sdk.application.UIApplication;
 import com.bluenimble.apps.sdk.controller.ActionInstance;
 import com.bluenimble.apps.sdk.controller.impls.actions.DefaultAction;
 import com.bluenimble.apps.sdk.json.JsonObject;
@@ -14,11 +9,7 @@ import com.bluenimble.apps.sdk.spec.ApplicationSpec;
 import com.bluenimble.apps.sdk.spec.PageSpec;
 import com.bluenimble.apps.sdk.ui.effects.Effect;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
 
 public class EffectsHelper {
 

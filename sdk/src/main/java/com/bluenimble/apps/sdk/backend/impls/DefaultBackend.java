@@ -33,6 +33,11 @@ public class DefaultBackend implements Backend {
 	
 	@Override
 	public void load (JsonObject spec) {
+		//TODO : added here Mehdi
+		register (Service.Type.Remote, 	new RemoteService());
+		register (Service.Type.Local, 	new PreferencesService());
+		register (Service.Type.Storage, new StorageService ());
+
 		if (this.spec == null) {
 			this.spec = spec;
 			return;

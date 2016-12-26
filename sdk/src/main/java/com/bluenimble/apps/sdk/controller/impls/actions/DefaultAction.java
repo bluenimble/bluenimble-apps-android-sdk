@@ -1,7 +1,5 @@
 package com.bluenimble.apps.sdk.controller.impls.actions;
 
-import java.util.Iterator;
-
 import com.bluenimble.apps.sdk.Json;
 import com.bluenimble.apps.sdk.Lang;
 import com.bluenimble.apps.sdk.Spec;
@@ -9,18 +7,14 @@ import com.bluenimble.apps.sdk.application.UIActivity;
 import com.bluenimble.apps.sdk.controller.Action;
 import com.bluenimble.apps.sdk.controller.ActionInstance;
 import com.bluenimble.apps.sdk.controller.DataHolder;
-import com.bluenimble.apps.sdk.controller.impls.data.DefaultDataHolder;
 import com.bluenimble.apps.sdk.json.JsonObject;
 import com.bluenimble.apps.sdk.spec.ApplicationSpec;
 import com.bluenimble.apps.sdk.spec.PageSpec;
-import com.bluenimble.apps.sdk.ui.effects.Effect;
 import com.bluenimble.apps.sdk.utils.BackendHelper;
 import com.bluenimble.apps.sdk.utils.BindingHelper;
 import com.bluenimble.apps.sdk.utils.EffectsHelper;
 
-import android.location.Location;
 import android.os.AsyncTask;
-import android.view.View;
 
 public class DefaultAction implements Action {
 
@@ -47,8 +41,14 @@ public class DefaultAction implements Action {
 
 		EffectsHelper.applyEffects (actionInstance, Spec.Action.OnStart, activity, page);
 
+		if (actionInstance.eventSpec () != null) {
+			application.logger ().info (DefaultAction.class.getSimpleName (), "EventSpec : " + actionInstance.eventSpec ().toString ());
+		}
+
 		final JsonObject oCall = Json.getObject (actionInstance.eventSpec (), Spec.Action.call.class.getSimpleName ());
 		final String sServices = Json.getString (oCall, Spec.Action.call.Services);
+
+		application.logger ().info (DefaultAction.class.getSimpleName (), "OCall : " + (oCall == null ? "NULL" : oCall.toString ()));
 
 		final DataHolder dataHolder = actionInstance.dataHolder ();
 
@@ -58,6 +58,8 @@ public class DefaultAction implements Action {
 			return;
 		}
 
+		application.logger ().error (DefaultAction.class.getSimpleName (), "OCall NOT EMPTY");
+
 		new AsyncTask<Void, Void, DataHolder> () {
 			@Override
 			protected DataHolder doInBackground (Void... params) {
@@ -65,6 +67,7 @@ public class DefaultAction implements Action {
 				String [] services = Lang.split (sServices, Lang.COMMA, true);
 				try {
 					for (String s : services) {
+						application.logger ().error (DefaultAction.class.getSimpleName () + " ---> Async", "Got into the Loop with " + s);
 						BackendHelper.callService (s, dataHolder, application);
 					}
 				} catch (Exception ex) {
@@ -79,11 +82,15 @@ public class DefaultAction implements Action {
 				if (result.exception () != null) {
 					// TODO log exception
 				}
+
+				application.logger ().error (DefaultAction.class.getSimpleName () + " --> OnPostExecute", result.toString ());
+
 				// onSuccess / onFailure
 				EffectsHelper.applyEffects (
 					actionInstance,
 					(result.exception () != null) ? Spec.Action.call.OnError : Spec.Action.call.OnSuccess,
-					activity, page
+					activity,
+					page
 				);
 				// onFinish
 				EffectsHelper.applyEffects (actionInstance, Spec.Action.call.OnFinish, activity, page);

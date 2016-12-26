@@ -379,8 +379,32 @@
 						"page": "medias/streaming"
 					}
 				]
+			},
+			{
+				"title": "Services",
+				"icon": "\uf233",
+				"examples": [
+					{
+						"title": "Remote",
+						"icon": "\uf233",
+						"page": "services/remote"
+					},
+					{
+						"title": "Local",
+						"icon": "\uf15b",
+						"page": "services/local"
+					}
+				]
 			}
 		]
+	},
+	"remote": {
+		"post": {
+			"en": "POST Data"
+		},
+		"get": {
+			"en": "GET Data"
+		}
 	},
 	"wizard": {
 		"name": {

@@ -1,0 +1,29 @@
+{
+	"layers": {
+		"header": [
+			"text               static.icons.back       ?   icon",
+			"image              static.images.logo      ?   logo",
+			"text               view.topic.title        ?   title primary rounded"
+		],
+		"main": [
+			"button:post        static.remote.post      ?   left /",
+			"button:get         static.remote.get       ?   right /"
+		]
+	},
+	"events": {
+		"main.post.press": {
+			"call": {
+				"services": "login"
+			},
+			"onSuccess": {
+				"echo": "Success : UUID = [login.uuid]"
+			},
+			"onError": {
+				"echo": "Error : [error.*]"
+			},
+			"onFinish": {
+				"echo": "Finish : Response = [login.*]"
+			}
+		}
+	}
+}

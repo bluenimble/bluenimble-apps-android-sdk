@@ -1,5 +1,6 @@
 package com.bluenimble.apps.sdk.backend.impls.remote;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -87,15 +88,21 @@ public class RemoteService implements Service {
 
 	@Override
 	public void execute (final String id, JsonObject masterSpec, ApplicationSpec application, DataHolder dh) throws Exception {
-		
+
+		application.logger ().info (RemoteService.class.getSimpleName () + " ---> Execute", "Service " + id);
+
 		if (masterSpec == null) {
 			throw new Exception ("backend service spec not found");
 		}
+
+		application.logger ().info (RemoteService.class.getSimpleName () + " ---> Execute", "Master Spec : " + masterSpec.toString ());
 
 		final JsonObject spec = masterSpec.duplicate ();
 		
 		// visit url
 		resolve (spec, Spec.Url, application, dh);
+
+		application.logger ().info (RemoteService.class.getSimpleName () + " ---> Execute", "Resolved Master Spec : " + spec.toString ());
 
 		// verb
 		Verb verb = null;
@@ -201,8 +208,15 @@ public class RemoteService implements Service {
 		}
 
 		Request request = rBuilder.build ();
-
-		final Response response = HttpClient.newCall (request).execute ();
+		application.logger ().error (RemoteService.class.getSimpleName () + " ---> Execute", "Request : " + request.toString ());
+		final Response response;
+		try {
+			response = HttpClient.newCall (request).execute ();
+		} catch (IOException e) {
+			e.printStackTrace ();
+			throw new Exception (e);
+		}
+		application.logger ().error (RemoteService.class.getSimpleName () + " ---> Execute", "Response: " + response.toString ());
 		
 		if (response.isSuccessful ()) {
 			final ResponseBody rBody = response.body ();
