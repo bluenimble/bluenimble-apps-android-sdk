@@ -1,21 +1,22 @@
 package com.bluenimble.apps.sdk.utils;
 
+import android.content.Context;
+
 import com.bluenimble.apps.sdk.Json;
 import com.bluenimble.apps.sdk.Lang;
 import com.bluenimble.apps.sdk.Spec;
+import com.bluenimble.apps.sdk.application.UIActivity;
 import com.bluenimble.apps.sdk.backend.Backend;
 import com.bluenimble.apps.sdk.backend.DataVisitor;
 import com.bluenimble.apps.sdk.backend.Service;
-import com.bluenimble.apps.sdk.backend.impls.remote.RemoteService;
 import com.bluenimble.apps.sdk.controller.DataHolder;
 import com.bluenimble.apps.sdk.json.JsonObject;
 import com.bluenimble.apps.sdk.spec.ApplicationSpec;
 
-import java.util.Map;
-
 public class BackendHelper {
 
-	public static void callService (String serviceId, DataHolder dh, ApplicationSpec application) throws Exception {
+	//TODO : check on leaks because of having passed an activity
+	public static void callService (String serviceId, DataHolder dh, ApplicationSpec application, Context appContext) throws Exception {
 
 		application.logger ().error (BackendHelper.class.getSimpleName () + " ---> callService1", "Got into the CallService Method with " + serviceId);
 
@@ -57,7 +58,7 @@ public class BackendHelper {
 		}
 
 		application.logger ().error (BackendHelper.class.getSimpleName () + " ---> callService2", "Got into the CallService Method with " + serviceId);
-		service.execute (serviceId, spec, application, dh);
+		service.execute (serviceId, spec, application, dh, appContext);
 
 		if (visitor != null) {
 			visitor.onResponse (dh);

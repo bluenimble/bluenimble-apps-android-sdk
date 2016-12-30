@@ -68,7 +68,7 @@ public class DefaultAction implements Action {
 				try {
 					for (String s : services) {
 						application.logger ().error (DefaultAction.class.getSimpleName () + " ---> Async", "Got into the Loop with " + s);
-						BackendHelper.callService (s, dataHolder, application);
+						BackendHelper.callService (s, dataHolder, application, activity.getApplicationContext ());
 					}
 				} catch (Exception ex) {
 					dataHolder.exception (ex);

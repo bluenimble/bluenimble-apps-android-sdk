@@ -65,7 +65,7 @@ public class MediaDownloader implements Downloader {
 		}
 
 		try {
-			BackendHelper.callService (serviceId, dh, application);
+			BackendHelper.callService (serviceId, dh, application, null);
 		} catch (Exception e) {
 			throw new IOException (e.getMessage (), e);
 		}
@@ -79,5 +79,4 @@ public class MediaDownloader implements Downloader {
 	public void shutdown () {
 
 	}
-
 }

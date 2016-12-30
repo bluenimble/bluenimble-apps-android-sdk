@@ -1,5 +1,7 @@
 package com.bluenimble.apps.sdk.backend.impls.remote;
 
+import android.content.Context;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
@@ -87,7 +89,7 @@ public class RemoteService implements Service {
 	}
 
 	@Override
-	public void execute (final String id, JsonObject masterSpec, ApplicationSpec application, DataHolder dh) throws Exception {
+	public void execute (final String id, JsonObject masterSpec, ApplicationSpec application, DataHolder dh, Context appContext) throws Exception {
 
 		application.logger ().info (RemoteService.class.getSimpleName () + " ---> Execute", "Service " + id);
 
@@ -217,7 +219,6 @@ public class RemoteService implements Service {
 			e.printStackTrace ();
 			throw new Exception (e);
 		}
-		application.logger ().error (RemoteService.class.getSimpleName () + " ---> Execute", "Response: " + response.toString ());
 		
 		if (response.isSuccessful ()) {
 			final ResponseBody rBody = response.body ();
@@ -233,11 +234,14 @@ public class RemoteService implements Service {
 				dh.set (id, rBody.string ());
 			} else {
 				dh.stream (new StreamSource () {
+
 					private InputStream stream;
+
 					@Override
 					public String id () {
 						return id + Lang.DOT + DataHolder.Namespace.Streams + Json.getString (spec, Spec.response.Id, DataHolder.DefaultStreamId);
 					}
+
 					@Override
 					public String name () {
 						String disposition = response.header (HttpHeaders.CONTENT_DISPOSITION);
@@ -246,10 +250,12 @@ public class RemoteService implements Service {
 						}
 						return disposition.replaceFirst ("(?i)^.*filename=\"([^\"]+)\".*$", "$1");
 					}
+
 					@Override
 					public String contentType () {
 						return response.header (HttpHeaders.CONTENT_TYPE);
 					}
+
 					@Override
 					public long length () {
 						String sLength = response.header (HttpHeaders.CONTENT_LENGTH);
@@ -258,6 +264,7 @@ public class RemoteService implements Service {
 						}
 						return Long.valueOf (sLength);
 					}
+
 					@Override
 					public InputStream stream () {
 						if (stream != null) {
@@ -266,6 +273,7 @@ public class RemoteService implements Service {
 						stream = rBody.byteStream ();
 						return stream;
 					}
+
 					@Override
 					public void close () {
 						if (stream == null) {
