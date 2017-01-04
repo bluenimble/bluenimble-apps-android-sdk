@@ -395,6 +395,17 @@
 						"page": "services/local"
 					}
 				]
+			},
+			{
+				"title": "Native",
+				"icon": "\uf233",
+				"examples": [
+					{
+						"title": "Native",
+						"icon": "\uf233",
+						"page": "native:natives/message"
+					}
+				]
 			}
 		]
 	},
@@ -780,5 +791,8 @@
 		"dueDate": {
 			"en": "12 Nov 2016"
 		}
+	},
+	"native": {
+		"en": "GONE NATIVE !"
 	}
 }

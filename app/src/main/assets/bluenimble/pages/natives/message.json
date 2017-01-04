@@ -1,0 +1,18 @@
+{
+	"layers": {
+		"header": [
+			"image static.images.logo ? logo",
+			"text static.title.short ? title primary rounded"
+		],
+		"main": [
+			"text static.native ? bigTitle"
+		]
+	},
+	"events": {
+		"create": {
+			"onStart": {
+				"echo": "DataHolder Passed: [view.*]"
+			}
+		}
+	}
+}

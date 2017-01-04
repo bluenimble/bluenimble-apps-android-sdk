@@ -3,6 +3,7 @@ package com.bluenimble.apps.sdk.application;
 import com.bluenimble.apps.sdk.Lang;
 import com.bluenimble.apps.sdk.Spec;
 import com.bluenimble.apps.sdk.controller.ActionInstance;
+import com.bluenimble.apps.sdk.controller.DataHolder;
 import com.bluenimble.apps.sdk.controller.impls.actions.DefaultActionInstance;
 import com.bluenimble.apps.sdk.json.JsonObject;
 import com.bluenimble.apps.sdk.spec.ApplicationSpec;
@@ -33,6 +34,7 @@ public class UIActivity extends AppCompatActivity implements ViewResolver {
 	
 	public interface Exchange {
 		String Page = "page";
+		String Dh   = "dataHolder";
 	}
 	
 	protected ViewGroup root;
@@ -66,10 +68,33 @@ public class UIActivity extends AppCompatActivity implements ViewResolver {
 	}
 
 	private void render () {
-		renderPage (page ());
+		PageSpec page = null;
+
+		String pageId = null;
+
+		DataHolder dh = null;
+
+		// is this activity called using an intent, get the pageId to open
+		Intent intent = getIntent ();
+		if (intent != null) {
+			pageId  = intent.getStringExtra (Exchange.Page);
+			dh      = (DataHolder)intent.getSerializableExtra (Exchange.Dh);
+		}
+
+		// get the page spec
+		if (!Lang.isNullOrEmpty (pageId)) {
+			page = getSpec ().page (pageId);
+		}
+
+		// get the main page spec
+		if (page == null) {
+			page = getSpec ().index ();
+		}
+
+		renderPage (page, dh);
 	}
 
-	private void renderPage (PageSpec page) {
+	private void renderPage (PageSpec page, DataHolder dh) {
 		if (page == null) {
 			return;
 		}
@@ -97,31 +122,7 @@ public class UIActivity extends AppCompatActivity implements ViewResolver {
 			actionBar.hide ();
 		}
 
-		getSpec ().renderer ().render (page, this, null);
-	}
-
-	private PageSpec page () {
-		PageSpec page = null;
-
-		String pageId = null;
-
-		// is this activity called using an intent, get the pageId to open
-		Intent intent = getIntent ();
-		if (intent != null) {
-			pageId = intent.getStringExtra (Exchange.Page);
-		}
-
-		// get the page spec
-		if (!Lang.isNullOrEmpty (pageId)) {
-			page = getSpec ().page (pageId);
-		}
-
-		// get the main page spec
-		if (page == null) {
-			page = getSpec ().index ();
-		}
-
-		return page;
+		getSpec ().renderer ().render (page, this, dh);
 	}
 
 	@Override
@@ -186,7 +187,7 @@ public class UIActivity extends AppCompatActivity implements ViewResolver {
 
 		if (requestCode == SecurityHelper.StartupRequestCode) {
 			if (grantResults.length < anps.length) {
-				renderPage (getSpec ().security ().accessDenied ());
+				renderPage (getSpec ().security ().accessDenied (), null);
 			} else {
 				render ();
 			}
@@ -210,7 +211,7 @@ public class UIActivity extends AppCompatActivity implements ViewResolver {
 
 	@Override
 	public void onBackPressed () {
-		JsonObject eventSpec = page ().event (EventListener.Event.back.name ());
+		JsonObject eventSpec = getSpec ().renderer ().current ().event (EventListener.Event.back.name ());
 		if (eventSpec == null) {
 			super.onBackPressed ();
 			return;
