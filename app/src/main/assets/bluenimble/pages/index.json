@@ -14,6 +14,12 @@
 		]
 	},
 	"events": {
+		"back": {
+			"scope": "main",
+			"onStart": {
+				"echo": "Back"
+			}
+		},
 		"menuTpl.press": {
 			"scope": "main",
 			"onStart": {

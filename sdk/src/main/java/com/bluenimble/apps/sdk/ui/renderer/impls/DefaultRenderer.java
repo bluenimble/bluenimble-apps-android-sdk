@@ -254,7 +254,7 @@ public class DefaultRenderer implements Renderer {
 		JsonObject eventSpec = page.event (LifeCycleEvent.destroy.name ());
 		if (eventSpec != null) {
 			application.controller ().process (
-				DefaultActionInstance.create (DefaultRenderer.LifeCycleEvent.destroy.name (), eventSpec, application, null, activity.root ()),
+				DefaultActionInstance.create (LifeCycleEvent.destroy.name (), eventSpec, application, null, activity.root ()),
 				activity,
 				false
 			);

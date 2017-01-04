@@ -14,6 +14,8 @@ public class EventListener implements Serializable {
 	private static final long serialVersionUID = 6926039907807796916L;
 
 	public enum Event {
+		back,
+
 		onTextChanged,
 		beforeTextChanged,
 		afterTextChanged,

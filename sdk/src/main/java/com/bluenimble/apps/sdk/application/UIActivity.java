@@ -1,6 +1,5 @@
 package com.bluenimble.apps.sdk.application;
 
-import com.bluenimble.apps.sdk.Json;
 import com.bluenimble.apps.sdk.Lang;
 import com.bluenimble.apps.sdk.Spec;
 import com.bluenimble.apps.sdk.controller.ActionInstance;
@@ -8,6 +7,7 @@ import com.bluenimble.apps.sdk.controller.impls.actions.DefaultActionInstance;
 import com.bluenimble.apps.sdk.json.JsonObject;
 import com.bluenimble.apps.sdk.spec.ApplicationSpec;
 import com.bluenimble.apps.sdk.spec.PageSpec;
+import com.bluenimble.apps.sdk.ui.components.impls.listeners.EventListener;
 import com.bluenimble.apps.sdk.ui.renderer.ViewResolver;
 import com.bluenimble.apps.sdk.ui.renderer.Renderer.LifeCycleEvent;
 import com.bluenimble.apps.sdk.utils.EffectsHelper;
@@ -26,7 +26,6 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.RelativeLayout;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -67,6 +66,41 @@ public class UIActivity extends AppCompatActivity implements ViewResolver {
 	}
 
 	private void render () {
+		renderPage (page ());
+	}
+
+	private void renderPage (PageSpec page) {
+		if (page == null) {
+			return;
+		}
+
+		// create a relative layout and attach to the activity
+
+		RelativeLayout mainLayout = new RelativeLayout (this);
+		RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams (
+			ViewGroup.LayoutParams.MATCH_PARENT,
+			ViewGroup.LayoutParams.MATCH_PARENT
+		);
+
+		mainLayout.setId (UIApplication.newId ());
+
+		mainLayout.setLayoutParams (layoutParams);
+
+		setContentView (mainLayout);
+
+		// remember the root view / layout
+		root = mainLayout;
+
+		// remove action bar
+		ActionBar actionBar = getSupportActionBar ();
+		if (actionBar != null) {
+			actionBar.hide ();
+		}
+
+		getSpec ().renderer ().render (page, this, null);
+	}
+
+	private PageSpec page () {
 		PageSpec page = null;
 
 		String pageId = null;
@@ -87,39 +121,7 @@ public class UIActivity extends AppCompatActivity implements ViewResolver {
 			page = getSpec ().index ();
 		}
 
-		renderPage (page);
-
-	}
-
-	private void renderPage (PageSpec page) {
-		if (page == null) {
-			return;
-		}
-
-		// create a relative layout and attach to the activity
-
-		RelativeLayout mainLayout = new RelativeLayout (this);
-		RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams (
-				ViewGroup.LayoutParams.MATCH_PARENT,
-				ViewGroup.LayoutParams.MATCH_PARENT
-		);
-
-		mainLayout.setId (UIApplication.newId ());
-
-		mainLayout.setLayoutParams (layoutParams);
-
-		setContentView (mainLayout);
-
-		// remember the root view / layout
-		root = mainLayout;
-
-		// remove action bar
-		ActionBar actionBar = getSupportActionBar ();
-		if (actionBar != null) {
-			actionBar.hide ();
-		}
-
-		getSpec ().renderer ().render (page, this, null);
+		return page;
 	}
 
 	@Override
@@ -157,7 +159,7 @@ public class UIActivity extends AppCompatActivity implements ViewResolver {
 		if (view == null) {
 			return null;
 		}
-		View vLevelDown = null;
+		View vLevelDown;
 		View current = view;
 		while (true) {
 			vLevelDown = current;
@@ -204,6 +206,21 @@ public class UIActivity extends AppCompatActivity implements ViewResolver {
 			return;
 		}
 		getSpec ().controller ().process (actionInstance, this, false);
+	}
+
+	@Override
+	public void onBackPressed () {
+		JsonObject eventSpec = page ().event (EventListener.Event.back.name ());
+		if (eventSpec == null) {
+			super.onBackPressed ();
+			return;
+		}
+
+		getSpec ().controller ().process (
+			DefaultActionInstance.create (EventListener.Event.back.name (), eventSpec, getSpec (), null, root ()),
+			this,
+			false
+		);
 	}
 
 	public ApplicationSpec getSpec () {
