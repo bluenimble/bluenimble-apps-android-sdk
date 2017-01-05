@@ -11,6 +11,7 @@ import com.bluenimble.apps.sdk.spec.PageSpec;
 import com.bluenimble.apps.sdk.ui.components.impls.listeners.EventListener;
 import com.bluenimble.apps.sdk.ui.renderer.ViewResolver;
 import com.bluenimble.apps.sdk.ui.renderer.Renderer.LifeCycleEvent;
+import com.bluenimble.apps.sdk.utils.AppResources;
 import com.bluenimble.apps.sdk.utils.EffectsHelper;
 import com.bluenimble.apps.sdk.utils.SecurityHelper;
 import com.bluenimble.apps.sdk.utils.SpecHelper;
@@ -36,12 +37,24 @@ public class UIActivity extends AppCompatActivity implements ViewResolver {
 		String Page = "page";
 		String Dh   = "dataHolder";
 	}
+
+	private final static String Splash = "splash";
 	
 	protected ViewGroup root;
 	protected boolean 	resumed;
 
 	protected Map<Integer, ActionInstance> secureActions = new ConcurrentHashMap<Integer, ActionInstance> (5);
-	
+
+	@Override
+	protected void onStart () {
+		super.onStart ();
+		UIApplication app = (UIApplication)getApplication ();
+		if (app.isLoaded ()) {
+			return;
+		}
+		app.setFirstActivity (this);
+	}
+
 	@Override
 	protected void onCreate (Bundle state) {
 		super.onCreate (state);
@@ -49,6 +62,24 @@ public class UIActivity extends AppCompatActivity implements ViewResolver {
 		// remove bar
 		requestWindowFeature (Window.FEATURE_NO_TITLE);
 
+		UIApplication app = (UIApplication)getApplication ();
+		if (app.isLoaded ()) {
+			init ();
+			return;
+		}
+
+		RelativeLayout splash = new RelativeLayout (getApplicationContext ());
+		splash.setBackground (getResources ().getDrawable (AppResources.id (Splash, getPackageName ())));
+
+		RelativeLayout.LayoutParams rlp = new RelativeLayout.LayoutParams (
+			RelativeLayout.LayoutParams.MATCH_PARENT,
+			RelativeLayout.LayoutParams.MATCH_PARENT
+		);
+
+		setContentView (splash, rlp);
+	}
+
+	private void init () {
 		// get app spec
 		ApplicationSpec spec = getSpec ();
 
@@ -64,7 +95,16 @@ public class UIActivity extends AppCompatActivity implements ViewResolver {
 
 		// find the startup page and render it
 		render ();
+	}
 
+	public void notifyInit () {
+		runOnUiThread (new Runnable () {
+
+			@Override
+			public void run () {
+				init ();
+			}
+		});
 	}
 
 	private void render () {
@@ -135,6 +175,12 @@ public class UIActivity extends AppCompatActivity implements ViewResolver {
 			resumed = true;
 		}
 
+	}
+
+	@Override
+	protected void onStop () {
+		((UIApplication)getApplication ()).setFirstActivity (null);
+		super.onStop ();
 	}
 
 	@Override

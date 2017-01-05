@@ -1,6 +1,7 @@
 package com.bluenimble.apps.sdk.utils;
 
 import com.bluenimble.apps.sdk.Lang;
+import com.bluenimble.apps.sdk.logging.Logger;
 
 import android.R;
 import android.content.Context;
@@ -46,6 +47,26 @@ public class AppResources {
 			return (int) field.get (null);
 		} catch (Exception e) {
 			// TODO: log style -> warning
+			e.printStackTrace ();
+			return 0;
+		}
+	}
+
+	public static int id (String name, String packageName) {
+		if (Lang.isNullOrEmpty (name)) {
+			return 0;
+		}
+		name = name.trim ();
+		if (name.indexOf (Lang.DOT) >= 0) {
+			name = name.substring (0, name.indexOf (Lang.DOT));
+		}
+		try {
+			Class<?> clazz = Class.forName (packageName + ".R.drawable");
+			Field field = clazz.getField (name);
+			return (int) field.get (null);
+		} catch (Exception e) {
+			// TODO: log style -> warning
+			e.printStackTrace ();
 			return 0;
 		}
 	}

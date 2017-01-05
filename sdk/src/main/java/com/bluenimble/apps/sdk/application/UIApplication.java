@@ -51,6 +51,8 @@ public abstract class UIApplication extends Application {
 	private static final AtomicInteger NextId = new AtomicInteger (1);
 	
 	protected 	ApplicationSpec spec;
+	protected   boolean         loaded;
+	private     UIActivity      firstActivity;
 	
 	protected 	static ViewSize screenSize;
 	
@@ -128,6 +130,21 @@ public abstract class UIApplication extends Application {
 	    } else {
 	        return View.generateViewId ();
 	    }
+	}
+
+	public synchronized void setFirstActivity (UIActivity firstActivity) {
+		this.firstActivity = firstActivity;
+	}
+
+	protected synchronized void notifyFirstActivity () {
+		if (firstActivity == null) {
+			return;
+		}
+		firstActivity.notifyInit ();
+	}
+
+	public boolean isLoaded () {
+		return loaded;
 	}
 	
 	protected 	abstract void reload () throws Exception;
