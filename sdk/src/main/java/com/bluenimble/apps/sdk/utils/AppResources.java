@@ -1,11 +1,9 @@
 package com.bluenimble.apps.sdk.utils;
 
 import com.bluenimble.apps.sdk.Lang;
-import com.bluenimble.apps.sdk.logging.Logger;
 
 import android.R;
 import android.content.Context;
-import android.content.res.AssetManager;
 import android.graphics.drawable.Drawable;
 
 import java.lang.reflect.Field;
@@ -39,7 +37,7 @@ public class AppResources {
 			return 0;
 		}
 		name = name.trim ();
-		if (name.indexOf (Lang.DOT) >= 0) {
+		if (name.contains (Lang.DOT)) {
 			name = name.substring (0, name.indexOf (Lang.DOT));
 		}
 		try {
@@ -47,7 +45,7 @@ public class AppResources {
 			return (int) field.get (null);
 		} catch (Exception e) {
 			// TODO: log style -> warning
-			e.printStackTrace ();
+			//e.printStackTrace ();
 			return 0;
 		}
 	}
@@ -57,16 +55,16 @@ public class AppResources {
 			return 0;
 		}
 		name = name.trim ();
-		if (name.indexOf (Lang.DOT) >= 0) {
+		if (name.contains (Lang.DOT)) {
 			name = name.substring (0, name.indexOf (Lang.DOT));
 		}
 		try {
-			Class<?> clazz = Class.forName (packageName + ".R.drawable");
+			Class<?> clazz = Class.forName (packageName + ".R$drawable");
 			Field field = clazz.getField (name);
 			return (int) field.get (null);
 		} catch (Exception e) {
 			// TODO: log style -> warning
-			e.printStackTrace ();
+			//e.printStackTrace ();
 			return 0;
 		}
 	}

@@ -42,6 +42,7 @@ public class UIActivity extends AppCompatActivity implements ViewResolver {
 	
 	protected ViewGroup root;
 	protected boolean 	resumed;
+	protected boolean   splashShown;
 
 	protected Map<Integer, ActionInstance> secureActions = new ConcurrentHashMap<Integer, ActionInstance> (5);
 
@@ -64,6 +65,7 @@ public class UIActivity extends AppCompatActivity implements ViewResolver {
 
 		UIApplication app = (UIApplication)getApplication ();
 		if (app.isLoaded ()) {
+			splashShown = true;
 			init ();
 			return;
 		}
@@ -103,6 +105,12 @@ public class UIActivity extends AppCompatActivity implements ViewResolver {
 			@Override
 			public void run () {
 				init ();
+				splashShown = true;
+				if (!resumed) {
+					PageSpec page = getSpec ().renderer ().current ();
+					SpecHelper.fireCreateEvent (page, page.id (), UIActivity.this, root (), false, null);
+					resumed = true;
+				}
 			}
 		});
 	}
@@ -169,7 +177,7 @@ public class UIActivity extends AppCompatActivity implements ViewResolver {
 	protected void onResume () {
 		super.onResume ();
 
-		if (!resumed) {
+		if (!resumed && splashShown) {
 			PageSpec page = getSpec ().renderer ().current ();
 			SpecHelper.fireCreateEvent (page, page.id (), this, root (), false, null);
 			resumed = true;
