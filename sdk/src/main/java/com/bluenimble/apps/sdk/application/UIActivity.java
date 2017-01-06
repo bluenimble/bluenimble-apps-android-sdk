@@ -59,7 +59,7 @@ public class UIActivity extends AppCompatActivity implements ViewResolver {
 	protected void onCreate (Bundle state) {
 		super.onCreate (state);
 
-		// remove bar
+		// remove action bar
 		requestWindowFeature (Window.FEATURE_NO_TITLE);
 
 		UIApplication app = (UIApplication)getApplication ();
