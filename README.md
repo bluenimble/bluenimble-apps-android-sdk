@@ -10,12 +10,31 @@ Getting Started
 -----
 
 ## Use in a brand new application
-If you're creating a new application, just clone bluenimble-apps-android-bootstrap. It's a pre-configured android project that you can run immediately.
+If you're creating a new application, just clone <a href="https://github.com/bluenimble/bluenimble-apps-android-bootstrap" target="_blank"> bluenimble-apps-android-bootstrap</a>. It's a pre-configured android project that you can run immediately.
 
 ## Use in an existing application
-If you're going to extend your existing application by adding new activities based on bluenimble sdk, add bluenimble-apps-sdk-android to your gradle build script
+If you're going to extend your existing application by adding new activities based on bluenimble sdk, add bluenimble-apps-sdk-android to your gradle build script.
 
-What's a BlueNimble Application 
+**Step1:**
+Add BlueNimble Apps SDK dependency on the gradle script:
+`
+compile 'com.github.bluenimble:bluenimble-apps-android-sdk:master-SNAPSHOT'
+`
+
+**Step2:**
+Register one of the BlueNimble Application classes and the the UIActivity on your AndroidManifest.xml file:
+`
+<application
+	.......
+	android:name="com.bluenimble.apps.sdk.application.AssetsApplication">
+	......
+	<activity
+		android:name="com.bluenimble.apps.sdk.application.UIActivity"
+		android:configChanges="orientation|screenSize|keyboardHidden" />
+</application>
+`
+
+What's a BlueNimble Application?
 -----
 
 A BlueNimble application is a folder under android assets which have the structure bellow:
@@ -39,126 +58,112 @@ Visual Components - Out-Of-The-Box
 
 **bluenimble-apps** supports the most used and standard visual components
 <table>
-<tr style="border: 0px;">
-<td style="border: 0px; padding-left: 20px;">
-text
-</td>
-<td style="border: 0px; padding-left: 20px;">
-Labels, titles and non editable description zones
-</td>
-</tr>
-<tr style="border: 0px;">
-<td style="border: 0px; padding-left: 20px;">
-input
-</td>
-<td style="border: 0px; padding-left: 20px;">
-Create editable input areas
-</td>
-</tr>
-<tr style="border: 0px;">
-<td style="border: 0px; padding-left: 20px;">
-checkbox
-</td>
-<td style="border: 0px; padding-left: 20px;">
-A Checkbox component
-</td>
-</tr>
-<tr style="border: 0px;">
-<td style="border: 0px; padding-left: 20px;">
-radiogroup
-</td>
-<td style="border: 0px; padding-left: 20px;">
-A RadioGroup component
-</td>
-</tr>
-<tr style="border: 0px;">
-<td style="border: 0px; padding-left: 20px;">
-button
-</td>
-<td style="border: 0px; padding-left: 20px;">
-A button 
-</td>
-<tr style="border: 0px;">
-<td style="border: 0px; padding-left: 20px;">
-image
-</td>
-<td style="border: 0px; padding-left: 20px;">
-An image 
-</td>
-</tr>
-<tr style="border: 0px;">
-<td style="border: 0px; padding-left: 20px;">
-dropdown
-</td>
-<td style="border: 0px; padding-left: 20px;">
-a selectable list of values 
-</td>
-</tr>
-<tr style="border: 0px;">
-<td style="border: 0px; padding-left: 20px;">
-list
-</td>
-<td style="border: 0px; padding-left: 20px;">
-a selectable list of values 
-</td>
-</tr>
-<tr style="border: 0px;">
-<td style="border: 0px; padding-left: 20px;">
-map
-</td>
-<td style="border: 0px; padding-left: 20px;">
-map component 
-</td>
-</tr>
-<tr style="border: 0px;">
-<td style="border: 0px; padding-left: 20px;">
-chart.line
-</td>
-<td style="border: 0px; padding-left: 20px;">
-Line Chart 
-</td>
-</tr>
-<tr style="border: 0px;">
-<td style="border: 0px; padding-left: 20px;">
-chart.bar
-</td>
-<td style="border: 0px; padding-left: 20px;">
-Bar Chart 
-</td>
-</tr>
-<tr style="border: 0px;">
-<td style="border: 0px; padding-left: 20px;">
-chart.pie
-</td>
-<td style="border: 0px; padding-left: 20px;">
-Pie Chart 
-</td>
-</tr>
-<tr style="border: 0px;">
-<td style="border: 0px; padding-left: 20px;">
-chart.bubble
-</td>
-<td style="border: 0px; padding-left: 20px;">
-Bubble Chart 
-</td>
-</tr>
-<tr style="border: 0px;">
-<td style="border: 0px; padding-left: 20px;">
-chart.radar
-</td>
-<td style="border: 0px; padding-left: 20px;">
-Radar Chart 
-</td>
-</tr>
-<tr style="border: 0px;">
-<td style="border: 0px; padding-left: 20px;">
-chart.scatter
-</td>
-<td style="border: 0px; padding-left: 20px;">
-Scatter Chart 
-</td>
-</tr>
+	<thead>
+		<tr style="border: 0px;">
+			<th>Id</th>
+			<th>Description</th>
+			<th>Declaration</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr style="border: 0px;">
+			<td style="border: 0px; padding-left: 20px;">text</td>
+			<td style="border: 0px; padding-left: 20px;">Labels, titles and non editable description zones</td>
+			<td style="border: 0px; padding-left: 20px;"></td>
+		</tr>
+		<tr style="border: 0px;">
+			<td style="border: 0px; padding-left: 20px;">input</td>
+			<td style="border: 0px; padding-left: 20px;">Editable input area</td>
+			<td style="border: 0px; padding-left: 20px;"></td>
+		</tr>
+		<tr style="border: 0px;">
+			<td style="border: 0px; padding-left: 20px;">checkbox</td>
+			<td style="border: 0px; padding-left: 20px;">Checkbox component (multi-choice)</td>
+			<td style="border: 0px; padding-left: 20px;"></td>
+		</tr>
+		<tr style="border: 0px;">
+			<td style="border: 0px; padding-left: 20px;">radiogroup</td>
+			<td style="border: 0px; padding-left: 20px;">RadioGroup component (single-choice)</td>
+			<td style="border: 0px; padding-left: 20px;"></td>
+		</tr>
+		<tr style="border: 0px;">
+			<td style="border: 0px; padding-left: 20px;">button</td>
+			<td style="border: 0px; padding-left: 20px;">Button</td>
+			<td style="border: 0px; padding-left: 20px;"></td>
+		</tr>
+		<tr style="border: 0px;">
+			<td style="border: 0px; padding-left: 20px;">image</td>
+			<td style="border: 0px; padding-left: 20px;">An image</td>
+			<td style="border: 0px; padding-left: 20px;"></td>
+		</tr>
+		<tr style="border: 0px;">
+			<td style="border: 0px; padding-left: 20px;">dropdown</td>
+			<td style="border: 0px; padding-left: 20px;">A single choice selectable list of values</td>
+			<td style="border: 0px; padding-left: 20px;"></td>
+		</tr>
+		<tr style="border: 0px;">
+			<td style="border: 0px; padding-left: 20px;">list</td>
+			<td style="border: 0px; padding-left: 20px;">A selectable list of values displayed as a list or grid</td>
+			<td style="border: 0px; padding-left: 20px;"></td>
+		</tr>
+		<tr style="border: 0px;">
+			<td style="border: 0px; padding-left: 20px;">map</td>
+			<td style="border: 0px; padding-left: 20px;">Map component (based on google maps)</td>
+			<td style="border: 0px; padding-left: 20px;"></td>
+		</tr>
+		<tr style="border: 0px;">
+			<td style="border: 0px; padding-left: 20px;">chart.line</td>
+			<td style="border: 0px; padding-left: 20px;">Line Chart</td>
+			<td style="border: 0px; padding-left: 20px;"></td>
+		</tr>
+		<tr style="border: 0px;">
+			<td style="border: 0px; padding-left: 20px;">chart.bar</td>
+			<td style="border: 0px; padding-left: 20px;">Bar Chart</td>
+			<td style="border: 0px; padding-left: 20px;"></td>
+		</tr>
+		<tr style="border: 0px;">
+			<td style="border: 0px; padding-left: 20px;">chart.pie</td>
+			<td style="border: 0px; padding-left: 20px;">Pie Chart</td>
+			<td style="border: 0px; padding-left: 20px;"></td>
+		</tr>
+		<tr style="border: 0px;">
+			<td style="border: 0px; padding-left: 20px;">chart.bubble</td>
+			<td style="border: 0px; padding-left: 20px;">Bubble Chart</td>
+			<td style="border: 0px; padding-left: 20px;"></td>
+		</tr>
+		<tr style="border: 0px;">
+			<td style="border: 0px; padding-left: 20px;">chart.radar</td>
+			<td style="border: 0px; padding-left: 20px;">Radar Chart</td>
+			<td style="border: 0px; padding-left: 20px;"></td>
+		</tr>
+		<tr style="border: 0px;">
+			<td style="border: 0px; padding-left: 20px;">chart.scatter</td>
+			<td style="border: 0px; padding-left: 20px;">Scatter Chart</td>
+			<td style="border: 0px; padding-left: 20px;"></td>
+		</tr>
+	</tbody>
 </table>
+
+
+## Credits:
+Thank you to the developers of the following libs, that BlueNimble Apps SDK uses underline:
+<ul>
+	<li>
+		<a href="https://github.com/square/okhttp" target="_blank">OkHttp</a>
+	</li>
+	<li>
+		<a href="https://github.com/square/picasso" target="_blank">Picasso</a>
+	</li>
+	<li>
+		<a href="https://github.com/PhilJay/MPAndroidChart" target="_blank">MPAndroidChart</a>
+	</li>
+	<li>
+		<a href="https://github.com/daimajia/AndroidViewAnimations" target="_blank">AndroidViewAnimations</a>
+	</li>
+	<li>
+		<a href="http://mathparser.org/" target="_blank">MxParser</a>
+	</li>
+</ul>
 
 License
 =======
