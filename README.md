@@ -10,7 +10,7 @@ Getting Started
 -----
 
 ## Use in a brand new application
-If you're creating a new application, just clone <a href="https://github.com/bluenimble/bluenimble-apps-android-bootstrap" target="_blank"> bluenimble-apps-android-bootstrap</a>. It's a pre-configured android project that you can run immediately.
+If you're creating a new application, just clone <a href="https://github.com/bluenimble/bluenimble-apps-android-bootstrap" target="_blank"> bluenimble-apps-android-bootstrap</a>. It's a pre-configured android project that you can run immediately. *(Rename the app package id and name of the project)*
 
 ## Use in an existing application
 If you're going to extend your existing application by adding new activities based on bluenimble sdk, add bluenimble-apps-sdk-android to your gradle build script.
@@ -65,84 +65,89 @@ Visual Components - Out-Of-The-Box
 		<tr style="border: 0px;">
 			<th>Id</th>
 			<th>Description</th>
-			<th>Declaration</th>
+			<th>Declaration (on your pages, such as *page1.json*)</th>
 		</tr>
 	</thead>
 	<tbody>
 		<tr style="border: 0px;">
 			<td style="border: 0px; padding-left: 20px;">text</td>
 			<td style="border: 0px; padding-left: 20px;">Labels, titles and non editable description zones</td>
-			<td style="border: 0px; padding-left: 20px;"></td>
+			<td style="border: 0px; padding-left: 20px;">`"text static.title ?"`</td>
 		</tr>
 		<tr style="border: 0px;">
 			<td style="border: 0px; padding-left: 20px;">input</td>
 			<td style="border: 0px; padding-left: 20px;">Editable input area</td>
-			<td style="border: 0px; padding-left: 20px;"></td>
+			<td style="border: 0px; padding-left: 20px;">`"input:fullName ? ?"`</td>
 		</tr>
 		<tr style="border: 0px;">
 			<td style="border: 0px; padding-left: 20px;">checkbox</td>
 			<td style="border: 0px; padding-left: 20px;">Checkbox component (multi-choice)</td>
-			<td style="border: 0px; padding-left: 20px;"></td>
-		</tr>
+			<td style="border: 0px; padding-left: 20px;">`"checkbox:terms static.terms ?`</td>		
+</tr>
 		<tr style="border: 0px;">
 			<td style="border: 0px; padding-left: 20px;">radiogroup</td>
 			<td style="border: 0px; padding-left: 20px;">RadioGroup component (single-choice)</td>
-			<td style="border: 0px; padding-left: 20px;"></td>
+			<td style="border: 0px; padding-left: 20px;">`"radiogroup:gender static.gender ?"`</td>
 		</tr>
 		<tr style="border: 0px;">
 			<td style="border: 0px; padding-left: 20px;">button</td>
 			<td style="border: 0px; padding-left: 20px;">Button</td>
-			<td style="border: 0px; padding-left: 20px;"></td>
+			<td style="border: 0px; padding-left: 20px;">`"button:create static.create ?"`</td>
 		</tr>
 		<tr style="border: 0px;">
 			<td style="border: 0px; padding-left: 20px;">image</td>
 			<td style="border: 0px; padding-left: 20px;">An image</td>
-			<td style="border: 0px; padding-left: 20px;"></td>
+			<td style="border: 0px; padding-left: 20px;">`"image static.images.logo ?"`</td>
 		</tr>
 		<tr style="border: 0px;">
 			<td style="border: 0px; padding-left: 20px;">dropdown</td>
 			<td style="border: 0px; padding-left: 20px;">A single choice selectable list of values</td>
-			<td style="border: 0px; padding-left: 20px;"></td>
+			<td style="border: 0px; padding-left: 20px;">`"dropdown:gender static.gender ?"`</td>
 		</tr>
 		<tr style="border: 0px;">
 			<td style="border: 0px; padding-left: 20px;">list</td>
 			<td style="border: 0px; padding-left: 20px;">A selectable list of values displayed as a list or grid</td>
-			<td style="border: 0px; padding-left: 20px;"></td>
+			<td style="border: 0px; padding-left: 20px;">`"list:tasks static.tasks ? template=taskTpl layout=grid cols=3"`</td>
+		</tr>
+		<tr style="border: 0px;">
+			<td style="border: 0px; padding-left: 20px;">/</td>
+			<td style="border: 0px; padding-left: 20px;">Line break (could be appended after a component declaration)</td>
+			<td style="border: 0px; padding-left: 20px;">`"/"` or `"text static.title ? /"`</td>
 		</tr>
 		<tr style="border: 0px;">
 			<td style="border: 0px; padding-left: 20px;">map</td>
 			<td style="border: 0px; padding-left: 20px;">Map component (based on google maps)</td>
-			<td style="border: 0px; padding-left: 20px;"></td>
+			<td style="border: 0px; padding-left: 20px;">`"map:world ? ?"`</td>
 		</tr>
 		<tr style="border: 0px;">
 			<td style="border: 0px; padding-left: 20px;">chart.line</td>
 			<td style="border: 0px; padding-left: 20px;">Line Chart</td>
-			<td style="border: 0px; padding-left: 20px;"></td>
+			<td style="border: 0px; padding-left: 20px;">`"chart.line static.charts.line ?"`</td>
 		</tr>
 		<tr style="border: 0px;">
 			<td style="border: 0px; padding-left: 20px;">chart.bar</td>
-			<td style="border: 0px; padding-left: 20px;">Bar Chart</td>
-			<td style="border: 0px; padding-left: 20px;"></td>
+			<td style="border: 0px; padding-left: 20px;">Bar Chart (horizontal and vertical)</td>
+			<td style="border: 0px; padding-left: 20px;">`"chart.bar static.charts.bar ?"`</td>
 		</tr>
 		<tr style="border: 0px;">
 			<td style="border: 0px; padding-left: 20px;">chart.pie</td>
 			<td style="border: 0px; padding-left: 20px;">Pie Chart</td>
-			<td style="border: 0px; padding-left: 20px;"></td>
+			<td style="border: 0px; padding-left: 20px;">`"chart.pie static.charts.pie ?"`</td>
 		</tr>
 		<tr style="border: 0px;">
 			<td style="border: 0px; padding-left: 20px;">chart.bubble</td>
 			<td style="border: 0px; padding-left: 20px;">Bubble Chart</td>
-			<td style="border: 0px; padding-left: 20px;"></td>
+			<td style="border: 0px; padding-left: 20px;">`"chart.bubble static.charts.bubble ?"`</td>
 		</tr>
 		<tr style="border: 0px;">
 			<td style="border: 0px; padding-left: 20px;">chart.radar</td>
 			<td style="border: 0px; padding-left: 20px;">Radar Chart</td>
-			<td style="border: 0px; padding-left: 20px;"></td>
+			<td style="border: 0px; padding-left: 20px;">`"chart.radar static.charts.radar ?"`</td>
 		</tr>
 		<tr style="border: 0px;">
 			<td style="border: 0px; padding-left: 20px;">chart.scatter</td>
 			<td style="border: 0px; padding-left: 20px;">Scatter Chart</td>
-			<td style="border: 0px; padding-left: 20px;"></td>
+			<td style="border: 0px; padding-left: 20px;">`"chart.scatter static.charts.scatter ?"`</td>
 		</tr>
 	</tbody>
 </table>
@@ -165,6 +170,9 @@ Thank you to the developers of the following libs, that BlueNimble Apps SDK uses
 	</li>
 	<li>
 		<a href="http://mathparser.org/" target="_blank">MxParser</a>
+	</li>
+	<li>
+		<a href="http://fontawesome.io/icons/" target="_blank">Font Awesome</a>
 	</li>
 </ul>
 
