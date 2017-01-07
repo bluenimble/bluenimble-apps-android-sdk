@@ -60,97 +60,24 @@ Visual Components - Out-Of-The-Box
 -----
 
 **bluenimble-apps** supports the most used and standard visual components
-<table>
-	<thead>
-		<tr style="border: 0px;">
-			<th>Id</th>
-			<th>Description</th>
-			<th>Declaration (goes into your pages files)</th>
-		</tr>
-	</thead>
-	<tbody>
-		<tr style="border: 0px;">
-			<td style="border: 0px; padding-left: 20px;">text</td>
-			<td style="border: 0px; padding-left: 20px;">Labels, titles and non editable description zones</td>
-			<td style="border: 0px; padding-left: 20px;"><pre>"text static.title ?"</pre></td>
-		</tr>
-		<tr style="border: 0px;">
-			<td style="border: 0px; padding-left: 20px;">input</td>
-			<td style="border: 0px; padding-left: 20px;">Editable input area</td>
-			<td style="border: 0px; padding-left: 20px;"><pre>"input:fullName ? ?"</pre></td>
-		</tr>
-		<tr style="border: 0px;">
-			<td style="border: 0px; padding-left: 20px;">checkbox</td>
-			<td style="border: 0px; padding-left: 20px;">Checkbox component (multi-choice)</td>
-			<td style="border: 0px; padding-left: 20px;"><pre>"checkbox:terms static.terms ?"</pre></td>		
-</tr>
-		<tr style="border: 0px;">
-			<td style="border: 0px; padding-left: 20px;">radiogroup</td>
-			<td style="border: 0px; padding-left: 20px;">RadioGroup component (single-choice)</td>
-			<td style="border: 0px; padding-left: 20px;"><pre>"radiogroup:gender static.gender ?"</pre></td>
-		</tr>
-		<tr style="border: 0px;">
-			<td style="border: 0px; padding-left: 20px;">button</td>
-			<td style="border: 0px; padding-left: 20px;">Button</td>
-			<td style="border: 0px; padding-left: 20px;"><pre>"button:create static.create ?"</pre></td>
-		</tr>
-		<tr style="border: 0px;">
-			<td style="border: 0px; padding-left: 20px;">image</td>
-			<td style="border: 0px; padding-left: 20px;">An image</td>
-			<td style="border: 0px; padding-left: 20px;"><pre>"image static.images.logo ?"</pre></td>
-		</tr>
-		<tr style="border: 0px;">
-			<td style="border: 0px; padding-left: 20px;">dropdown</td>
-			<td style="border: 0px; padding-left: 20px;">A single choice selectable list of values</td>
-			<td style="border: 0px; padding-left: 20px;"><pre>"dropdown:gender static.gender ?"</pre></td>
-		</tr>
-		<tr style="border: 0px;">
-			<td style="border: 0px; padding-left: 20px;">list</td>
-			<td style="border: 0px; padding-left: 20px;">A selectable list of values displayed as a list or grid</td>
-			<td style="border: 0px; padding-left: 20px;"><pre>"list:tasks static.tasks ? template=taskTpl layout=grid cols=3"</pre></td>
-		</tr>
-		<tr style="border: 0px;">
-			<td style="border: 0px; padding-left: 20px;">/</td>
-			<td style="border: 0px; padding-left: 20px;">Line break (could be appended after a component declaration)</td>
-			<td style="border: 0px; padding-left: 20px;"><pre>"/"</pre> or <pre>"text static.title ? /"</pre></td>
-		</tr>
-		<tr style="border: 0px;">
-			<td style="border: 0px; padding-left: 20px;">map</td>
-			<td style="border: 0px; padding-left: 20px;">Map component (based on google maps)</td>
-			<td style="border: 0px; padding-left: 20px;"><pre>"map:world ? ?"</pre></td>
-		</tr>
-		<tr style="border: 0px;">
-			<td style="border: 0px; padding-left: 20px;">chart.line</td>
-			<td style="border: 0px; padding-left: 20px;">Line Chart</td>
-			<td style="border: 0px; padding-left: 20px;"><pre>"chart.line static.charts.line ?"</pre></td>
-		</tr>
-		<tr style="border: 0px;">
-			<td style="border: 0px; padding-left: 20px;">chart.bar</td>
-			<td style="border: 0px; padding-left: 20px;">Bar Chart (horizontal and vertical)</td>
-			<td style="border: 0px; padding-left: 20px;"><pre>"chart.bar static.charts.bar ?"</pre></td>
-		</tr>
-		<tr style="border: 0px;">
-			<td style="border: 0px; padding-left: 20px;">chart.pie</td>
-			<td style="border: 0px; padding-left: 20px;">Pie Chart</td>
-			<td style="border: 0px; padding-left: 20px;"><pre>"chart.pie static.charts.pie ?"</pre></td>
-		</tr>
-		<tr style="border: 0px;">
-			<td style="border: 0px; padding-left: 20px;">chart.bubble</td>
-			<td style="border: 0px; padding-left: 20px;">Bubble Chart</td>
-			<td style="border: 0px; padding-left: 20px;"><pre>"chart.bubble static.charts.bubble ?"</pre></td>
-		</tr>
-		<tr style="border: 0px;">
-			<td style="border: 0px; padding-left: 20px;">chart.radar</td>
-			<td style="border: 0px; padding-left: 20px;">Radar Chart</td>
-			<td style="border: 0px; padding-left: 20px;"><pre>"chart.radar static.charts.radar ?"</pre></td>
-		</tr>
-		<tr style="border: 0px;">
-			<td style="border: 0px; padding-left: 20px;">chart.scatter</td>
-			<td style="border: 0px; padding-left: 20px;">Scatter Chart</td>
-			<td style="border: 0px; padding-left: 20px;"><pre>"chart.scatter static.charts.scatter ?"</pre></td>
-		</tr>
-	</tbody>
-</table>
+| Id            | Description | Spec Declaration |
+| ------------- | --- |--- |
+| text          | Labels, titles and non editable description zones                       | `"text static.title ?"`|
+| input         | Editable input area                                                     | `"input:fullName ? ?"` |
+| checkbox      | Checkbox component (multi-choice)                                       | `"checkbox:terms static.terms ?"` | 
+| radiogroup    | RadioGroup component (single-choice)                                    | `"radiogroup:gender static.gender ?"` |
+| button        | Button                                                                  | `"button:create static.create ?"` |
+| image         | An image | `"image static.images.logo ?"` |
+| dropdown      | A single choice selectable list of values                               | `"dropdown:gender static.gender ?"` |
+| list          | A selectable list of values displayed as a list or grid                 | `"list:tasks static.tasks ? template=taskTpl layout=grid cols=3"` |
+| /             | Line break (declared standalone or appended to a component declaration) | `"/"` or `"text static.title ? /"` |
+| map           | Map component (based on google maps)                                    | `"map:world ? ?"` |
+| chart.line    | Line Chart                                                              | `"chart.line static.charts.line ?"` | 
+| chart.bar     | Bar Chart (horizontal and vertical)                                     | `"chart.bar static.charts.bar ?"` |
+| chart.pie     | Pie Chart                                                               | `"chart.pie static.charts.pie ?"` |
+| chart.bubble  | Bubble Chart 								  | `"chart.bubble static.charts.bubble ?"` |
+| chart.radar   | Radar Chart 								  | `"chart.radar static.charts.radar ?"` |
+| chart.scatter | Scatter Chart 							  | `"chart.scatter static.charts.scatter ?"` |
 
 I18n Text resources - static.json
 -----
