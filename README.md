@@ -60,24 +60,25 @@ Visual Components - Out-Of-The-Box
 -----
 
 **bluenimble-apps** supports the most used and standard visual components
-| Id            | Description | Spec Declaration |
-| ------------- | --- |--- |
-| text          | Labels, titles and non editable description zones                       | `"text static.title ?"`|
-| input         | Editable input area                                                     | `"input:fullName ? ?"` |
-| checkbox      | Checkbox component (multi-choice)                                       | `"checkbox:terms static.terms ?"` | 
-| radiogroup    | RadioGroup component (single-choice)                                    | `"radiogroup:gender static.gender ?"` |
-| button        | Button                                                                  | `"button:create static.create ?"` |
-| image         | An image | `"image static.images.logo ?"` |
-| dropdown      | A single choice selectable list of values                               | `"dropdown:gender static.gender ?"` |
-| list          | A selectable list of values displayed as a list or grid                 | `"list:tasks static.tasks ? template=taskTpl layout=grid cols=3"` |
-| /             | Line break (declared standalone or appended to a component declaration) | `"/"` or `"text static.title ? /"` |
-| map           | Map component (based on google maps)                                    | `"map:world ? ?"` |
-| chart.line    | Line Chart                                                              | `"chart.line static.charts.line ?"` | 
-| chart.bar     | Bar Chart (horizontal and vertical)                                     | `"chart.bar static.charts.bar ?"` |
-| chart.pie     | Pie Chart                                                               | `"chart.pie static.charts.pie ?"` |
-| chart.bubble  | Bubble Chart 								  | `"chart.bubble static.charts.bubble ?"` |
-| chart.radar   | Radar Chart 								  | `"chart.radar static.charts.radar ?"` |
-| chart.scatter | Scatter Chart 							  | `"chart.scatter static.charts.scatter ?"` |
+
+| Id | Description | Spec Declaration |
+| --- | --- | --- |
+| text | Labels, titles and non editable description zones | `"text static.title ?"`|
+| input | Editable input area | `"input:fullName ? ?"` |
+| checkbox | Checkbox component (multi-choice) | `"checkbox:terms static.terms ?"` | 
+| radiogroup | RadioGroup component (single-choice) | `"radiogroup:gender static.gender ?"` |
+| button | Button | `"button:create static.create ?"` |
+| image | An image | `"image static.images.logo ?"` |
+| dropdown | A single choice selectable list of values | `"dropdown:gender static.gender ?"` |
+| list | A selectable list of values displayed as a list or grid | `"list:tasks static.tasks ? template=taskTpl layout=grid cols=3"` |
+| / | Line break (declared standalone or appended to a component declaration) | `"/"` or `"text static.title ? /"` |
+| map | Map component (based on google maps) | `"map:world ? ?"` |
+| chart.line | Line Chart | `"chart.line static.charts.line ?"` | 
+| chart.bar | Bar Chart (horizontal and vertical) | `"chart.bar static.charts.bar ?"` |
+| chart.pie | Pie Chart | `"chart.pie static.charts.pie ?"` |
+| chart.bubble | Bubble Chart | `"chart.bubble static.charts.bubble ?"` |
+| chart.radar | Radar Chart | `"chart.radar static.charts.radar ?"` |
+| chart.scatter | Scatter Chart | `"chart.scatter static.charts.scatter ?"` |
 
 I18n Text resources - static.json
 -----
