@@ -27,21 +27,24 @@ Register one of the BlueNimble Application classes and the the UIActivity on you
 <application
 	.......
 	android:name="com.bluenimble.apps.sdk.application.AssetsApplication">
+
 	......
+
 	<activity
 		android:name="com.bluenimble.apps.sdk.application.UIActivity"
 		android:configChanges="orientation|screenSize|keyboardHidden" />
+
 </application>
 ```
 
 What's a BlueNimble Application?
 -----
 
-A BlueNimble application is a folder under android assets which have the structure bellow:
+A BlueNimble application is a folder under android assets which have the structure below:
 
 - myApp
   - app.json
-  - static.json (*optional*. Put application texts by user spoken language such as form fields labels)
+  - static.json (*optional*. Put application texts by user spoken language such as form fields labels - i18n)
   - backend.json (*optional*. Define your REST or local services)
   - themes (*optional*)
     - aTheme
