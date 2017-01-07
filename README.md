@@ -1,6 +1,6 @@
 # BlueNimble Apps SDK for Android
 
-**BlueNimble Apps SDK** let you create android applications **almost without writing a single line of code**. You can create complex pages, styling components, adding effects and integrate with your backend using simple json configuration files.
+**BlueNimble Apps SDK** let you create android ***NATIVE*** applications **almost without writing a single line of code**. You can create complex pages, styling components, adding effects and integrate with your backend using simple json configuration files.
 
 With almost no android experience, you can create advanced applications without the hassle of understanding how layouts, visual components, async tasks or backend integration works in android.
 
@@ -56,8 +56,101 @@ A BlueNimble application is a folder under android assets which have the structu
 
 You can also zip the myApp folder and tell the sdk to load the app from the archive. 
 	
-Visual Components - Out-Of-The-Box
+Create a Page:
 -----
+
+A page is basically a Json file representing a screen in your android app. Usually an application will have multiple pages through which users can navigate.
+You can organize your application pages in folders under the directory `pages` if you want (by module names for e.g), or let them on the root of the `pages` folder.
+
+e.g:
+  - pages
+    - home.json
+	- help.json
+	- authentication
+	  - login.json
+	  - signup.json
+	- todo
+	  - addTask.json
+	  - listTasks.json
+
+The components of a page are: ***Layers*** and ***Events***.
+
+
+### Layers:
+A layer is a section of a page, hosting visual components (buttons, labels etc..). It's main purpose is to organize your UI blocks (section of the page, popup dialog etc..).
+
+A layer could have 3 states: 
+- **Rendered:** by default. (visible)
+- **Rendered and Hidden:** by adding the ***hidden*** keyword after the layout name. (invisible)
+- **Not Rendered:** by adding the ***!*** character before the layout name. Useful in lists/grids. (not created therefore invisible)
+
+e.g:
+**myPage.json:** 
+```
+{
+	"layers": {
+		"header": [
+			// components (buttons, images, labels etc...)
+		],
+		"main": [
+			// components (buttons, images, labels etc...)
+		],
+		"hiddenBlock hidden": [
+			// components (buttons, images, labels etc...)
+		], 
+		"! notRenderedBlock": [
+			// components (buttons, images, labels etc...)
+		]
+	},
+	"events": {
+		// events go here
+	}
+}
+```
+
+As stated before, a layer is a group of: ***Components***.
+
+
+### Components:
+This is how to declare a component:
+
+`"component:ID  bindingSET  bindingGET  property1=value1 property2=value2...  styleAttr1 styleAttr2... /"`
+
+- **component:** the name of the component, *e.g: `text` for the label component*
+- **ID:** *[optional]* useful when linking an event to the component or when binding data dynamically to/from it. (see events and binding sections)
+- **bindingSet:** the value to be bound to this component, or the ***?*** if none. (see binding section)
+- **bindingGet:** the value that this component will output, or the ***?*** if none. (see binding section)
+- **properties:** *[optional]* predefined or custom properties of this component *e.g: `placeholder` for the input component*
+- **styleAttributes:** *[optional]* keys identifying a specific style on the application theme. *e.g: `center` or `red`*
+- **/ :** *[optional]* Break the line. (next element will be positioned below this one)
+
+e.g:
+**myPage.json:** 
+```
+{
+	"layers": {
+		"header": [
+			"text  	static.icons.back 	?   icon",
+			"image  static.images.logo  ?   logo"
+		],
+		"main": [
+			"input:email 		? 						? 	placeholder=identity.email type=email 	center 	/",
+			"dropdown:gender    static.identity.gender  ?   center /",
+			"button:submit   	static.submit   		?   center"
+		],
+		"hiddenBlock hidden": [
+			
+		], 
+		"! notRenderedBlock": [
+		]
+	},
+	"events": {
+		// events go here
+	}
+}
+```
+
+By default, the following is an exhaustive list of the current Out-Of-The-Box supported components:
 
 **bluenimble-apps** supports the most used and standard visual components
 
@@ -79,6 +172,13 @@ Visual Components - Out-Of-The-Box
 | chart.bubble | Bubble Chart | `"chart.bubble static.charts.bubble ?"` |
 | chart.radar | Radar Chart | `"chart.radar static.charts.radar ?"` |
 | chart.scatter | Scatter Chart | `"chart.scatter static.charts.scatter ?"` |
+
+*Refer to the <a href="">wiki page</a> on how you can easily create your own components.*
+
+
+### Data Binding:
+	#### Binding Get:
+	
 
 I18n Text resources - static.json
 -----
