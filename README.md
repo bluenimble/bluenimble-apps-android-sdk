@@ -72,7 +72,7 @@ Visual Components - Out-Of-The-Box
 		<tr style="border: 0px;">
 			<td style="border: 0px; padding-left: 20px;">text</td>
 			<td style="border: 0px; padding-left: 20px;">Labels, titles and non editable description zones</td>
-			<td style="border: 0px; padding-left: 20px;">`text static.title ?`</td>
+			<td style="border: 0px; padding-left: 20px;"><pre>"text static.title ?"</pre></td>
 		</tr>
 		<tr style="border: 0px;">
 			<td style="border: 0px; padding-left: 20px;">input</td>
