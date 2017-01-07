@@ -72,17 +72,17 @@ Visual Components - Out-Of-The-Box
 		<tr style="border: 0px;">
 			<td style="border: 0px; padding-left: 20px;">text</td>
 			<td style="border: 0px; padding-left: 20px;">Labels, titles and non editable description zones</td>
-			<td style="border: 0px; padding-left: 20px;">`"text static.title ?"`</td>
+			<td style="border: 0px; padding-left: 20px;">`text static.title ?`</td>
 		</tr>
 		<tr style="border: 0px;">
 			<td style="border: 0px; padding-left: 20px;">input</td>
 			<td style="border: 0px; padding-left: 20px;">Editable input area</td>
-			<td style="border: 0px; padding-left: 20px;">`"input:fullName ? ?"`</td>
+			<td style="border: 0px; padding-left: 20px;">`input:fullName ? ?`</td>
 		</tr>
 		<tr style="border: 0px;">
 			<td style="border: 0px; padding-left: 20px;">checkbox</td>
 			<td style="border: 0px; padding-left: 20px;">Checkbox component (multi-choice)</td>
-			<td style="border: 0px; padding-left: 20px;">`"checkbox:terms static.terms ?`</td>		
+			<td style="border: 0px; padding-left: 20px;">`checkbox:terms static.terms ?`</td>		
 </tr>
 		<tr style="border: 0px;">
 			<td style="border: 0px; padding-left: 20px;">radiogroup</td>
