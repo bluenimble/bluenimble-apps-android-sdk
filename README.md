@@ -17,13 +17,13 @@ If you're going to extend your existing application by adding new activities bas
 
 **Step1:**
 Add BlueNimble Apps SDK dependency on the gradle script:
-`
+```
 compile 'com.github.bluenimble:bluenimble-apps-android-sdk:master-SNAPSHOT'
-`
+```
 
 **Step2:**
 Register one of the BlueNimble Application classes and the the UIActivity on your AndroidManifest.xml file:
-`
+```
 <application
 	.......
 	android:name="com.bluenimble.apps.sdk.application.AssetsApplication">
@@ -32,7 +32,7 @@ Register one of the BlueNimble Application classes and the the UIActivity on you
 		android:name="com.bluenimble.apps.sdk.application.UIActivity"
 		android:configChanges="orientation|screenSize|keyboardHidden" />
 </application>
-`
+```
 
 What's a BlueNimble Application?
 -----
