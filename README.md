@@ -56,8 +56,7 @@ A BlueNimble application is a folder under android assets which have the structu
 
 You can also zip the myApp folder and tell the sdk to load the app from the archive. 
 	
-Create a Page:
------
+## Create a Page:
 
 A page is basically a Json file representing a screen in your android app. Usually an application will have multiple pages through which users can navigate.
 You can organize your application pages in folders under the directory `pages` if you want (by module names for e.g), or let them on the root of the `pages` folder.
@@ -130,11 +129,11 @@ e.g:
 {
 	"layers": {
 		"header": [
-			"text  	static.icons.back 	?   icon",
-			"image  static.images.logo  ?   logo"
+			"text  				static.icons.back 		?   icon",
+			"image  			static.images.logo  	? 	logo"
 		],
 		"main": [
-			"input:email 		? 						? 	placeholder=identity.email type=email 	center 	/",
+			"input:email 		? 						? 	placeholder=identity.email type=email center /",
 			"dropdown:gender    static.identity.gender  ?   center /",
 			"button:submit   	static.submit   		?   center"
 		],
@@ -164,7 +163,7 @@ By default, the following is an exhaustive list of the current Out-Of-The-Box su
 | image | An image | `"image static.images.logo ?"` |
 | dropdown | A single choice selectable list of values | `"dropdown:gender static.gender ?"` |
 | list | A selectable list of values displayed as a list or grid | `"list:tasks static.tasks ? template=taskTpl layout=grid cols=3"` |
-| / | Line break (declared standalone or appended to a component declaration) | `"/"` or `"text static.title ? /"` |
+| / | Line break (declared standalone on a line or appended to a component declaration) | `"/"` or `"text static.title ? /"` |
 | map | Map component (based on google maps) | `"map:world ? ?"` |
 | chart.line | Line Chart | `"chart.line static.charts.line ?"` | 
 | chart.bar | Bar Chart (horizontal and vertical) | `"chart.bar static.charts.bar ?"` |
@@ -177,11 +176,41 @@ By default, the following is an exhaustive list of the current Out-Of-The-Box su
 
 
 ### Data Binding:
-	#### Binding Get:
+As the name suggests, data binding is the mechanism of: 
+- Getting data from visual components. **Binding GET** 
+- Putting data into visual components. **Binding SET**
+
+The underlying mechanism where data is temporarily stored is the **DataHolder**.
+It's a Json Object containing data for each of the 4 scopes:
+- **View:** Data coming from the UI components.
+- **Streams:** Upload / Download files.
+- **Error:** Error happened.
+- **Device:** Information about the device such as Geolocation.
+
+#### Binding GET:
+The Binding **GET** is the data retrieval process from a UI Component.
+
+e.g: *Getting data from an input text field.*
+`"input:fullName   ?   ?"`: the value of this field will be accessible (on your event for ex before an HTTP Call) from the dataHolder with `[view.fullName]`
+
+If you want to see all the views retrieved data contained on the dataHolder, you can do it with `[view.*]`.
+
+*We'll get into more details on the Events & Effects section*
+
+#### Binding SET:
+The Binding **SET** is the data putting process from a Data source into a UI Component.
+
+e.g: *Putting data into an input text field.*
+`"input:fullName   static.fullName   ?"`: this field will be populated by the value identified by the key `fullName` on the `static.json` file.
+
+
+### Events & Effects:
 	
 
-I18n Text resources - static.json
------
+### Services:
+
+
+### I18n Text resources - static.json:
 This is where you put your text resources that will be displayed on your application. There are multiple ways of organizing your strings depending on the component you are displaying it with.
 ```
 {	
