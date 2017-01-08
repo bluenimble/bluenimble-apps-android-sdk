@@ -4,7 +4,9 @@
 
 With almost no android experience, you can create advanced applications without the hassle of understanding how layouts, visual components, async tasks or backend integration works in android.
 
-> **BlueNimble Apps SDK** sdk provides android developers with simple java interfaces which they can extend to create new themes, component types, effects, data binding, backend integration and more
+> **BlueNimble Apps SDK** sdk provides android developers with simple java interfaces which they can extend to create new themes, component types, effects, data binding, backend integration and more.
+
+> We would love to have an iOS developer join the initiative and create the iOS version of this SDK. If you are interested in implementing the specs, reach out at community@bluenimble.com!
 
 Getting Started
 -----
