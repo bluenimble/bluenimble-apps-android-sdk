@@ -176,16 +176,16 @@ By default, the following is an exhaustive list of the current Out-Of-The-Box su
 
 
 ### Data Binding:
-As the name suggests, data binding is the mechanism of: 
-- Getting data from visual components. **Binding GET** 
-- Putting data into visual components. **Binding SET**
-
 The underlying mechanism where data is temporarily stored is the **DataHolder**.
-It's a Json Object containing data for each of the 4 scopes:
+The DataHolder is an Object containing data for each of the following namespaces:
 - **View:** Data coming from the UI components.
 - **Streams:** Upload / Download files.
 - **Error:** Error happened.
 - **Device:** Information about the device such as Geolocation.
+- **Static:** Data coming from the i18n file static.json.
+- **Service names:** Data coming from service calls. (see Services section)
+
+There are 2 types of Bindings.
 
 #### Binding GET:
 The Binding **GET** is the data retrieval process from a UI Component.
@@ -193,7 +193,7 @@ The Binding **GET** is the data retrieval process from a UI Component.
 e.g: *Getting data from an input text field.*
 `"input:fullName   ?   ?"`: the value of this field will be accessible (on your event for ex before an HTTP Call) from the dataHolder with `[view.fullName]`
 
-If you want to see all the views retrieved data contained on the dataHolder, you can do it with `[view.*]`.
+To see the data of the DataHolder concerning all the views, simply use: `[view.*]`.
 
 *We'll get into more details on the Events & Effects section*
 
@@ -201,13 +201,62 @@ If you want to see all the views retrieved data contained on the dataHolder, you
 The Binding **SET** is the data putting process from a Data source into a UI Component.
 
 e.g: *Putting data into an input text field.*
-`"input:fullName   static.fullName   ?"`: this field will be populated by the value identified by the key `fullName` on the `static.json` file.
+`"input:fullName   static.fullName   ?"`: this field will be populated by the value identified by the key `fullName` on the `static.json` file. (`static.json` being the data source in this example)
 
 
 ### Events & Effects:
-	
+Events can be user actions, such as clicking on a button, dragging a map or clicking on a layer or could be system occurrences, such as opening a new page.
+**Events** have 4 callbacks from where ***effects*** will be called:
+- **onStart:** Right before executing the action.
+- **onSuccess:** The action associated with this event has been successful. 
+- **onError:** The action associated with this event has failed / throwed an exception. 
+- **onFinish:** Executed anyway, ***after*** onSuccess/onError.
+
+Additionally, an event could run on a specific **Scope (layer)**, in order to restrict the data passed on the DataHolder to only be pulled from UI Components on that specific Scope.
+
+**Effects** are operations affecting the UI, such as showing/hiding/removing a layer, navigating from a page to another one etc..
+
+e.g:
+**myPage.json:** 
+```
+{
+	"layers": {
+		"header": [
+			"text  				static.icons.back 		?   icon",
+			"image  			static.images.logo  	? 	logo"
+		],
+		"main": [
+			"input:email 		? 						? 	placeholder=identity.email type=email center /",
+			"dropdown:gender    static.identity.gender  ?   center /",
+			"button:submit   	static.submit   		?   center"
+		],
+		"hiddenBlock hidden": [
+			"text 				view.email 				?"
+		], 
+		"! notRenderedBlock": [
+		]
+	},
+	"events": {
+		"create": { // fired upon page creation
+			"onStart": {
+				"echo": "Page Creation." // Echo Effect
+			}
+		}, 
+		"main.submit.press": {
+			"scope": "main",
+			"onStart": {
+				"echo": "Selected: [view.*]", // Echo effect will display the content of the DataHolder of the main layer
+				"hide": "main",  // the "main" layer will be hidden using the effect "hide".
+				"show": "hiddenBlock" // the "hiddenBlock" layer previously hidden will be visible using the effect "show".
+			}
+		}
+	}
+}
+```
+
 
 ### Services:
+
 
 
 ### I18n Text resources - static.json:
