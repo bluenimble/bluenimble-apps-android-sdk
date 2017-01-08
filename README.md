@@ -254,6 +254,9 @@ e.g:
 }
 ```
 
+Here is an exhaustive list of the BNB SDK Out-of-the-box Events:
+
+
 
 ### Services:
 
