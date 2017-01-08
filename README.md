@@ -43,7 +43,7 @@ What's a BlueNimble Application?
 A BlueNimble application is a folder under android assets which have the structure below:
 
 - myApp
-  - app.json
+  - app.json (basic declaration of the app, name, default theme, default language, entry page)
   - static.json (*optional*. Put application texts by user spoken language such as form fields labels - i18n)
   - backend.json (*optional*. Define your REST or local services)
   - themes (*optional*)
@@ -429,6 +429,94 @@ And to display these strings on your components, you just need to append the *st
 `text static.title ?` will display a label component with `BlueNimble Apps SDK Browser` as value.
 
 In other words, it will perform a `Binding SET` on the `text` component with as data source `static` and as value `static.title`.
+
+
+## Styling:
+You can define multiple themes for your application, one being the generic one and others for specific components and styles.
+
+Developers themes should be placed under the `themes` directory of the app.
+
+By default, Bluenimble SDK comes with a built-in default theme with basic styleAttributes such as `visible, hidden, center, rounded...`.
+
+You can refer to your components from your theme, either:
+- **By ID** : gives a specific style for this specific component ID, such as `logo` 
+- **By Component type** : gives a generic style to all the components with the same type, such as `text`, which can be extended and overriden by other styleAttributes or by specifying an ID and refering it from the theme file.
+
+You can refer to your theme from your components:
+- **By Adding the style key on the end of the component declaration**, such as `text:title ? ? center`
+
+The theme structure is pretty self-explanatory.
+
+e.g: **theme1.json**
+
+```
+{
+	"*": {
+		"text": {
+			"padding": "20 20 20 20",
+			"text": {
+				"align": "center middle",
+				"color": "#FFFFFF",
+				"shadow": "#7F000000 1 1 2"
+			},
+			"background": {
+				"color": "#09afdf"
+			}
+		},
+		"secondary": {
+			"padding": "20 20 20 20",
+			"text": {
+				"align": "center middle",
+				"color": "#FFFFFF",
+				"shadow": "#7F000000 1 1 2"
+			},
+			"background": {
+				"color": "#8bc43f"
+			}
+		},
+		"logo": {
+			"align": "middle",
+			"margin": "? ? ? 20",
+			"size": {
+				"width": "500"
+			}
+		},
+		"title": {
+			"align": "right middle",
+			"margin": "? 10 ? 10",
+			"text": {
+				"size": "14"
+			}
+		},
+		"icon": {
+			"size": {
+				"width": "200",
+				"height": "200"
+			},
+			"text": {
+				"font": "fontawesome",
+				"color": "#FFFFFF",
+				"size": "24",
+				"shadow": "#7F000000 1 1 2",
+				"align": "center middle"
+			},
+			"background": {
+				"color": "#FFFFFF #09afdf",
+				"gradient": {
+					"radius": "300"
+				},
+				"opacity": ".4"
+			},
+			"shadow": {
+				"color": "#0293BD",
+				"tick": "3"
+			},
+			"align": "center"
+		},
+		.....
+	}
+}
+```
 
 
 ## Credits:
