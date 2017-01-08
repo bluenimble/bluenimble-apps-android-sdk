@@ -1,6 +1,6 @@
 # BlueNimble Apps SDK for Android
 
-**BlueNimble Apps SDK** let you create android ***NATIVE*** applications **almost without writing a single line of code**. You can create complex pages, styling components, adding effects and integrate with your backend using simple json configuration files.
+**BlueNimble Apps SDK** lets you create android ***NATIVE*** applications **almost without writing a single line of code**. You can create complex pages, styling components, adding effects and integrate with your backend using simple json configuration files.
 
 With almost no android experience, you can create advanced applications without the hassle of understanding how layouts, visual components, async tasks or backend integration works in android.
 
@@ -161,10 +161,12 @@ By default, the following is an exhaustive list of the current Out-Of-The-Box su
 | radiogroup | RadioGroup component (single-choice) | `"radiogroup:gender static.gender ?"` |
 | button | Button | `"button:create static.create ?"` |
 | image | An image | `"image static.images.logo ?"` |
+| video | A basic video player | `"video:movie static.medias.videos.online ?"` |
 | dropdown | A single choice selectable list of values | `"dropdown:gender static.gender ?"` |
 | list | A selectable list of values displayed as a list or grid | `"list:tasks static.tasks ? template=taskTpl layout=grid cols=3"` |
 | / | Line break (declared standalone on a line or appended to a component declaration) | `"/"` or `"text static.title ? /"` |
 | map | Map component (based on google maps) | `"map:world ? ?"` |
+| tabs | Swiping tabs | `"tabs static.articles.titles ? template=tabTpl1+tabTpl2+tabTpl3"` |
 | chart.line | Line Chart | `"chart.line static.charts.line ?"` | 
 | chart.bar | Bar Chart (horizontal and vertical) | `"chart.bar static.charts.bar ?"` |
 | chart.pie | Pie Chart | `"chart.pie static.charts.pie ?"` |
@@ -214,7 +216,7 @@ Events can be user actions, such as clicking on a button, dragging a map or clic
 
 Additionally, an event could run on a specific **Scope (layer)**, in order to restrict the data passed on the DataHolder to only be pulled from UI Components on that specific Scope.
 
-**Effects** are operations affecting the UI, such as showing/hiding/removing a layer, navigating from a page to another one etc..
+**Effects** are operations affecting the UI, such as showing/hiding/removing a layer, styling, animating, navigating from a page to another one etc..
 
 e.g:
 **myPage.json:** 
@@ -254,12 +256,129 @@ e.g:
 }
 ```
 
-Here is an exhaustive list of the BNB SDK Out-of-the-box Events:
+Here is an exhaustive list of the current Out-of-the-box Events:
 
+| Target | Events | 
+| ------ | ------ | 
+| text | <ul><li>`press`</li><li>`longPress`</li></ul> | 
+| input | <ul><li>`afterTextChanged`</li><li>`beforeTextChanged`</li><li>`onTextChanged`</li></ul> | 
+| checkbox | <ul><li>`select`</li></ul> | 
+| radiogroup | <ul><li>`select`</li></ul> | 
+| button | <ul><li>`press`</li><li>`longPress`</li></ul> | 
+| image | <ul><li>`press`</li><li>`longPress`</li></ul> |
+| dropdown | <ul><li>`select`</li></ul> | 
+| list | <ul><li>`press`</li><li>`longPress`</li><li>Swipe (coming soon)</li><li>Scroll (coming soon)</li></ul> | 
+| map | <ul><li>`move`</li><li>`press`</li><li>`longPress`</li><li>`markerDrag`</li><li>`markerStartDrag`</li><li>`markerEndDrag`</li><li>`markerPress`</li></ul> |
+| layer | <ul><li>`press`</li><li>`longPress`</li></ul> | 
+| page | <ul><li>`back`</li><li>`start`</li></ul> | 
+
+
+Here is an exhaustive list of the current Out-of-the-box Effects:
+| Effects | Purpose |
+| ------- | ------- |
+| hide |  |
+| show |  |
+| render |  |
+| relocate |  |
+| style |  |
+| destroy |  |
+| bind |  |
+| unbind |  |
+| goto |  |
+| open |  |
+| animate |  |
+| select |  |
+| clear |  |
+| update |  |
+| delete |  |
+| play |  |
+| resume |  |
+| pause |  |
+| seek |  |
+| echo |  |
 
 
 ### Services:
+Services represent communication with REST WebServices and phone Storage.
+3 services are currently included out-of-the-box:
+- **REST Calls** : GET, POST, PUT, DELETE.
+- **SharedPreference** Operations (key-value android storage) : GET, POST, DELETE.
+- **Local Storage** (Private and Public) : GET, POST, DELETE.
 
+Services are declared on the `backend.json` file. The `data` serving as a payload to the service could be declared on the service declaration or on the event firing the call.
+
+e.g:
+
+```
+{	
+	"login": {
+		"type": "remote",
+		"url": "http://your-api/bnb-sdk-backend/api/login",
+		"verb": "post",
+		"headers": {
+			"Content-Type": "application/json",
+			"Accept": "application/json"
+		},
+		"data": {
+			"username": "USERNAME",
+			"password": "Python"
+		}
+	}
+}
+```
+
+And, to call this service from your pages: 
+**myPage.json:** 
+```
+{
+	"layers": {
+		"header": [
+			"text  				static.icons.back 		?   icon",
+			"image  			static.images.logo  	? 	logo"
+		],
+		"main": [
+			"input:email 		? 						? 	placeholder=identity.email type=email center /",
+			"dropdown:gender    static.identity.gender  ?   center /",
+			"button:submit   	static.submit   		?   center", 
+			"button:backend 	static.backend 			? 	right"
+		],
+		"hiddenBlock hidden": [
+			"text 				view.email 				?"
+		], 
+		"! notRenderedBlock": [
+		]
+	},
+	"events": {
+		"create": { 
+			"onStart": {
+				"echo": "Page Creation." 
+			}
+		}, 
+		"main.submit.press": {
+			"scope": "main",
+			"onStart": {
+				"echo": "Selected: [view.*]", 
+				"hide": "main", 
+				"show": "hiddenBlock"
+			}
+		}, 
+		"main.backend.press": {
+			"call": { // Action to call the login service
+				"services": "login"
+			},
+			"onSuccess": {
+				"echo": "Success : UUID = [login.uuid]"
+			},
+			"onError": {
+				"echo": "Error : [error.*]"
+			},
+			"onFinish": {
+				"echo": "Finish : Response = [login.*]"
+			}
+		}
+	}
+}
+```
 
 
 ### I18n Text resources - static.json:
@@ -303,8 +422,13 @@ This is where you put your text resources that will be displayed on your applica
 	}
 }
 ```
-And to display these strings on your components, you just need to append the *static* keyword to your their keys. 
-*e.g :* `text static.title ?` will display a label component with `BlueNimble Apps SDK Browser` as value.
+And to display these strings on your components, you just need to append the *static* keyword to the key. 
+*e.g :* 
+
+`text static.title ?` will display a label component with `BlueNimble Apps SDK Browser` as value.
+
+In other words, it will perform a `Binding SET` on the `text` component with as data source `static` and as value `static.title`.
+
 
 ## Credits:
 Thank you to the developers of the following libs, that BlueNimble Apps SDK uses underline:
@@ -323,9 +447,6 @@ Thank you to the developers of the following libs, that BlueNimble Apps SDK uses
 	</li>
 	<li>
 		<a href="http://mathparser.org/" target="_blank">MxParser</a>
-	</li>
-	<li>
-		<a href="http://fontawesome.io/icons/" target="_blank">Font Awesome</a>
 	</li>
 </ul>
 
