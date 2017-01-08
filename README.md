@@ -274,6 +274,7 @@ Here is an exhaustive list of the current Out-of-the-box Events:
 
 
 Here is an exhaustive list of the current Out-of-the-box Effects:
+
 | Effects | Purpose |
 | ------- | ------- |
 | hide |  |
