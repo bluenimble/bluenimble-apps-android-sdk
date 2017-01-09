@@ -523,6 +523,8 @@ e.g: **theme1.json**
 }
 ```
 
+#### Check the <a href="https://github.com/bluenimble/bluenimble-apps-android-sdk/wiki">Wiki page</a> for more examples and how to customize or create your own components, services, effects.
+
 
 ## Credits:
 Thank you to the developers of the following libs, that BlueNimble Apps SDK uses underline:
