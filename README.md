@@ -120,12 +120,12 @@ This is how to declare a component:
 
 `"component:ID  bindingSET  bindingGET  property1=value1 property2=value2...  styleAttr1 styleAttr2... /"`
 
-- **component:** the name of the component, *e.g: `text` for the label component*
+- **component:** the type of the component, *e.g: `text` for a label, `button` for a Button...*
 - **ID:** *[optional]* useful when linking an event to the component or when binding data dynamically to/from it. (see events and binding sections)
 - **bindingSet:** the value to be bound to this component, or the ***?*** if none. (see binding section)
 - **bindingGet:** the value that this component will output, or the ***?*** if none. (see binding section)
 - **properties:** *[optional]* predefined or custom properties of this component *e.g: `placeholder` for the input component*
-- **styleAttributes:** *[optional]* keys identifying a specific style on the application theme. *e.g: `center` or `red`*
+- **styleAttributes:** *[optional]* keys identifying a specific style on the application theme. *e.g: `center` or `rounded`*
 - **/ :** *[optional]* Break the line. (next element will be positioned below this one)
 
 e.g:
