@@ -179,7 +179,7 @@ By default, the following is an exhaustive list of the current Out-Of-The-Box su
 | chart.radar | Radar Chart | `"chart.radar static.charts.radar ?"` |
 | chart.scatter | Scatter Chart | `"chart.scatter static.charts.scatter ?"` |
 
-*Refer to the <a href="">wiki page</a> on how you can easily create your own components.*
+*Refer to the <a href="https://github.com/bluenimble/bluenimble-apps-android-sdk/wiki#forms-component">Examples</a> and to <a href="https://github.com/bluenimble/bluenimble-apps-android-sdk/wiki/Extending-BlueNimble-Apps-SDK#components">the wikis</a> for how you can easily create your own components.*
 
 
 ### Data Binding:
@@ -282,27 +282,28 @@ Here is an exhaustive list of the current Out-of-the-box Effects:
 
 | Effects | Purpose |
 | ------- | ------- |
-| hide |  |
-| show |  |
-| render |  |
-| relocate |  |
-| style |  |
-| destroy |  |
-| bind |  |
-| unbind |  |
-| goto |  |
-| open |  |
-| animate |  |
-| select |  |
-| clear |  |
-| update |  |
-| delete |  |
-| play |  |
-| resume |  |
-| pause |  |
-| seek |  |
-| echo |  |
+| hide | Hide a layer or a UI component. |
+| show | Show a layer or a UI component. |
+| render | Render a layer. |
+| relocate | Send a layer back and bring another one front. |
+| style | Styling layers / components. |
+| destroy | Destroy layers / components. |
+| bind | Bind data to a layer / component. |
+| unbind | Unbind data to a layer / component. |
+| goto | Goto another page. |
+| open | Open an existing Android activity. |
+| animate | Animate a layer / component. |
+| select | Select a record of a list. |
+| clear | Clear a selected list record. |
+| update | Update a record of a list. |
+| delete | Delete a record from a list. |
+| play | Play a video. |
+| resume | Resume a video playing. |
+| pause | Pause a video. |
+| seek | Jump to a video location (a second). |
+| echo | Show a small Toast message. |
 
+Refer to the <a href=""https://github.com/bluenimble/bluenimble-apps-android-sdk/wiki/Extending-BlueNimble-Apps-SDK#effects>the wikis</a> for how you can easily create your own services (Realm, Worklight, SOAP etc...).*
 
 ### Services:
 Services represent communication with REST WebServices and phone Storage.
@@ -385,6 +386,7 @@ And, to call this service from your pages:
 	}
 }
 ```
+Refer to the <a href="https://github.com/bluenimble/bluenimble-apps-android-sdk/wiki#services">Examples</a> and to <a href="https://github.com/bluenimble/bluenimble-apps-android-sdk/wiki/Extending-BlueNimble-Apps-SDK#services">the wikis</a> for how you can easily create your own services (Realm, Worklight, SOAP etc...).*
 
 
 ### I18n Text resources - static.json:
@@ -434,6 +436,8 @@ And to display these strings on your components, you just need to append the *st
 `text static.title ?` will display a label component with `BlueNimble Apps SDK Browser` as value.
 
 In other words, it will perform a `Binding SET` on the `text` component with as data source `static` and as value `static.title`.
+
+Refer to the <a href="https://github.com/bluenimble/bluenimble-apps-android-sdk/wiki#i18n-staticjson">Examples</a>
 
 
 ## Styling:
@@ -522,6 +526,8 @@ e.g: **theme1.json**
 	}
 }
 ```
+Refer to the <a href="https://github.com/bluenimble/bluenimble-apps-android-sdk/wiki#themes">Examples</a>
+
 
 #### Check the <a href="https://github.com/bluenimble/bluenimble-apps-android-sdk/wiki">Wiki page</a> for more examples and how to customize or create your own components, services, effects.
 
