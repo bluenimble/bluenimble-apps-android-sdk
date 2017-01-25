@@ -172,7 +172,7 @@ public class RemoteService implements Service {
 
 					body = fb.build ();
 				} else if (verb.equals (Verb.GET)) {
-					HttpUrl.Builder urlBuilder = HttpUrl.parse("https://api.github.help").newBuilder ();
+					HttpUrl.Builder urlBuilder = HttpUrl.parse (url).newBuilder ();
 					Iterator<String> pnames = rdata.keys ();
 					while (pnames.hasNext ()) {
 						String pn = pnames.next ();
